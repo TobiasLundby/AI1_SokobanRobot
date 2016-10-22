@@ -15,6 +15,7 @@
 using namespace std;
 
 #include "Map.hpp"
+#include "Sokoban_features.hpp"
 
 int main(int argc,  char **argv) {
     if (argc >= 2) { // Accept only one file
