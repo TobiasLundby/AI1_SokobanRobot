@@ -47,7 +47,7 @@ private:
 
 Map::Map()
 {
-	cout << "From class1: " << parent_map << endl;
+
 }
 
 Map::Map(Map &source_map)
