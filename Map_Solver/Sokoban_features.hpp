@@ -18,20 +18,12 @@
 #define     SOUTH   = 2;
 #define     WEST    = 3;
 
+using namespace std;
 
 class Sokoban_features
 {
 public:
-	// Constructor, overload constructor, and destructor
-	Sokoban_features();
-	~Sokoban_features();
-
-	// Public variables
-
-	// Public Methods
-
-private:
-    // feature_node
+	// feature_node
     struct feature_node
     {
         // Sokoban parameters
@@ -47,11 +39,24 @@ private:
 		feature_node(feature_node* in_parent, int in_depth)
         : parent{ in_parent }, depth{ in_depth } { }
     };
+
+	// Constructor, overload constructor, and destructor
+	Sokoban_features();
+	~Sokoban_features();
+
+	// Public variables
+
+	// Public Methods
+    feature_node* get_root_ptr();
+	feature_node* insert_child(feature_node* parent_node);
+
+private:
 	// Private variables
     feature_node* root; // to hold the start sokoban features which is understod as the start placement of the elements / features
     Map* map;
 
 	// Private Methods
+
 };
 
 
@@ -59,24 +64,33 @@ Sokoban_features::Sokoban_features()
 {
 	root = nullptr;
 	map = nullptr;
-
-	feature_node* t = new feature_node{nullptr,2};
-	feature_node* s1 = new feature_node{t,t->depth+1};
-	t->children.push_back(s1);
-
-	feature_node* s2 = new feature_node{t,t->depth+1};
-	t->children.push_back(s2);
-
-	cout << "Depth of t is: " << t->depth << endl;
-	cout << "Depth of s1 is: " << s1->depth << endl;
-	cout << "Depth of s1's parent is: " << s1->parent->depth << endl;
-
-	if (t->children.size() > 0)
-		for (size_t i = 0; i < t->children.size(); i++)
-			cout << "Depth of t's " << i+1 <<  " st child is: " << t->children.at(i)->depth << endl;
 }
 
 Sokoban_features::~Sokoban_features()
 {
 	// Do cleanup
+}
+
+Sokoban_features::feature_node* Sokoban_features::get_root_ptr()
+{
+	return root;
+}
+
+Sokoban_features::feature_node* Sokoban_features::insert_child(feature_node* parent_node)
+// Input: can either be the nullptr for creating the root of the tree or a pointer to the parent
+// Output: Pointer to the created node / child
+{
+    feature_node* temp_node = nullptr;
+    if (parent_node == nullptr) {
+        if (root == nullptr) {
+            temp_node = new Sokoban_features::feature_node{nullptr,0};
+            root = temp_node;
+        } else
+            cout << "Trying to create new root in existing tree, please create a new feature tree and try again" << endl;
+
+    } else {
+        temp_node = new Sokoban_features::feature_node{parent_node,parent_node->depth+1};
+        parent_node->children.push_back(temp_node);
+    }
+	return temp_node;
 }

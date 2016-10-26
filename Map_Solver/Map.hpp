@@ -14,6 +14,8 @@
 #define start       5
 #define undefined   9
 
+using namespace std;
+
 class Map
 {
 public:
