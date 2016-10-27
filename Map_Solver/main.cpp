@@ -35,6 +35,13 @@ int main(int argc,  char **argv) {
             Sokoban_features::feature_node* s3 = feature_tree.insert_child(tree_root);
             Sokoban_features::feature_node* s4 = feature_tree.insert_child(s1);
             Sokoban_features::feature_node* s5 = feature_tree.insert_child(s1);
+            Sokoban_features::feature_node* s6 = feature_tree.insert_child(s1);
+            Sokoban_features::feature_node* s7 = feature_tree.insert_child(s1);
+            Sokoban_features::feature_node* s8 = feature_tree.insert_child(s7);
+            Sokoban_features::feature_node* s9 = feature_tree.insert_child(s7);
+            Sokoban_features::feature_node* s10 = feature_tree.insert_child(s9);
+            Sokoban_features::feature_node* s11 = feature_tree.insert_child(s10);
+            Sokoban_features::feature_node* s12 = feature_tree.insert_child(s11);
             cout << "Depth of tree_root is: " << tree_root->depth << endl;
             cout << "Depth of s1 is: " << s1->depth << endl;
             cout << "Depth of s1's parent is: " << s1->parent->depth << endl;
