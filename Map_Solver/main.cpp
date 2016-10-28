@@ -23,10 +23,7 @@ int main(int argc,  char **argv) {
         Map initial_map;
 
         Sokoban_features feature_tree;
-
-        Sokoban_features::feature_node* tree_root = feature_tree.insert_child(nullptr);
-
-
+        Sokoban_features::feature_node* tree_root = feature_tree.insert_child(nullptr); // Create tree root
 
         if (true) { // EXTERNAL TREE TESTER, NOT FOR USE IN ACTUAL PROGRAMMING
             Sokoban_features::feature_node* tree_root2 = feature_tree.insert_child(nullptr); // Reports an error in the terminal
