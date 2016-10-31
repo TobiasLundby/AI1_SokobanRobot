@@ -7,6 +7,13 @@
 
 #pragma once
 
+// Library include
+// - none yet
+
+// Class include
+//#include "Sokoban_features.hpp" // Uses the features and therefore needs to be included
+
+// Defines
 #define obstacle    1
 #define freespace   2
 #define box         3
@@ -14,6 +21,7 @@
 #define start       5
 #define undefined   9
 
+// Namespaces
 using namespace std;
 
 class Map
@@ -31,13 +39,25 @@ public:
 	// Public Methods
 	bool load_map_from_file(string file_name);
 	void print_map();
+	void print_map(point2D& in_worker_pos, vector< point2D > in_boxes_pos);
 	void print_info();
+	void print_goals();
+	void print_boxes();
 
 	vector< vector<int> > get_map();
+	vector< point2D > get_goals();
+	vector< point2D > get_boxes();
+	point2D get_worker();
 
 private:
 	// Private variables
 	vector< vector<int> > map_structure;
+
+	//vector< array<int, 2> > goals;
+	//vector< array<int, 2> > boxes;
+	vector< point2D > initial_pos_goals;
+	vector< point2D > initial_pos_boxes;
+	point2D initial_pos_worker; // x,y
 
 	int map_height      = 0;
 	int map_width       = 0;
@@ -84,24 +104,40 @@ bool Map::load_map_from_file(string file_name)
 			} else {
 				//cout << line << '\n';
 				vector<int> row; // Create an empty row
-				for (size_t i = 0; i < line.length(); i++) {
+				for (size_t j = 0; j < line.length(); j++) {
 					//save, switch etc.
-					if (line.at(i) == 'X') {
+					if (line.at(j) == 'X') {
 						row.push_back(obstacle);
-					} else if (line.at(i) == '.') {
+						//cout << "Obstacle at " << j << ", " << i << endl;
+					} else if (line.at(j) == '.') {
 						row.push_back(freespace);
-					} else if (line.at(i) == 'J') {
-						row.push_back(box);
-					} else if (line.at(i) == 'G') {
-						row.push_back(goal);
-					} else if (line.at(i) == 'M') {
-						row.push_back(start);
+					} else if (line.at(j) == 'J') {
+						//row.push_back(box);
+						row.push_back(freespace);
+						initial_pos_boxes.push_back( point2D() );
+						initial_pos_boxes.at(initial_pos_boxes.size()-1).x = j;
+						initial_pos_boxes.at(initial_pos_boxes.size()-1).y = i-2;
+					} else if (line.at(j) == 'G') {
+						//row.push_back(goal);
+						row.push_back(freespace);
+						initial_pos_goals.push_back( point2D() );
+						initial_pos_goals.at(initial_pos_goals.size()-1).x = j;
+						initial_pos_goals.at(initial_pos_goals.size()-1).y = i-2;
+					} else if (line.at(j) == 'M') {
+						//row.push_back(start);
+						row.push_back(freespace);
+						initial_pos_worker.x = j;
+						initial_pos_worker.y = i-2;
 					}
 				}
 				map_structure.push_back(row);
 			}
 		}
 		map_file.close();
+		if (initial_pos_goals.size() != initial_pos_boxes.size()) {
+			cout << "The number og goals and boxes does not match!" << endl << endl;
+			return false;
+		}
 		cout << "Loading successful!" << endl << endl;
 		empty_map = false;
 		return true;
@@ -113,30 +149,105 @@ bool Map::load_map_from_file(string file_name)
 
 void Map::print_map()
 {
+	// if (!empty_map) {
+	// 	cout << endl << " *** Printing map ***" << endl << "  ";
+	//     for (size_t i = 0; i < map_structure.at(0).size(); i++)
+	//         cout << i << " ";
+	//     cout << endl;
+	//     for (size_t row = 0; row < map_structure.size(); row++) {
+	//         if (map_structure.size() >= 10)
+	//             cout << row << "  ";
+	//         else
+	//             cout << row << " ";
+	//         for (size_t col = 0; col < map_structure.at(row).size(); col++) {
+	//             //cout << map_structure_loaded.at(row).at(col);
+	// 			bool printed_obj = false;
+	// 			for (size_t h = 0; h < initial_pos_boxes.size(); h++){
+	// 				if (initial_pos_boxes.at(h).x == col and initial_pos_boxes.at(h).y == row) {
+	// 					cout << "\033[1;31m×\033[0m"; // box
+	// 					printed_obj = true;
+	// 				}
+	// 			}
+	//
+	// 			for (size_t h = 0; h < initial_pos_goals.size(); h++) {
+	// 				if (initial_pos_goals.at(h).x == col and initial_pos_goals.at(h).y == row) {
+	// 					cout << "\033[1;32m★\033[0m"; // goal
+	// 					printed_obj = true;
+	// 				}
+	// 			}
+	//
+	// 			if (initial_pos_worker.x == col and initial_pos_worker.y == row) {
+	// 				cout << "\033[1;35mΔ\033[0m"; // start
+	// 				printed_obj = true;
+	// 			}
+	//
+	//             if (map_structure.at(row).at(col) == obstacle) {
+	//                 cout << "⊞"; // obstacle
+	//             } else if (map_structure.at(row).at(col) == freespace and !printed_obj) {
+	//                 cout << " "; // free space
+	//             }
+	//
+	//             if (col >= 10) {
+	//                 cout << "  ";
+	//             } else {
+	//                 cout << " ";
+	//             }
+	//         }
+	//         cout << endl;
+	//     }
+	//     cout << "⊞: Obstacle" << endl;
+	//     cout << " : Free space" << endl;
+	//     cout << "\033[1;31m×\033[0m: Box" << endl;
+	//     cout << "\033[1;32m★\033[0m: Goal" << endl;
+	//     cout << "\033[1;35mΔ\033[0m: Start / robot" << endl;
+	//     cout << " *** Printing map done ***" << endl << endl;
+	// } else {
+	// 	cout << "Map is empty and cannot be printed!" << endl << endl;
+	// }
+	print_map(initial_pos_worker, initial_pos_boxes);
+}
+
+void Map::print_map(point2D& in_worker_pos, vector< point2D > in_boxes_pos)
+{
 	if (!empty_map) {
 		cout << endl << " *** Printing map ***" << endl << "  ";
 	    for (size_t i = 0; i < map_structure.at(0).size(); i++)
-	        cout << i+1 << " ";
+	        cout << i << " ";
 	    cout << endl;
 	    for (size_t row = 0; row < map_structure.size(); row++) {
-	        if (map_structure.size() >= 9)
-	            cout << row+1 << "  ";
+	        if (map_structure.size() >= 10)
+	            cout << row << "  ";
 	        else
-	            cout << row+1 << " ";
+	            cout << row << " ";
 	        for (size_t col = 0; col < map_structure.at(row).size(); col++) {
 	            //cout << map_structure_loaded.at(row).at(col);
-	            if (map_structure.at(row).at(col) == 1) {
+				bool printed_obj = false;
+				for (size_t h = 0; h < in_boxes_pos.size(); h++){
+					if (in_boxes_pos.at(h).x == col and in_boxes_pos.at(h).y == row) {
+						cout << "\033[1;31m×\033[0m"; // box
+						printed_obj = true;
+					}
+				}
+
+				for (size_t h = 0; h < initial_pos_goals.size(); h++) {
+					if (initial_pos_goals.at(h).x == col and initial_pos_goals.at(h).y == row) {
+						cout << "\033[1;32m★\033[0m"; // goal
+						printed_obj = true;
+					}
+				}
+
+				if (in_worker_pos.x == col and in_worker_pos.y == row) {
+					cout << "\033[1;35mΔ\033[0m"; // start
+					printed_obj = true;
+				}
+
+	            if (map_structure.at(row).at(col) == obstacle) {
 	                cout << "⊞"; // obstacle
-	            } else if (map_structure.at(row).at(col) == 2) {
+	            } else if (map_structure.at(row).at(col) == freespace and !printed_obj) {
 	                cout << " "; // free space
-	            } else if (map_structure.at(row).at(col) == 3) {
-	                cout << "\033[1;31m×\033[0m"; // box
-	            } else if (map_structure.at(row).at(col) == 4) {
-	                cout << "\033[1;32m★\033[0m"; // goal
-	            } else if (map_structure.at(row).at(col) == 5) {
-	                cout << "\033[1;35mΔ\033[0m"; // start
 	            }
-	            if (col >= 9) {
+
+	            if (col >= 10) {
 	                cout << "  ";
 	            } else {
 	                cout << " ";
@@ -163,7 +274,44 @@ void Map::print_info()
 	cout << "Obstacles: " << map_obstacles << endl;
 }
 
+void Map::print_goals()
+{
+	if (initial_pos_goals.size() > 0) {
+		cout << endl << "Printing goals (" << initial_pos_goals.size() << ")" << endl;
+		for (size_t i = 0; i < initial_pos_goals.size(); i++) {
+			cout << "Goal " << i << ": x=" << initial_pos_goals.at(i).x << ", y=" << initial_pos_goals.at(i).y << endl;
+		}
+	} else
+		cout << endl << "There are no goals in the map" << endl;
+}
+
+void Map::print_boxes()
+{
+	if (initial_pos_boxes.size() > 0) {
+		cout << endl << "Printing boxes (" << initial_pos_boxes.size() << ")" << endl;
+		for (size_t i = 0; i < initial_pos_boxes.size(); i++) {
+			cout << "Box " << i << ": x=" << initial_pos_boxes.at(i).x << ", y=" << initial_pos_boxes.at(i).y << endl;
+		}
+	} else
+		cout << endl << "There are no boxes in the map" << endl;
+}
+
 vector< vector<int> > Map::get_map()
 {
 	return map_structure;
+}
+
+vector< point2D > Map::get_goals()
+{
+	return initial_pos_goals;
+}
+
+vector< point2D > Map::get_boxes()
+{
+	return initial_pos_boxes;
+}
+
+point2D Map::get_worker()
+{
+	return initial_pos_worker;
 }
