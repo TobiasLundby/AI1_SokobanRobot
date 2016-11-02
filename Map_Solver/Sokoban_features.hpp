@@ -40,11 +40,6 @@ public:
 
 		feature_node(feature_node* in_parent, int in_depth)
         : parent{ in_parent }, depth{ in_depth } { }
-
-		// void print_node()
-		// {
-		// 	this->map->print_map(worker_pos, boxes);
-		// }
     };
 
 	// Constructor, overload constructor, and destructor
@@ -80,8 +75,6 @@ Sokoban_features::Sokoban_features()
 Sokoban_features::Sokoban_features(Map* map_ptr)
 {
 	root = nullptr;
-	map = nullptr;
-
 	map = map_ptr;
 }
 
@@ -109,7 +102,6 @@ Sokoban_features::feature_node* Sokoban_features::insert_child(feature_node* par
             root = temp_node; // Set root as temp node after relevant info is saved from Map object
         } else
             cout << "Trying to create new root in existing tree, please create a new feature tree and try again" << endl;
-
     } else {
         temp_node = new Sokoban_features::feature_node{parent_node,parent_node->depth+1};
 		temp_node->boxes = parent_node->boxes;
@@ -139,7 +131,6 @@ void Sokoban_features::solve()
 				print_node(tmp_node);
 			}
 		}
-
 	} else
 		cout << "Tree already exists; break solve" << endl;
 }
