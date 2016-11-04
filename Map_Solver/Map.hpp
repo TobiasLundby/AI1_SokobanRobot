@@ -3,6 +3,7 @@
 //  AI1_Sokoban-solver_MM-TL
 //
 //  Created by Tobias Lundby on 26/09/16.
+//  All files are licenced under the BSD 3-Clause (see LICENSE.md)
 //
 
 #pragma once
@@ -42,6 +43,7 @@ public:
 	void print_info();
 	void print_goals();
 	void print_boxes();
+	int  map_point_type(point2D &inPoint);
 
 	vector< vector<int> > get_map();
 	vector< point2D > get_goals();
@@ -50,7 +52,7 @@ public:
 
 private:
 	// Private variables
-	vector< vector<int> > map_structure;
+	vector< vector<int> > map_structure; // outer vector holds rows and therefore the internal vector is the column, ex. map_structure.at(y).at(x)
 
 	vector< point2D > initial_pos_goals;
 	vector< point2D > initial_pos_boxes;
@@ -248,4 +250,10 @@ vector< point2D > Map::get_boxes()
 point2D Map::get_worker()
 {
 	return initial_pos_worker;
+}
+
+int Map::map_point_type(point2D &inPoint)
+{
+	int temp_type = map_structure.at(inPoint.y).at(inPoint.x);
+	return temp_type;
 }

@@ -3,6 +3,7 @@
 //  AI1_Sokoban-solver_MM-TL
 //
 //  Created by Tobias Lundby on 19/10/16.
+//  All files are licenced under the BSD 3-Clause (see LICENSE.md)
 //
 
 #pragma once
@@ -55,6 +56,7 @@ public:
 
 	void print_node(feature_node* in_node);
 	void solve();
+    int  point_type(point2D &inPoint);
 
 private:
 	// Private variables
@@ -133,4 +135,9 @@ void Sokoban_features::solve()
 		}
 	} else
 		cout << "Tree already exists; break solve" << endl;
+}
+
+int  Sokoban_features::point_type(point2D &inPoint)
+{
+    return 1;
 }
