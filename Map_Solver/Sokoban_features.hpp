@@ -15,10 +15,17 @@
 #include "Map.hpp" // Uses map and therefore needs to be included
 
 // Defines
-#define     NORTH   0; // NOTE: this goes opposite the y-axis
-#define     EAST    1; // NOTE: this goes as the x-axis
-#define     SOUTH   2; // NOTE: this goes as the y-axis
-#define     WEST    3; // NOTE: this goes opposite the x-axis
+#define     NORTH   1; // NOTE: this goes opposite the y-axis
+#define     EAST    2; // NOTE: this goes as the x-axis
+#define     SOUTH   3; // NOTE: this goes as the y-axis
+#define     WEST    4; // NOTE: this goes opposite the x-axis
+
+#define     forward     1;
+#define     backward    2;
+#define     left        3; // Turn CCW 90
+#define     right       4; // Turn CW 90
+#define     deploy      5;
+#define     approach    6;
 
 // Namespaces
 using namespace std;
@@ -31,6 +38,7 @@ public:
     {
         // Sokoban parameters
         vector< point2D > boxes; // vector for holding the different boxes
+        vector< int >     box_goal_ref;
         point2D worker_pos;
         int worker_dir;
 
@@ -56,7 +64,7 @@ public:
 
 	void print_node(feature_node* in_node);
 	void solve();
-    int  point_type(point2D &inPoint);
+    int  point_type(feature_node* in_node, point2D &inPoint);
 
 private:
 	// Private variables
@@ -99,6 +107,30 @@ Sokoban_features::feature_node* Sokoban_features::insert_child(feature_node* par
         if (root == nullptr) {
             temp_node = new Sokoban_features::feature_node{nullptr,0};
 			temp_node->boxes = map->get_boxes();
+
+
+
+
+
+
+
+
+
+
+
+            // NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE : MAKE SOME THING ABOUT THE box_goal_ref
+
+
+
+
+
+
+
+
+
+
+
+
 			temp_node->worker_pos = map->get_worker();
 			temp_node->worker_dir = NORTH;
             root = temp_node; // Set root as temp node after relevant info is saved from Map object
@@ -107,6 +139,7 @@ Sokoban_features::feature_node* Sokoban_features::insert_child(feature_node* par
     } else {
         temp_node = new Sokoban_features::feature_node{parent_node,parent_node->depth+1};
 		temp_node->boxes = parent_node->boxes;
+        temp_node->box_goal_ref = parent_node->box_goal_ref;
 		temp_node->worker_pos = parent_node->worker_pos;
 		temp_node->worker_dir = parent_node->worker_dir;
         parent_node->children.push_back(temp_node);
@@ -124,7 +157,7 @@ void Sokoban_features::solve()
 	if (root == nullptr) {
 		root = insert_child(nullptr); // Create tree root
 
-		int new_nodes = 10000000;
+		int new_nodes = 10;
 
 		for (size_t i = 0; i < new_nodes; i++) {
 			feature_node* tmp_node = insert_child(root);
@@ -135,9 +168,19 @@ void Sokoban_features::solve()
 		}
 	} else
 		cout << "Tree already exists; break solve" << endl;
+
+    cout << "x: " << root->boxes.at(0).x << ", y: " << root->boxes.at(0).y << endl;
+    point2D tmp_point;
+    tmp_point.x = 2;
+    tmp_point.y = 1;
+    cout << "Type is " << point_type(root, tmp_point) << endl;
+    cout << "Box is " << box << endl;
 }
 
-int  Sokoban_features::point_type(point2D &inPoint)
+int  Sokoban_features::point_type(feature_node* in_node, point2D &inPoint)
 {
-    return 1;
+    for (size_t i = 0; i < in_node->boxes.size(); i++)
+        if (in_node->boxes.at(i).x == inPoint.x and in_node->boxes.at(i).y == inPoint.y)
+            return box;
+    return map->map_point_type(inPoint);
 }

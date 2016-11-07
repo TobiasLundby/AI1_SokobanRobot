@@ -254,6 +254,5 @@ point2D Map::get_worker()
 
 int Map::map_point_type(point2D &inPoint)
 {
-	int temp_type = map_structure.at(inPoint.y).at(inPoint.x);
-	return temp_type;
+	return map_structure.at(inPoint.y).at(inPoint.x);
 }
