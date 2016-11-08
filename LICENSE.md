@@ -1,4 +1,4 @@
-Copyright (c) 2016, Tobias Lundby and Mathias Højgaard Egeberg
+Copyright (c) 2016, Tobias Lundby and Morten Markmann
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
