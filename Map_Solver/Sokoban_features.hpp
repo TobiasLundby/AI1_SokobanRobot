@@ -11,6 +11,7 @@
 // Library include
 #include <array>
 #include <cmath>
+#include <functional>
 
 // Class include
 #include "Map.hpp" // Uses map and therefore needs to be included
@@ -62,6 +63,11 @@ public:
 		feature_node(feature_node* in_parent, int in_depth)
         : parent{ in_parent }, depth{ in_depth } { }
     };
+    struct hash_node {
+        unsigned long hash_value;
+        feature_node* ref_node;
+    };
+    vector< hash_node > hash_table;
 
 	// Constructor, overload constructor, and destructor
 	Sokoban_features();
@@ -81,6 +87,7 @@ public:
     double calculate_euclidian_distance(point2D &inPoint1, point2D &inPoint2);
     int calculate_taxicab_distance(point2D &inPoint1, point2D &inPoint2);
     void update_nearest_goals(feature_node* in_node);
+    bool hash_table_insert(unsigned long in_hash_value, feature_node* in_node);
 
 private:
 	// Private variables
@@ -164,7 +171,7 @@ void Sokoban_features::solve()
 			}
 		}
 	} else
-		cout << "Tree already exists; break solve" << endl;
+		cout << "[INFO] Tree already exists; break solve" << endl;
 
     cout << "x: " << root->boxes.at(0).x << ", y: " << root->boxes.at(0).y << endl;
     point2D tmp_point;
@@ -179,6 +186,68 @@ void Sokoban_features::solve()
     for (size_t i = 0; i < root->boxes.size(); i++) {
         cout << "Box " << i << " has goal " << root->box_goal_ref.at(i) << " as nearest goal" << endl;
     }
+
+    cout << endl << endl << "[INFO] Hashing test" << endl;
+    hash<string> str_hash; // define a sting hashing func
+
+    string str1 = "Test1";
+    string str2 = "Test2";
+    string str3 = "Test1";
+
+    vector< int > tmp_vec1;
+    tmp_vec1.push_back(1);
+    tmp_vec1.push_back(99);
+    tmp_vec1.push_back(142142);
+
+    vector< int > tmp_vec2;
+    tmp_vec2.push_back(2);
+    tmp_vec2.push_back(99);
+    tmp_vec2.push_back(142142);
+
+    vector< int > tmp_vec3;
+    tmp_vec3.push_back(3);
+    tmp_vec3.push_back(99);
+    tmp_vec3.push_back(142142);
+
+    string str4;
+    for (size_t i = 0; i < tmp_vec1.size(); i++) {
+        str4 += to_string(tmp_vec1.at(i));
+    }
+    string str5;
+    for (size_t i = 0; i < tmp_vec2.size(); i++) {
+        str5 += to_string(tmp_vec2.at(i));
+    }
+    string str6;
+    for (size_t i = 0; i < tmp_vec3.size(); i++) {
+        str6 += to_string(tmp_vec3.at(i));
+    }
+    cout << "Combined string4 is " << str4 << " and hashed " << str_hash(str4) << endl;
+    cout << "Combined string5 is " << str5 << " and hashed " << str_hash(str5) << endl;
+    cout << "Combined string6 is " << str6 << " and hashed " << str_hash(str6) << endl;
+    cout << "str4 and str5: " << (str_hash(str4)==str_hash(str5)) << endl;
+    cout << "str5 and str6: " << (str_hash(str5)==str_hash(str6)) << endl;
+
+
+
+
+
+    cout << "calc" << 1/2 << endl;
+
+
+    cout << "str1 and str2: " << (str_hash(str1)==str_hash(str2)) << endl;
+    cout << "str2 and str3: " << (str_hash(str2)==str_hash(str3)) << endl;
+    cout << "str1 and str3: " << (str_hash(str1)==str_hash(str3)) << endl;
+
+    hash_table_insert(str_hash(str4), root);
+    hash_table_insert(str_hash(str5), root);
+    hash_table_insert(str_hash(str6), root);
+    cout << hash_table_insert(str_hash(str4), root) << endl;
+    hash_table_insert(str_hash(str5), root);
+    hash_table_insert(str_hash(str6), root);
+    for (size_t i = 0; i < hash_table.size(); i++) {
+        cout << "element " << i << " contains " << hash_table.at(i).hash_value << " and " << hash_table.at(i).ref_node << endl;
+    }
+
 }
 
 int  Sokoban_features::point_type(feature_node* in_node, point2D &inPoint)
@@ -279,4 +348,50 @@ void Sokoban_features::update_nearest_goals(feature_node* in_node)
             }
         }
     }
+}
+
+// Hash table methods
+bool Sokoban_features::hash_table_insert(unsigned long in_hash_value, feature_node* in_node)
+// inserts with a time constant of log(n) where n = hash_table_size
+{
+    //cout << endl;
+    hash_node tmp_hash_node;
+    tmp_hash_node.hash_value = in_hash_value;
+    tmp_hash_node.ref_node = in_node;
+    if (hash_table.size() > 0) {
+        int tmp_table_id = hash_table.size()/2;
+        int table_id_add = tmp_table_id;
+        while(true)
+        {
+            table_id_add /= 2;
+            //cout << tmp_table_id << endl;
+            if (hash_table.at(tmp_table_id).hash_value == in_hash_value)
+                return false;
+            else if (hash_table.at(tmp_table_id).hash_value > in_hash_value)
+                tmp_table_id -= table_id_add;
+            else if (hash_table.at(tmp_table_id).hash_value < in_hash_value)
+                tmp_table_id += table_id_add;
+            if (table_id_add == 0) {
+                if (tmp_table_id == 0) {
+                    if (hash_table.at(tmp_table_id).hash_value == in_hash_value)
+                        return false;
+                } else if (tmp_table_id == hash_table.size()-2) {
+                    if (hash_table.at(tmp_table_id-1).hash_value == in_hash_value or hash_table.at(tmp_table_id).hash_value == in_hash_value or hash_table.at(tmp_table_id+1).hash_value == in_hash_value)
+                        return false;
+                } else {
+                    if (hash_table.at(tmp_table_id-1).hash_value == in_hash_value or hash_table.at(tmp_table_id).hash_value == in_hash_value )
+                        return false;
+                }
+                if (hash_table.at(tmp_table_id).hash_value < in_hash_value) {
+                    hash_table.insert(hash_table.begin()+tmp_table_id+1,tmp_hash_node);
+                } else
+                    hash_table.insert(hash_table.begin()+tmp_table_id,tmp_hash_node);
+
+                break;
+            }
+        }
+    } else {
+        hash_table.push_back(tmp_hash_node);
+    }
+    return true;
 }
