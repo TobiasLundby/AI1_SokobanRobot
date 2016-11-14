@@ -88,6 +88,7 @@ public:
     int calculate_taxicab_distance(point2D &inPoint1, point2D &inPoint2);
     void update_nearest_goals(feature_node* in_node);
     bool hash_table_insert(unsigned long in_hash_value, feature_node* in_node);
+    bool hash_table_delete(unsigned long in_hash_value);
 
 private:
 	// Private variables
@@ -198,16 +199,25 @@ void Sokoban_features::solve()
     tmp_vec1.push_back(1);
     tmp_vec1.push_back(99);
     tmp_vec1.push_back(142142);
+    feature_node* tmp_node_1 = insert_child(root);
 
     vector< int > tmp_vec2;
     tmp_vec2.push_back(2);
     tmp_vec2.push_back(99);
     tmp_vec2.push_back(142142);
+    feature_node* tmp_node_2 = insert_child(root);
 
     vector< int > tmp_vec3;
     tmp_vec3.push_back(3);
     tmp_vec3.push_back(99);
     tmp_vec3.push_back(142142);
+    feature_node* tmp_node_3 = insert_child(root);
+
+    vector< int > tmp_vec4;
+    tmp_vec4.push_back(3);
+    tmp_vec4.push_back(99);
+    tmp_vec4.push_back(142112);
+    feature_node* tmp_node_4 = insert_child(root);
 
     string str4;
     for (size_t i = 0; i < tmp_vec1.size(); i++) {
@@ -221,9 +231,14 @@ void Sokoban_features::solve()
     for (size_t i = 0; i < tmp_vec3.size(); i++) {
         str6 += to_string(tmp_vec3.at(i));
     }
+    string str7;
+    for (size_t i = 0; i < tmp_vec4.size(); i++) {
+        str7 += to_string(tmp_vec4.at(i));
+    }
     cout << "Combined string4 is " << str4 << " and hashed " << str_hash(str4) << endl;
     cout << "Combined string5 is " << str5 << " and hashed " << str_hash(str5) << endl;
     cout << "Combined string6 is " << str6 << " and hashed " << str_hash(str6) << endl;
+    cout << "Combined string6 is " << str7 << " and hashed " << str_hash(str7) << endl;
     cout << "str4 and str5: " << (str_hash(str4)==str_hash(str5)) << endl;
     cout << "str5 and str6: " << (str_hash(str5)==str_hash(str6)) << endl;
 
@@ -238,15 +253,26 @@ void Sokoban_features::solve()
     cout << "str2 and str3: " << (str_hash(str2)==str_hash(str3)) << endl;
     cout << "str1 and str3: " << (str_hash(str1)==str_hash(str3)) << endl;
 
-    hash_table_insert(str_hash(str4), root);
-    hash_table_insert(str_hash(str5), root);
-    hash_table_insert(str_hash(str6), root);
-    cout << hash_table_insert(str_hash(str4), root) << endl;
-    hash_table_insert(str_hash(str5), root);
-    hash_table_insert(str_hash(str6), root);
+
+    hash_table_insert(str_hash(str4), tmp_node_1);
+    hash_table_insert(str_hash(str5), tmp_node_2);
+    hash_table_insert(str_hash(str6), tmp_node_3);
+    //hash_table_insert(str_hash(str7), tmp_node_4);
+    //hash_table_insert(str_hash(str5), tmp_node_2);
+
+    //cout << hash_table_insert(str_hash(str4), tmp_node_1) << endl;
+    //hash_table_insert(str_hash(str5), tmp_node_2);
+    //hash_table_insert(str_hash(str6), tmp_node_3);
     for (size_t i = 0; i < hash_table.size(); i++) {
         cout << "element " << i << " contains " << hash_table.at(i).hash_value << " and " << hash_table.at(i).ref_node << endl;
     }
+
+
+    // cout << endl << "[INFO] Delete element begin" << endl;
+    // hash_table_delete(str_hash(str1));
+    // for (size_t i = 0; i < hash_table.size(); i++) {
+    //     cout << "element " << i << " contains " << hash_table.at(i).hash_value << " and " << hash_table.at(i).ref_node << endl;
+    // }
 
 }
 
@@ -354,17 +380,17 @@ void Sokoban_features::update_nearest_goals(feature_node* in_node)
 bool Sokoban_features::hash_table_insert(unsigned long in_hash_value, feature_node* in_node)
 // inserts with a time constant of log(n) where n = hash_table_size
 {
-    //cout << endl;
+    cout << endl;
     hash_node tmp_hash_node;
     tmp_hash_node.hash_value = in_hash_value;
     tmp_hash_node.ref_node = in_node;
     if (hash_table.size() > 0) {
         int tmp_table_id = hash_table.size()/2;
-        int table_id_add = tmp_table_id;
+        int table_id_add = tmp_table_id ;
         while(true)
         {
             table_id_add /= 2;
-            //cout << tmp_table_id << endl;
+            cout << tmp_table_id << " and " << table_id_add << endl;
             if (hash_table.at(tmp_table_id).hash_value == in_hash_value)
                 return false;
             else if (hash_table.at(tmp_table_id).hash_value > in_hash_value)
@@ -372,26 +398,89 @@ bool Sokoban_features::hash_table_insert(unsigned long in_hash_value, feature_no
             else if (hash_table.at(tmp_table_id).hash_value < in_hash_value)
                 tmp_table_id += table_id_add;
             if (table_id_add == 0) {
-                if (tmp_table_id == 0) {
+
+                if (tmp_table_id == 0) { // if second element insert
                     if (hash_table.at(tmp_table_id).hash_value == in_hash_value)
                         return false;
-                } else if (tmp_table_id == hash_table.size()-2) {
-                    if (hash_table.at(tmp_table_id-1).hash_value == in_hash_value or hash_table.at(tmp_table_id).hash_value == in_hash_value or hash_table.at(tmp_table_id+1).hash_value == in_hash_value)
+                    else if (hash_table.at(tmp_table_id).hash_value > in_hash_value) {
+                        hash_table.insert(hash_table.begin(),tmp_hash_node);
+                    } else {
+                        hash_table.insert(hash_table.begin()+1,tmp_hash_node);
+                    }
+                } else if (tmp_table_id == hash_table.size()-1) { // if itr at last element
+                    if (hash_table.at(tmp_table_id).hash_value == in_hash_value)
                         return false;
-                } else {
-                    if (hash_table.at(tmp_table_id-1).hash_value == in_hash_value or hash_table.at(tmp_table_id).hash_value == in_hash_value )
-                        return false;
+                    else if (hash_table.at(tmp_table_id).hash_value > in_hash_value)
+                        hash_table.insert(hash_table.end()-1,tmp_hash_node);
+                    else
+                        hash_table.push_back(tmp_hash_node);
                 }
-                if (hash_table.at(tmp_table_id).hash_value < in_hash_value) {
-                    hash_table.insert(hash_table.begin()+tmp_table_id+1,tmp_hash_node);
-                } else
-                    hash_table.insert(hash_table.begin()+tmp_table_id,tmp_hash_node);
+
+                // if (tmp_table_id == 0) {
+                //     if (hash_table.at(tmp_table_id).hash_value == in_hash_value)
+                //         return false;
+                // } else if (tmp_table_id == hash_table.size()-2) {
+                //     if (hash_table.at(tmp_table_id-1).hash_value == in_hash_value
+                //     or hash_table.at(tmp_table_id).hash_value == in_hash_value
+                //     or hash_table.at(tmp_table_id+1).hash_value == in_hash_value)
+                //         return false;
+                // } else {
+                //     if (hash_table.at(tmp_table_id-1).hash_value == in_hash_value
+                //     or hash_table.at(tmp_table_id).hash_value == in_hash_value )
+                //         return false;
+                // }
+                // if (hash_table.at(tmp_table_id).hash_value < in_hash_value) {
+                //     hash_table.insert(hash_table.begin()+tmp_table_id+1,tmp_hash_node);
+                // } else
+                //     hash_table.insert(hash_table.begin()+tmp_table_id-1,tmp_hash_node);
 
                 break;
+
             }
         }
     } else {
         hash_table.push_back(tmp_hash_node);
     }
     return true;
+}
+
+bool Sokoban_features::hash_table_delete(unsigned long in_hash_value)
+{
+    if (hash_table.size() > 0) {
+        int tmp_table_id = hash_table.size()/2;
+        int table_id_add = tmp_table_id;
+
+        while(true)
+        {
+            table_id_add /= 2;
+            cout << tmp_table_id << " and " << table_id_add << endl;
+            if (hash_table.at(tmp_table_id).hash_value == in_hash_value)
+            {
+                // Delete entry from table
+                cout << "Found element at " << tmp_table_id << endl;
+                return true;
+            }
+            else if (hash_table.at(tmp_table_id).hash_value > in_hash_value)
+            {
+                cout << "subtracting" << endl;
+                tmp_table_id -= table_id_add;
+            }
+            else if (hash_table.at(tmp_table_id).hash_value < in_hash_value)
+            {
+                cout << "adding" << endl;
+                tmp_table_id += table_id_add;
+            }
+            if (table_id_add == 0) {
+                if (tmp_table_id == 1) {
+                    //Test
+                }
+
+
+                return false;
+            }
+        }
+
+    } else {
+        return false;
+    }
 }
