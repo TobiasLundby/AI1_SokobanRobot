@@ -195,7 +195,7 @@ void Sokoban_features::solve()
     string str3 = "Test1";
 
     vector< int > tmp_vec1;
-    tmp_vec1.push_back(1);
+    tmp_vec1.push_back(5);
     tmp_vec1.push_back(99);
     tmp_vec1.push_back(142142);
 
@@ -206,7 +206,7 @@ void Sokoban_features::solve()
 
     vector< int > tmp_vec3;
     tmp_vec3.push_back(3);
-    tmp_vec3.push_back(99);
+    tmp_vec3.push_back(39);
     tmp_vec3.push_back(142142);
 
     string str4;
@@ -238,15 +238,19 @@ void Sokoban_features::solve()
     cout << "str2 and str3: " << (str_hash(str2)==str_hash(str3)) << endl;
     cout << "str1 and str3: " << (str_hash(str1)==str_hash(str3)) << endl;
 
+    hash_table_insert(str_hash(str6), root);
     hash_table_insert(str_hash(str4), root);
     hash_table_insert(str_hash(str5), root);
-    hash_table_insert(str_hash(str6), root);
     cout << hash_table_insert(str_hash(str4), root) << endl;
     hash_table_insert(str_hash(str5), root);
     hash_table_insert(str_hash(str6), root);
     for (size_t i = 0; i < hash_table.size(); i++) {
         cout << "element " << i << " contains " << hash_table.at(i).hash_value << " and " << hash_table.at(i).ref_node << endl;
     }
+
+    cout << endl << endl << "[INFO]" << endl;
+    //cout << *hash_table.end() << endl;
+    //int tmp_itr = hash_table.back();
 
 }
 
@@ -358,10 +362,12 @@ bool Sokoban_features::hash_table_insert(unsigned long in_hash_value, feature_no
     tmp_hash_node.hash_value = in_hash_value;
     tmp_hash_node.ref_node = in_node;
 
-    int start_itr = hash_table.begin();
-    int end_itr = hash_table.end();
-
     if (hash_table.size() > 0) { // test if has_table is empty
+        int const start_hash_table = 0; // access this element as hash_table.begin()
+        int start_itr = start_hash_table;
+        int const end_hash_table = hash_table.size()-1; // access this element as hash_table.end()
+        int end_itr = end_hash_table;
+
         if (start_itr == end_itr) { // test if has_table only consists of 1 element
             if (in_hash_value == hash_table.at(start_itr).hash_value) {
                 // element exists return ptr. NOTE
@@ -370,13 +376,15 @@ bool Sokoban_features::hash_table_insert(unsigned long in_hash_value, feature_no
                 hash_table.push_back(tmp_hash_node);
                 return true; // node inserted after 1st element
             } else {
-                hash_table.insert(start_itr);
+                hash_table.insert(hash_table.begin()+start_itr,tmp_hash_node);
                 return true; // node inserted before 1st element
             }
         }
 
-        int tmp_itr = (end_itr-start_itr)/2;
+        int tmp_itr;
         while (true) {
+            tmp_itr = (end_itr-start_itr)/2;
+
             if (tmp_itr == 0) {
                 if (in_hash_value == hash_table.at(start_itr).hash_value) {
                     // element exists return ptr. NOTE
@@ -386,20 +394,29 @@ bool Sokoban_features::hash_table_insert(unsigned long in_hash_value, feature_no
                         // element exists return ptr. NOTE
                         return false;
                     } else if (in_hash_value > hash_table.at(end_itr).hash_value) {
-                        if (end_itr == hash_table.end()) {
+                        if (end_itr == end_hash_table) {
                             hash_table.push_back(tmp_hash_node);
                             return true; // node inserted at end of list
                         } else {
-                            hash_table.insert(end_itr + 1);
+                            hash_table.insert(hash_table.begin() + end_itr + 1,tmp_hash_node);
                             return true; // node inserted after end_ptr
                         }
                     } else {
-                        hash_table.insert(end_itr);
+                        hash_table.insert(hash_table.begin() + end_itr,tmp_hash_node);
                         return true; // node inserted between ptr's
                     }
                 } else {
-                    hash_table.insert(start_itr); // insert at start itr space
+                    hash_table.insert(hash_table.begin() + start_itr,tmp_hash_node); // insert at start itr space
                     return true; // node inserted before 1st element
+                }
+            } else {
+                if (in_hash_value == hash_table.at(tmp_itr).hash_value) {
+                    // element exists return ptr. NOTE
+                    return false;
+                } else if (in_hash_value > hash_table.at(tmp_itr).hash_value) {
+                    start_itr = tmp_itr;
+                } else {
+                    end_itr = tmp_itr;
                 }
             }
         }
@@ -407,47 +424,5 @@ bool Sokoban_features::hash_table_insert(unsigned long in_hash_value, feature_no
         hash_table.push_back(tmp_hash_node);
         return true; // first element inserted
     }
-
-
-
-    // //cout << endl;
-    // hash_node tmp_hash_node;
-    // tmp_hash_node.hash_value = in_hash_value;
-    // tmp_hash_node.ref_node = in_node;
-    // if (hash_table.size() > 0) {
-    //     int tmp_table_id = hash_table.size()/2;
-    //     int table_id_add = tmp_table_id;
-    //     while(true)
-    //     {
-    //         table_id_add /= 2;
-    //         //g	cout << tmp_table_id << endl;
-    //         if (hash_table.at(tmp_table_id).hash_value == in_hash_value)
-    //             return false;
-    //         else if (hash_table.at(tmp_table_id).hash_value > in_hash_value)
-    //             tmp_table_id -= table_id_add;
-    //         else if (hash_table.at(tmp_table_id).hash_value < in_hash_value)
-    //             tmp_table_id += table_id_add;
-    //         if (table_id_add == 0) {
-    //             if (tmp_table_id == 0) {
-    //                 if (hash_table.at(tmp_table_id).hash_value == in_hash_value)
-    //                     return false;
-    //             } else if (tmp_table_id == hash_table.size()-2) {
-    //                 if (hash_table.at(tmp_table_id-1).hash_value == in_hash_value or hash_table.at(tmp_table_id).hash_value == in_hash_value or hash_table.at(tmp_table_id+1).hash_value == in_hash_value)
-    //                     return false;
-    //             } else {
-    //                 if (hash_table.at(tmp_table_id-1).hash_value == in_hash_value or hash_table.at(tmp_table_id).hash_value == in_hash_value )
-    //                     return false;
-    //             }
-    //             if (hash_table.at(tmp_table_id).hash_value < in_hash_value) {
-    //                 hash_table.insert(hash_table.begin()+tmp_table_id+1,tmp_hash_node);
-    //             } else
-    //                 hash_table.insert(hash_table.begin()+tmp_table_id,tmp_hash_node);
-    //
-    //             break;
-    //         }
-    //     }
-    // } else {
-    //     hash_table.push_back(tmp_hash_node);
-    // }
     return true;
 }
