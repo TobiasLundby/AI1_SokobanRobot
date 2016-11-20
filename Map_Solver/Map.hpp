@@ -20,6 +20,7 @@
 #define box         3
 #define goal        4
 #define start       5
+#define worker 		6
 #define undefined   9
 
 // Namespaces
@@ -254,5 +255,8 @@ point2D Map::get_worker()
 
 int Map::map_point_type(point2D &inPoint)
 {
+	for (size_t i = 0; i < initial_pos_goals.size(); i++)
+        if (initial_pos_goals.at(i).x == inPoint.x and initial_pos_goals.at(i).y == inPoint.y)
+            return goal;
 	return map_structure.at(inPoint.y).at(inPoint.x);
 }

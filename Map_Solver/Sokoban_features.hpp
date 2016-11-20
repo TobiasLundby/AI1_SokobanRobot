@@ -57,8 +57,10 @@ public:
 		int depth;
         double heuristic;
         double cost_to_node;
+
         feature_node* parent = nullptr;
 		vector< feature_node* > children; // vector for holding the children
+        vector< feature_node* > children_edge_cost; // vector for holding the children
 
 		feature_node(feature_node* in_parent, int in_depth)
         : parent{ in_parent }, depth{ in_depth } { }
@@ -80,6 +82,8 @@ public:
     feature_node* get_root_ptr();
 	feature_node* insert_child(feature_node* parent_node);
 
+    void print_debug(const string& in_string);
+    void print_info(const string& in_string);
 	void print_node(feature_node* in_node);
 	void solve();
     int  point_type(feature_node* in_node, point2D &inPoint);
@@ -87,15 +91,27 @@ public:
     double calculate_euclidian_distance(point2D &inPoint1, point2D &inPoint2);
     int calculate_taxicab_distance(point2D &inPoint1, point2D &inPoint2);
     void update_nearest_goals(feature_node* in_node);
-    bool hash_table_insert(unsigned long in_hash_value, feature_node* in_node);
+    unsigned long hash_node_to_key(feature_node* in_node);
+    bool nodes_match(feature_node* in_node1, feature_node* in_node2);
+    bool update_parent_node(feature_node* &in_node_child, feature_node* in_node_new_parent);
+
+    bool hash_table_insert(feature_node* &in_node);
+    bool hash_table_insert(unsigned long in_hash_value, feature_node* &in_node);
+    bool hash_table_exist(feature_node* &in_node);
+    bool hash_table_exist(unsigned long in_hash_value, feature_node* &in_node);
+    bool hash_table_delete(feature_node* &in_node);
+    bool hash_table_delete(unsigned long in_hash_value, feature_node* &in_node);
 
 private:
 	// Private variables
     feature_node* root; // to hold the start sokoban features which is understod as the start placement of the elements / features
     Map* map;
 
-	// Private Methods
+    vector< feature_node* > open_list; // Hold unvisited nodes
+    vector< feature_node* > closed_list; // holds visited nodes
 
+	// Private Methods
+    hash<string> str_hash; // define a sting hashing func
 };
 
 
@@ -131,22 +147,33 @@ Sokoban_features::feature_node* Sokoban_features::insert_child(feature_node* par
             temp_node = new Sokoban_features::feature_node{nullptr,0};
 			temp_node->boxes = map->get_boxes();
             for (size_t i = 0; i < temp_node->boxes.size(); i++) {
-                temp_node->box_goal_ref.push_back(1);
+                temp_node->box_goal_ref.push_back(i);
             }
             update_nearest_goals(temp_node);
 			temp_node->worker_pos = map->get_worker();
 			temp_node->worker_dir = NORTH;
             temp_node->cost_to_node = 0;
+            temp_node->heuristic = 0; // No heuristic!
+
             root = temp_node; // Set root as temp node after relevant info is saved from Map object
         } else
-            cout << "Trying to create new root in existing tree, please create a new feature tree and try again" << endl;
+            print_info("Trying to create new root in existing tree, please create a new feature tree and try again.");
     } else {
         temp_node = new Sokoban_features::feature_node{parent_node,parent_node->depth+1};
+        // Save box information from parent
 		temp_node->boxes = parent_node->boxes;
         temp_node->box_goal_ref = parent_node->box_goal_ref;
+        // Save worker information from parent
 		temp_node->worker_pos = parent_node->worker_pos;
 		temp_node->worker_dir = parent_node->worker_dir;
+        // Save stuff for searching
+        temp_node->cost_to_node = parent_node->cost_to_node; // no movement yet so there is no added edge cost!
+        temp_node->heuristic = 0; // No heuristic!
+        // Add new node to parent!
         parent_node->children.push_back(temp_node);
+        parent_node->children_edge_cost.push_back(0); // no movement yet so there is no edge cost!
+        // The node has no children at this stage
+        // The node has no childrena and therefore no children edge cost
     }
 	return temp_node;
 }
@@ -165,97 +192,37 @@ void Sokoban_features::solve()
 
 		for (size_t i = 0; i < new_nodes; i++) {
 			feature_node* tmp_node = insert_child(root);
-			if (i == new_nodes -1) {
-				tmp_node->worker_pos.x = 7;
-				print_node(tmp_node);
-			}
+			// if (i == new_nodes -1) {
+			// 	tmp_node->worker_pos.x = 7;
+			// 	print_node(tmp_node);
+			// }
 		}
 	} else
-		cout << "[INFO] Tree already exists; break solve" << endl;
+        print_info("Tree already exists; breaking solver");
 
-    cout << "x: " << root->boxes.at(0).x << ", y: " << root->boxes.at(0).y << endl;
-    point2D tmp_point;
-    tmp_point.x = 2;
-    tmp_point.y = 1;
-    point2D tmp_point2;
-    tmp_point2.x = 4;
-    tmp_point2.y = 2;
-
-    cout << endl;
-    update_nearest_goals(root);
-    for (size_t i = 0; i < root->boxes.size(); i++) {
-        cout << "Box " << i << " has goal " << root->box_goal_ref.at(i) << " as nearest goal" << endl;
-    }
-
-    cout << endl << endl << "[INFO] Hashing test" << endl;
-    hash<string> str_hash; // define a sting hashing func
-
-    string str1 = "Test1";
-    string str2 = "Test2";
-    string str3 = "Test1";
-
-    vector< int > tmp_vec1;
-    tmp_vec1.push_back(5);
-    tmp_vec1.push_back(99);
-    tmp_vec1.push_back(142142);
-
-    vector< int > tmp_vec2;
-    tmp_vec2.push_back(2);
-    tmp_vec2.push_back(99);
-    tmp_vec2.push_back(142142);
-
-    vector< int > tmp_vec3;
-    tmp_vec3.push_back(3);
-    tmp_vec3.push_back(39);
-    tmp_vec3.push_back(142142);
-
-    string str4;
-    for (size_t i = 0; i < tmp_vec1.size(); i++) {
-        str4 += to_string(tmp_vec1.at(i));
-    }
-    string str5;
-    for (size_t i = 0; i < tmp_vec2.size(); i++) {
-        str5 += to_string(tmp_vec2.at(i));
-    }
-    string str6;
-    for (size_t i = 0; i < tmp_vec3.size(); i++) {
-        str6 += to_string(tmp_vec3.at(i));
-    }
-    cout << "Combined string4 is " << str4 << " and hashed " << str_hash(str4) << endl;
-    cout << "Combined string5 is " << str5 << " and hashed " << str_hash(str5) << endl;
-    cout << "Combined string6 is " << str6 << " and hashed " << str_hash(str6) << endl;
-    cout << "str4 and str5: " << (str_hash(str4)==str_hash(str5)) << endl;
-    cout << "str5 and str6: " << (str_hash(str5)==str_hash(str6)) << endl;
-
-
-
-
-
-    cout << "calc" << 1/2 << endl;
-
-
-    cout << "str1 and str2: " << (str_hash(str1)==str_hash(str2)) << endl;
-    cout << "str2 and str3: " << (str_hash(str2)==str_hash(str3)) << endl;
-    cout << "str1 and str3: " << (str_hash(str1)==str_hash(str3)) << endl;
-
-    hash_table_insert(str_hash(str6), root);
-    hash_table_insert(str_hash(str4), root);
-    hash_table_insert(str_hash(str5), root);
-    cout << hash_table_insert(str_hash(str4), root) << endl;
-    hash_table_insert(str_hash(str5), root);
-    hash_table_insert(str_hash(str6), root);
-    for (size_t i = 0; i < hash_table.size(); i++) {
-        cout << "element " << i << " contains " << hash_table.at(i).hash_value << " and " << hash_table.at(i).ref_node << endl;
-    }
-
-    cout << endl << endl << "[INFO]" << endl;
-    //cout << *hash_table.end() << endl;
-    //int tmp_itr = hash_table.back();
+    // print_info("Point type test");
+    // point2D point_tmp;
+    // point_tmp.x = 2;
+    // point_tmp.y = 3;
+    // cout << point_type(root,point_tmp) << endl;
+    //
+    //print_info("Nearest goals test");
+    // update_nearest_goals(root);
+    // for (size_t i = 0; i < root->boxes.size(); i++)
+    //     cout << "Box " << i << " has goal " << root->box_goal_ref.at(i) << " as nearest goal" << endl;
+    //
+    //print_info("Hashing test");
+    // feature_node* tmp_node = insert_child(root);
+    // cout << hash_table_insert(tmp_node) << " node " << tmp_node << endl;
+    // for (size_t i = 0; i < hash_table.size(); i++)
+    //     cout << "element " << i << " contains " << hash_table.at(i).hash_value << " and " << hash_table.at(i).ref_node << endl;
 
 }
 
 int  Sokoban_features::point_type(feature_node* in_node, point2D &inPoint)
 {
+    if (in_node->worker_pos.x == inPoint.x and in_node->worker_pos.y == inPoint.y)
+        return worker;
     for (size_t i = 0; i < in_node->boxes.size(); i++)
         if (in_node->boxes.at(i).x == inPoint.x and in_node->boxes.at(i).y == inPoint.y)
             return box;
@@ -354,9 +321,62 @@ void Sokoban_features::update_nearest_goals(feature_node* in_node)
     }
 }
 
-// Hash table methods
-bool Sokoban_features::hash_table_insert(unsigned long in_hash_value, feature_node* in_node)
+unsigned long Sokoban_features::hash_node_to_key(feature_node* in_node)
+// Hashes a node
+// the boxes are not treated as unique
+{
+    vector< int > tmp_vec;
+    for (size_t i = 0; i < in_node->boxes.size(); i++) {
+        tmp_vec.push_back((in_node->boxes.at(i).x * 10) + in_node->boxes.at(i).y);
+    }
+    sort(tmp_vec.begin(), tmp_vec.end());
+
+    string tmp_str = "";
+    tmp_str += to_string(in_node->worker_pos.x);
+    tmp_str += to_string(in_node->worker_pos.y);
+    tmp_str += to_string(in_node->worker_dir);
+
+    for (size_t i = 0; i < tmp_vec.size(); i++) {
+        tmp_str += to_string(tmp_vec.at(i));
+    }
+
+    return str_hash(tmp_str);
+
+}
+
+bool Sokoban_features::nodes_match(feature_node* in_node1, feature_node* in_node2)
+// Hashes each node and compares the hashing value; note that the boxes are not treated as unique
+{
+    return hash_node_to_key(in_node1) == hash_node_to_key(in_node2);
+}
+
+bool Sokoban_features::update_parent_node(feature_node* &in_node_child, feature_node* in_node_new_parent)
+{
+    if ( (in_node_child->parent = in_node_new_parent) ) {
+        return true;
+    }
+    return false;
+}
+
+void Sokoban_features::print_debug(const string& in_string)
+{
+    cout << "[DEBUG] " << in_string << endl;
+}
+void Sokoban_features::print_info(const string& in_string)
+{
+    cout << "[INFO] " << in_string << endl;
+}
+
+
+// Hash table methods **********************************************************
+bool Sokoban_features::hash_table_insert(feature_node* &in_node)
+{
+    return hash_table_insert(hash_node_to_key(in_node), in_node);
+}
+bool Sokoban_features::hash_table_insert(unsigned long in_hash_value, feature_node* &in_node)
 // inserts with a time constant of log(n) where n = hash_table_size
+// if the element exists the in_node is changed to the existing element so it can be used for futher processing
+// return true if element is inserted and false if it already exists
 {
     hash_node tmp_hash_node;
     tmp_hash_node.hash_value = in_hash_value;
@@ -371,6 +391,7 @@ bool Sokoban_features::hash_table_insert(unsigned long in_hash_value, feature_no
         if (start_itr == end_itr) { // test if has_table only consists of 1 element
             if (in_hash_value == hash_table.at(start_itr).hash_value) {
                 // element exists return ptr. NOTE
+                in_node = hash_table.at(start_itr).ref_node;
                 return false;
             } else if (in_hash_value > hash_table.at(start_itr).hash_value) {
                 hash_table.push_back(tmp_hash_node);
@@ -381,17 +402,21 @@ bool Sokoban_features::hash_table_insert(unsigned long in_hash_value, feature_no
             }
         }
 
+        //cout << "[DEBUG INFO: hash_table_insert] entering while loop for " << in_hash_value << endl;
         int tmp_itr;
         while (true) {
             tmp_itr = (end_itr-start_itr)/2;
+            //cout << "[DEBUG INFO: hash_table_insert] tmp_itr has value " << tmp_itr << ", start " << start_itr << ", end " << end_itr << endl; // debug info
 
             if (tmp_itr == 0) {
                 if (in_hash_value == hash_table.at(start_itr).hash_value) {
                     // element exists return ptr. NOTE
+                    in_node = hash_table.at(start_itr).ref_node;
                     return false;
                 } else if (in_hash_value > hash_table.at(start_itr).hash_value) {
                     if (in_hash_value == hash_table.at(end_itr).hash_value) {
                         // element exists return ptr. NOTE
+                        in_node = hash_table.at(end_itr).ref_node;
                         return false;
                     } else if (in_hash_value > hash_table.at(end_itr).hash_value) {
                         if (end_itr == end_hash_table) {
@@ -410,13 +435,14 @@ bool Sokoban_features::hash_table_insert(unsigned long in_hash_value, feature_no
                     return true; // node inserted before 1st element
                 }
             } else {
-                if (in_hash_value == hash_table.at(tmp_itr).hash_value) {
-                    // element exists return ptr. NOTE
+                if (in_hash_value == hash_table.at(start_itr+tmp_itr).hash_value) {
+                    // element exists return ptr.
+                    in_node = hash_table.at(start_itr+tmp_itr).ref_node;
                     return false;
-                } else if (in_hash_value > hash_table.at(tmp_itr).hash_value) {
-                    start_itr = tmp_itr;
+                } else if (in_hash_value > hash_table.at(start_itr+tmp_itr).hash_value) {
+                    start_itr += tmp_itr;
                 } else {
-                    end_itr = tmp_itr;
+                    end_itr -= tmp_itr;
                 }
             }
         }
@@ -425,4 +451,91 @@ bool Sokoban_features::hash_table_insert(unsigned long in_hash_value, feature_no
         return true; // first element inserted
     }
     return true;
+}
+
+bool Sokoban_features::hash_table_exist(feature_node* &in_node)
+{
+    //cout << "[DEBUG: hashing] Hash key " << hash_node_to_key(in_node) << endl;
+    return hash_table_exist(hash_node_to_key(in_node), in_node);
+}
+bool Sokoban_features::hash_table_exist(unsigned long in_hash_value, feature_node* &in_node)
+{
+    if (hash_table.size() > 0) { // test if has_table is empty
+        int const start_hash_table = 0; // access this element as hash_table.begin()
+        int start_itr = start_hash_table;
+        int const end_hash_table = hash_table.size()-1; // access this element as hash_table.end()
+        int end_itr = end_hash_table;
+
+        int tmp_itr;
+        while (true) {
+            tmp_itr = (end_itr-start_itr)/2;
+            //cout << "[DEBUG INFO: hash_table_insert] tmp_itr has value " << tmp_itr << ", start " << start_itr << ", end " << end_itr << endl; // debug info
+
+            if (tmp_itr == 0) {
+                if (in_hash_value == hash_table.at(start_itr).hash_value) {
+                    in_node = hash_table.at(start_itr).ref_node;
+                    return true;
+                } else if (in_hash_value == hash_table.at(end_itr).hash_value) {
+                    in_node = hash_table.at(end_itr).ref_node;
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                if (in_hash_value == hash_table.at(start_itr+tmp_itr).hash_value) {
+                    in_node = hash_table.at(start_itr+tmp_itr).ref_node;
+                    return true;
+                } else if (in_hash_value > hash_table.at(start_itr+tmp_itr).hash_value) {
+                    start_itr += tmp_itr;
+                } else {
+                    end_itr -= tmp_itr;
+                }
+            }
+        }
+    } else {
+        return false;
+    }
+}
+
+bool Sokoban_features::hash_table_delete(feature_node* &in_node)
+{
+    return hash_table_delete(hash_node_to_key(in_node), in_node);
+}
+bool Sokoban_features::hash_table_delete(unsigned long in_hash_value, feature_node* &in_node)
+{
+    if (hash_table.size() > 0) { // test if has_table is empty
+        int const start_hash_table = 0; // access this element as hash_table.begin()
+        int start_itr = start_hash_table;
+        int const end_hash_table = hash_table.size()-1; // access this element as hash_table.end()
+        int end_itr = end_hash_table;
+
+        int tmp_itr;
+        while (true) {
+            tmp_itr = (end_itr-start_itr)/2;
+            //cout << "[DEBUG INFO: hash_table_insert] tmp_itr has value " << tmp_itr << ", start " << start_itr << ", end " << end_itr << endl; // debug info
+
+            if (tmp_itr == 0) {
+                if (in_hash_value == hash_table.at(start_itr).hash_value) {
+                    hash_table.erase(hash_table.begin() + start_itr);
+                    return true;
+                } else if (in_hash_value == hash_table.at(end_itr).hash_value) {
+                    hash_table.erase(hash_table.begin() + end_itr);
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                if (in_hash_value == hash_table.at(start_itr+tmp_itr).hash_value) {
+                    hash_table.erase(hash_table.begin() + start_itr+tmp_itr);
+                    return true;
+                } else if (in_hash_value > hash_table.at(start_itr+tmp_itr).hash_value) {
+                    start_itr += tmp_itr;
+                } else {
+                    end_itr -= tmp_itr;
+                }
+            }
+        }
+    } else {
+        return false;
+    }
 }
