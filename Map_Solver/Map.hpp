@@ -158,7 +158,8 @@ void Map::print_map(point2D& in_worker_pos, vector< point2D > in_boxes_pos, bool
 {
 	if (!empty_map) {
 		if (print_descriptor)
-			cout << endl << " *** Printing map ***" << endl << "  ";;
+			cout << endl << " *** Printing map ***" << endl;
+		cout << "  ";
 	    for (size_t i = 0; i < map_structure.at(0).size(); i++)
 	        cout << i << " ";
 	    cout << endl;
@@ -170,18 +171,35 @@ void Map::print_map(point2D& in_worker_pos, vector< point2D > in_boxes_pos, bool
 	        for (size_t col = 0; col < map_structure.at(row).size(); col++) {
 	            //cout << map_structure_loaded.at(row).at(col);
 				bool printed_obj = false;
+
+				bool same_goal_box = false;
 				for (size_t h = 0; h < in_boxes_pos.size(); h++){
 					if (in_boxes_pos.at(h).x == col and in_boxes_pos.at(h).y == row) {
-						cout << "\033[1;31m×\033[0m"; // box
-						printed_obj = true;
+						for (size_t j = 0; j < initial_pos_goals.size(); j++) {
+							if (initial_pos_goals.at(j).x == col and initial_pos_goals.at(j).y == row) {
+								same_goal_box = true;
+							}
+						}
 					}
 				}
-				for (size_t h = 0; h < initial_pos_goals.size(); h++) {
-					if (initial_pos_goals.at(h).x == col and initial_pos_goals.at(h).y == row) {
-						cout << "\033[1;32m★\033[0m"; // goal
-						printed_obj = true;
+				if (same_goal_box) {
+					cout << "\033[1;32mX\033[0m"; // box on goal
+					printed_obj = true;
+				} else {
+					for (size_t h = 0; h < in_boxes_pos.size(); h++){
+						if (in_boxes_pos.at(h).x == col and in_boxes_pos.at(h).y == row) {
+							cout << "\033[1;31m×\033[0m"; // box
+							printed_obj = true;
+						}
+					}
+					for (size_t h = 0; h < initial_pos_goals.size(); h++) {
+						if (initial_pos_goals.at(h).x == col and initial_pos_goals.at(h).y == row) {
+							cout << "\033[1;32m★\033[0m"; // goal
+							printed_obj = true;
+						}
 					}
 				}
+
 				if (in_worker_pos.x == col and in_worker_pos.y == row) {
 					cout << "\033[1;35mΔ\033[0m"; // start
 					printed_obj = true;

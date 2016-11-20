@@ -99,6 +99,7 @@ public:
 	bool remove_node(feature_node* &child);
 	bool goal_node(feature_node* in_node);
 	bool move_box(feature_node* in_node, int in_x, int in_y, int offset_x, int offset_y);
+    void move_forward(feature_node* in_node);
 
 	// Hash table methods
     bool hash_table_insert(feature_node* &in_node);
@@ -220,17 +221,7 @@ void Sokoban_features::solve(int solver_type)
 
 				switch (tmp_node->worker_dir) {
 					case NORTH:
-						if (point_type(tmp_node, tmp_node->worker_pos.x, tmp_node->worker_pos.y - 1) == box
-							and (point_type(tmp_node, tmp_node->worker_pos.x, tmp_node->worker_pos.y - 2) == goal or point_type(tmp_node, tmp_node->worker_pos.x, tmp_node->worker_pos.y - 2) == freespace) ) {
-							cout << "Hell yeah" << endl;
-							feature_node* tmp_node_child = insert_child(tmp_node);
-							move_box(tmp_node_child,tmp_node->worker_pos.x,tmp_node->worker_pos.y - 1,0,-1);
-							tmp_node_child->worker_pos.y = tmp_node_child->worker_pos.y - 1;
-							print_node(tmp_node_child);
-							cout << "Node is goal: " << goal_node(tmp_node_child) << endl;
-							// NOTE move box
-							// NOTE check id new node, delete if not and add to openlist if it is
-						}
+                        move_forward(tmp_node);
 					// case EAST:
 					// case SOUTH:
 					// case WEST:
@@ -283,6 +274,42 @@ void Sokoban_features::solve(int solver_type)
     // for (size_t i = 0; i < hash_table.size(); i++)
     //     cout << "element " << i << " contains " << hash_table.at(i).hash_value << " and " << hash_table.at(i).ref_node << endl;
 
+}
+
+void Sokoban_features::move_forward(feature_node* in_node)
+// the move is relative to the direction of the worker
+{
+    int move_x = 0;
+    int move_y = 0;
+    if (in_node->worker_dir == NORTH)
+        move_y = -1;
+    else if (in_node->worker_dir == EAST)
+        move_x = 1;
+    else if (in_node->worker_dir == SOUTH)
+        move_y = 1;
+    else if (in_node->worker_dir == WEST)
+        move_x = -1;
+
+    // First test if there is free space to move forward
+    // second test if there is a box in front and if there is test for freespace or goal in front of box
+    if (point_type(in_node, in_node->worker_pos.x + move_x, in_node->worker_pos.y + move_y) == freespace) {
+        // move forward to freespace
+        cout << "move forward" << endl;
+    } else if (point_type(in_node, in_node->worker_pos.x + move_x, in_node->worker_pos.y + move_y) == box
+        and (point_type(in_node, in_node->worker_pos.x + move_x*2, in_node->worker_pos.y + move_y*2) == goal
+            or point_type(in_node, in_node->worker_pos.x + move_x*2, in_node->worker_pos.y + move_y*2) == freespace)
+        and (point_type(in_node, in_node->worker_pos.x + move_x*2, in_node->worker_pos.y + move_y*2) != box) ) {
+
+        cout << "Hell yeah" << endl;
+        feature_node* tmp_node_child = insert_child(in_node);
+        move_box(tmp_node_child,in_node->worker_pos.x + move_x,in_node->worker_pos.y + move_y,move_x,move_y);
+        tmp_node_child->worker_pos.x = tmp_node_child->worker_pos.x + move_x;
+        tmp_node_child->worker_pos.y = tmp_node_child->worker_pos.y + move_y;
+        print_node(tmp_node_child);
+        cout << "Node is goal: " << goal_node(tmp_node_child) << endl;
+        // NOTE move box
+        // NOTE check id new node, delete if not and add to openlist if it is
+    }
 }
 
 int  Sokoban_features::point_type(feature_node* in_node, point2D &inPoint)
