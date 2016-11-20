@@ -30,7 +30,7 @@ int main(int argc,  char **argv) {
              initial_map.print_boxes();
 
              Sokoban_features feature_tree(initial_map_ptr);
-             feature_tree.solve();
+             feature_tree.solve(0);
 
             //  if (false) { // EXTERNAL TREE TESTER, NOT FOR USE IN ACTUAL PROGRAMMING
             //      Sokoban_features::feature_node* tree_root2 = feature_tree.insert_child(nullptr); // Reports an error in the terminal

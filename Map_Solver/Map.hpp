@@ -40,7 +40,7 @@ public:
 	// Public Methods
 	bool load_map_from_file(string file_name);
 	void print_map();
-	void print_map(point2D& in_worker_pos, vector< point2D > in_boxes_pos);
+	void print_map(point2D& in_worker_pos, vector< point2D > in_boxes_pos, bool print_descriptor);
 	void print_info();
 	void print_goals();
 	void print_boxes();
@@ -50,6 +50,8 @@ public:
 	vector< point2D > get_goals();
 	vector< point2D > get_boxes();
 	point2D get_worker();
+	int  get_width();
+	int  get_height();
 
 private:
 	// Private variables
@@ -149,13 +151,14 @@ bool Map::load_map_from_file(string file_name)
 
 void Map::print_map()
 {
-	print_map(initial_pos_worker, initial_pos_boxes);
+	print_map(initial_pos_worker, initial_pos_boxes, true);
 }
 
-void Map::print_map(point2D& in_worker_pos, vector< point2D > in_boxes_pos)
+void Map::print_map(point2D& in_worker_pos, vector< point2D > in_boxes_pos, bool print_descriptor)
 {
 	if (!empty_map) {
-		cout << endl << " *** Printing map ***" << endl << "  ";
+		if (print_descriptor)
+			cout << endl << " *** Printing map ***" << endl << "  ";;
 	    for (size_t i = 0; i < map_structure.at(0).size(); i++)
 	        cout << i << " ";
 	    cout << endl;
@@ -194,12 +197,14 @@ void Map::print_map(point2D& in_worker_pos, vector< point2D > in_boxes_pos)
 	        }
 	        cout << endl;
 	    }
-	    cout << "⊞: Obstacle" << endl;
-	    cout << " : Free space" << endl;
-	    cout << "\033[1;31m×\033[0m: Box" << endl;
-	    cout << "\033[1;32m★\033[0m: Goal" << endl;
-	    cout << "\033[1;35mΔ\033[0m: Start / robot" << endl;
-	    cout << " *** Printing map done ***" << endl << endl;
+		if (print_descriptor) {
+			cout << "⊞: Obstacle" << endl;
+			cout << " : Free space" << endl;
+			cout << "\033[1;31m×\033[0m: Box" << endl;
+			cout << "\033[1;32m★\033[0m: Goal" << endl;
+			cout << "\033[1;35mΔ\033[0m: Start / robot" << endl;
+			cout << " *** Printing map done ***" << endl << endl;
+		}
 	} else {
 		cout << "Map is empty and cannot be printed!" << endl << endl;
 	}
@@ -259,4 +264,13 @@ int Map::map_point_type(point2D &inPoint)
         if (initial_pos_goals.at(i).x == inPoint.x and initial_pos_goals.at(i).y == inPoint.y)
             return goal;
 	return map_structure.at(inPoint.y).at(inPoint.x);
+}
+
+int  Map::get_width()
+{
+	return map_width;
+}
+int  Map::get_height()
+{
+	return map_height;
 }

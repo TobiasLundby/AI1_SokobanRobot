@@ -17,26 +17,26 @@
 #include "Map.hpp" // Uses map and therefore needs to be included
 
 // Defines
-#define     NORTH   1; // NOTE: this goes opposite the y-axis
-#define     EAST    2; // NOTE: this goes as the x-axis
-#define     SOUTH   3; // NOTE: this goes as the y-axis
-#define     WEST    4; // NOTE: this goes opposite the x-axis
+#define     NORTH   1 // NOTE: this goes opposite the y-axis
+#define     EAST    2 // NOTE: this goes as the x-axis
+#define     SOUTH   3 // NOTE: this goes as the y-axis
+#define     WEST    4 // NOTE: this goes opposite the x-axis
 
 // Moves
-#define     forward     1;
-#define     backward    2;
-#define     left        3; // Turn CCW 90
-#define     right       4; // Turn CW 90
-#define     deploy      5;
-#define     approach    6;
+#define     forward     1
+#define     backward    2
+#define     left        3 // Turn CCW 90
+#define     right       4 // Turn CW 90
+#define     deploy      5
+#define     approach    6
 
 // Moves cost_to_node
-#define     forward_cost     1;
-#define     backward_cost    1;
-#define     left_cost        1;
-#define     right_cost       1;
-#define     deploy_cost      2;
-#define     approach_cost    1.5;
+#define     forward_cost     1
+#define     backward_cost    1
+#define     left_cost        1
+#define     right_cost       1
+#define     deploy_cost      2
+#define     approach_cost    1.5
 
 // Namespaces
 using namespace std;
@@ -85,8 +85,9 @@ public:
     void print_debug(const string& in_string);
     void print_info(const string& in_string);
 	void print_node(feature_node* in_node);
-	void solve();
+	void solve(int solver_type);
     int  point_type(feature_node* in_node, point2D &inPoint);
+	int  point_type(feature_node* in_node, int in_x, int in_y);
     double calcualte_heuristic(feature_node* in_node);
     double calculate_euclidian_distance(point2D &inPoint1, point2D &inPoint2);
     int calculate_taxicab_distance(point2D &inPoint1, point2D &inPoint2);
@@ -94,7 +95,12 @@ public:
     unsigned long hash_node_to_key(feature_node* in_node);
     bool nodes_match(feature_node* in_node1, feature_node* in_node2);
     bool update_parent_node(feature_node* &in_node_child, feature_node* in_node_new_parent);
+	void print_branch_up(feature_node* in_node);
+	bool remove_node(feature_node* &child);
+	bool goal_node(feature_node* in_node);
+	bool move_box(feature_node* in_node, int in_x, int in_y, int offset_x, int offset_y);
 
+	// Hash table methods
     bool hash_table_insert(feature_node* &in_node);
     bool hash_table_insert(unsigned long in_hash_value, feature_node* &in_node);
     bool hash_table_exist(feature_node* &in_node);
@@ -106,6 +112,8 @@ private:
 	// Private variables
     feature_node* root; // to hold the start sokoban features which is understod as the start placement of the elements / features
     Map* map;
+
+	int tree_nodes = 0;
 
     vector< feature_node* > open_list; // Hold unvisited nodes
     vector< feature_node* > closed_list; // holds visited nodes
@@ -141,6 +149,7 @@ Sokoban_features::feature_node* Sokoban_features::insert_child(feature_node* par
 // Input: can either be the nullptr for creating the root of the tree or a pointer to the parent
 // Output: Pointer to the created node / child
 {
+	tree_nodes++;
     feature_node* temp_node = nullptr;
     if (parent_node == nullptr) {
         if (root == nullptr) {
@@ -177,29 +186,86 @@ Sokoban_features::feature_node* Sokoban_features::insert_child(feature_node* par
     }
 	return temp_node;
 }
+bool Sokoban_features::remove_node(feature_node* &child)
+// only deletes the current child and from parent
+{
+	feature_node* parent_node = child->parent;
+	for (size_t i = 0; i < parent_node->children.size(); i++) {
+		if (parent_node->children.at(i) == child) {
+			parent_node->children.erase(parent_node->children.begin()+i);
+			parent_node->children_edge_cost.erase(parent_node->children_edge_cost.begin()+i);
+		}
+	}
+	delete child;
+	child = nullptr;
+	return true;
+}
 
 void Sokoban_features::print_node(feature_node* in_node)
 {
-	map->print_map(in_node->worker_pos, in_node->boxes);
+	map->print_map(in_node->worker_pos, in_node->boxes, false);
 }
 
-void Sokoban_features::solve()
+void Sokoban_features::solve(int solver_type)
 {
 	if (root == nullptr) {
-		root = insert_child(nullptr); // Create tree root
+		if (solver_type == BF) {
+			root = insert_child(nullptr); // Create tree root
+			open_list.push_back(root);
 
-		int new_nodes = 10;
+			while (open_list.size()) {
+				feature_node* tmp_node = open_list.front();
+				open_list.erase(open_list.begin());
+				cout << "Current element is " << tmp_node << " and has depth " << tmp_node->depth << endl;
 
-		for (size_t i = 0; i < new_nodes; i++) {
-			feature_node* tmp_node = insert_child(root);
-			// if (i == new_nodes -1) {
-			// 	tmp_node->worker_pos.x = 7;
-			// 	print_node(tmp_node);
+				switch (tmp_node->worker_dir) {
+					case NORTH:
+						if (point_type(tmp_node, tmp_node->worker_pos.x, tmp_node->worker_pos.y - 1) == box
+							and (point_type(tmp_node, tmp_node->worker_pos.x, tmp_node->worker_pos.y - 2) == goal or point_type(tmp_node, tmp_node->worker_pos.x, tmp_node->worker_pos.y - 2) == freespace) ) {
+							cout << "Hell yeah" << endl;
+							feature_node* tmp_node_child = insert_child(tmp_node);
+							move_box(tmp_node_child,tmp_node->worker_pos.x,tmp_node->worker_pos.y - 1,0,-1);
+							tmp_node_child->worker_pos.y = tmp_node_child->worker_pos.y - 1;
+							print_node(tmp_node_child);
+							cout << "Node is goal: " << goal_node(tmp_node_child) << endl;
+							// NOTE move box
+							// NOTE check id new node, delete if not and add to openlist if it is
+						}
+					// case EAST:
+					// case SOUTH:
+					// case WEST:
+				}
+			}
+
+			// int new_nodes = 5;
+			// for (size_t i = 0; i < new_nodes; i++) {
+			// 	if (i==0)
+			// 		tmp_node = insert_child(root);
+			// 	else
+			// 		tmp_node = insert_child(tmp_node);
 			// }
+			//remove_node(tmp_node);
+
+		} else if (solver_type == Astar) {
+			root = insert_child(nullptr); // Create tree root
+		} else {
+			print_info("Unknown solver type, try again.");
 		}
+
+		// int new_nodes = 100;
+		//
+		// for (size_t i = 0; i < new_nodes; i++) {
+		// 	feature_node* tmp_node = insert_child(root);
+		// 	// if (i == new_nodes -1) {
+		// 	// 	tmp_node->worker_pos.x = 7;
+		// 	// 	print_node(tmp_node);
+		// 	// }
+		// }
 	} else
         print_info("Tree already exists; breaking solver");
 
+	cout << endl;
+	print_info("Nodes in tree " + to_string(tree_nodes));
     // print_info("Point type test");
     // point2D point_tmp;
     // point_tmp.x = 2;
@@ -221,12 +287,23 @@ void Sokoban_features::solve()
 
 int  Sokoban_features::point_type(feature_node* in_node, point2D &inPoint)
 {
-    if (in_node->worker_pos.x == inPoint.x and in_node->worker_pos.y == inPoint.y)
-        return worker;
-    for (size_t i = 0; i < in_node->boxes.size(); i++)
-        if (in_node->boxes.at(i).x == inPoint.x and in_node->boxes.at(i).y == inPoint.y)
-            return box;
-    return map->map_point_type(inPoint);
+	if ( (inPoint.x >= 0 and inPoint.x < map->get_width()) and (inPoint.y >= 0 and inPoint.y < map->get_height()) ) {
+		if (in_node->worker_pos.x == inPoint.x and in_node->worker_pos.y == inPoint.y)
+	        return worker;
+	    for (size_t i = 0; i < in_node->boxes.size(); i++)
+	        if (in_node->boxes.at(i).x == inPoint.x and in_node->boxes.at(i).y == inPoint.y)
+	            return box;
+	    return map->map_point_type(inPoint);
+	}
+    return undefined;
+}
+
+int  Sokoban_features::point_type(feature_node* in_node, int in_x, int in_y)
+{
+	point2D tmp_point;
+	tmp_point.x = in_x;
+	tmp_point.y = in_y;
+	return point_type(in_node,tmp_point);
 }
 
 double Sokoban_features::calcualte_heuristic(feature_node* in_node)
@@ -367,6 +444,59 @@ void Sokoban_features::print_info(const string& in_string)
     cout << "[INFO] " << in_string << endl;
 }
 
+void Sokoban_features::print_branch_up(feature_node* in_node)
+{
+	cout << endl;
+	print_info(" *** PRINTING BRANCH - OUTPUT LENGTH DEPENDS ON BRANCH DEPTH ***");
+	feature_node* tmp_node = in_node;
+
+	while (tmp_node->parent != nullptr) {
+		print_info("Depth is " + to_string(tmp_node->depth));
+		print_node(tmp_node);
+		tmp_node = tmp_node->parent;
+	}
+	// Print root
+	print_info("Depth is " + to_string(tmp_node->depth));
+	print_node(tmp_node);
+}
+
+bool Sokoban_features::goal_node(feature_node* in_node)
+{
+	vector< int > tmp_vec_box;
+    for (size_t i = 0; i < in_node->boxes.size(); i++) {
+        tmp_vec_box.push_back((in_node->boxes.at(i).x * 10) + in_node->boxes.at(i).y);
+    }
+    sort(tmp_vec_box.begin(), tmp_vec_box.end());
+
+	vector< point2D > goals = map->get_goals();
+	vector< int > tmp_vec_goal;
+    for (size_t i = 0; i < goals.size(); i++) {
+        tmp_vec_goal.push_back((goals.at(i).x * 10) + goals.at(i).y);
+    }
+    sort(tmp_vec_goal.begin(), tmp_vec_goal.end());
+
+	bool equal = true;
+	for (size_t i = 0; i < tmp_vec_box.size(); i++) {
+		if (tmp_vec_box.at(i) != tmp_vec_goal.at(i)) {
+			equal = false;
+			break;
+		}
+	}
+
+    return equal;
+}
+
+bool Sokoban_features::move_box(feature_node* in_node, int in_x, int in_y, int offset_x, int offset_y)
+{
+	for (size_t i = 0; i < in_node->boxes.size(); i++) {
+		if (in_node->boxes.at(i).x == in_x and in_node->boxes.at(i).y == in_y) {
+			in_node->boxes.at(i).x = in_node->boxes.at(i).x + offset_x;
+			in_node->boxes.at(i).y = in_node->boxes.at(i).y + offset_y;
+			return true;
+		}
+	}
+	return false;
+}
 
 // Hash table methods **********************************************************
 bool Sokoban_features::hash_table_insert(feature_node* &in_node)
