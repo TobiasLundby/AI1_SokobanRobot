@@ -1,8 +1,9 @@
-05 07 01
+05 08 01
 XXXXX
 X...X
 X.G.X
-X.J.X
-X.M.X
 X...X
+X.J.X
+X...X
+X.M.X
 XXXXX
