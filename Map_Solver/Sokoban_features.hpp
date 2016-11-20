@@ -306,6 +306,9 @@ void Sokoban_features::move_forward(feature_node* in_node)
         tmp_node_child->worker_pos.x = tmp_node_child->worker_pos.x + move_x;
         tmp_node_child->worker_pos.y = tmp_node_child->worker_pos.y + move_y;
         print_node(tmp_node_child);
+        if (goal_node(tmp_node_child)) {
+            print_branch_up(tmp_node_child);
+        }
         cout << "Node is goal: " << goal_node(tmp_node_child) << endl;
         // NOTE move box
         // NOTE check id new node, delete if not and add to openlist if it is
@@ -477,14 +480,17 @@ void Sokoban_features::print_branch_up(feature_node* in_node)
 	print_info(" *** PRINTING BRANCH - OUTPUT LENGTH DEPENDS ON BRANCH DEPTH ***");
 	feature_node* tmp_node = in_node;
 
-	while (tmp_node->parent != nullptr) {
-		print_info("Depth is " + to_string(tmp_node->depth));
-		print_node(tmp_node);
+    vector< feature_node* > branch;
+    while (tmp_node != nullptr) {
+		branch.push_back(tmp_node);
 		tmp_node = tmp_node->parent;
 	}
-	// Print root
-	print_info("Depth is " + to_string(tmp_node->depth));
-	print_node(tmp_node);
+	while (branch.size()) {
+        tmp_node = branch.back();
+        branch.pop_back();
+		print_info("Depth is " + to_string(tmp_node->depth));
+		print_node(tmp_node);
+	}
 }
 
 bool Sokoban_features::goal_node(feature_node* in_node)
