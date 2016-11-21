@@ -97,6 +97,8 @@ public:
     bool update_parent_node(feature_node* &in_node_child, feature_node* in_node_new_parent);
 	void print_branch_up(feature_node* in_node);
 	bool remove_node(feature_node* &child);
+    bool remove_node_from_parent(feature_node* &child);
+    bool add_node_to_parent(feature_node* &child, int pos);
 	bool goal_node(feature_node* in_node);
     bool goal_box(point2D in_box);
 	bool move_box(feature_node* in_node, int in_x, int in_y, int offset_x, int offset_y);
@@ -200,6 +202,32 @@ bool Sokoban_features::remove_node(feature_node* &child)
 	}
 	delete child;
 	child = nullptr;
+	return true;
+}
+
+bool Sokoban_features::remove_node_from_parent(feature_node* &child)
+// only deletes the current child and from parent
+{
+	feature_node* parent_node = child->parent;
+	for (size_t i = 0; i < parent_node->children.size(); i++) {
+		if (parent_node->children.at(i) == child) {
+			parent_node->children.erase(parent_node->children.begin()+i);
+			parent_node->children_edge_cost.erase(parent_node->children_edge_cost.begin()+i);
+		}
+	}
+	return true;
+}
+bool Sokoban_features::add_node_to_parent(feature_node* &child, int pos)
+// only deletes the current child and from parent
+{
+	feature_node* parent_node = child->parent;
+    if (pos >= parent_node->children.size()) {
+        parent_node->children.insert(open_list.begin()+pos,child);
+        parent_node->children_edge_cost.insert(open_list.begin()+pos,0);
+    } else {
+        parent_node->children.push_back(child);
+        parent_node->children_edge_cost.push_back(0);
+    }
 	return true;
 }
 
@@ -311,12 +339,6 @@ bool Sokoban_features::move_forward(feature_node* in_node)
         // move forward to freespace
         tmp_node_child->cost_to_node = tmp_node_child->cost_to_node + 1*forward_cost;
         // save forward move
-        // check if blank end, do not add if it is
-
-        //if (point_type(tmp_node_child, tmp_node_child->worker_pos.x + move_x*2, tmp_node_child->worker_pos.y + move_y*2) != obstacle) {
-        //     open_list.push_back(tmp_node_child);
-        //     return true;
-        //}
         tmp_node_child->worker_pos.x = tmp_node_child->worker_pos.x + move_x;
         tmp_node_child->worker_pos.y = tmp_node_child->worker_pos.y + move_y;
 
@@ -328,14 +350,12 @@ bool Sokoban_features::move_forward(feature_node* in_node)
         } else {
             // Check if the returned
             if (tmp_node_child->cost_to_node < tmp_node_child_for_check->cost_to_node) {
-                // not completed yet!!!! NOTE
-                // // Print hash table for check
-                // hash_table_delete(tmp_node_child_for_check);
-                // remove_node(tmp_node_child_for_check);
-                // // Print hash table for check
-                // hash_table_insert(tmp_node_child);
-                // open_list.push_back(tmp_node_child);
-                // return true;
+                tmp_node_child_for_check->cost_to_node = tmp_node_child->cost_to_node;
+                remove_node_from_parent(tmp_node_child_for_check);
+                tmp_node_child_for_check->parent = tmp_node_child->parent;
+                add_node_to_parent(tmp_node_child_for_check,0);
+                remove_node(tmp_node_child);
+                return true;
             } else {
                 remove_node(tmp_node_child);
                 return false;
@@ -348,7 +368,7 @@ bool Sokoban_features::move_forward(feature_node* in_node)
         and (point_type(tmp_node_child, tmp_node_child->worker_pos.x + move_x*2, tmp_node_child->worker_pos.y + move_y*2) == goal
             or point_type(tmp_node_child, tmp_node_child->worker_pos.x + move_x*2, tmp_node_child->worker_pos.y + move_y*2) == freespace) ) {
         //and (point_type(tmp_node_child, tmp_node_child->worker_pos.x + move_x*2, tmp_node_child->worker_pos.y + move_y*2) != box)
-        tmp_node_child->cost_to_node = tmp_node_child->cost_to_node + 3*forward_cost;
+        tmp_node_child->cost_to_node = tmp_node_child->cost_to_node + 1.5*forward_cost;
         // Save push move
         cout << "pushing a box" << endl;
 
@@ -387,6 +407,12 @@ bool Sokoban_features::move_forward(feature_node* in_node)
                 //     open_list.push_back(tmp_node_child);
                 // }
                 // return true;
+                tmp_node_child_for_check->cost_to_node = tmp_node_child->cost_to_node;
+                remove_node_from_parent(tmp_node_child_for_check);
+                tmp_node_child_for_check->parent = tmp_node_child->parent;
+                add_node_to_parent(tmp_node_child_for_check,0);
+                remove_node(tmp_node_child);
+                return true;
             } else {
                 remove_node(tmp_node_child);
                 return false;
