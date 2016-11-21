@@ -390,23 +390,8 @@ bool Sokoban_features::move_forward(feature_node* in_node)
             }
             return true;
         } else {
-            // Check if the returned
+            // Check the returned
             if (tmp_node_child->cost_to_node < tmp_node_child_for_check->cost_to_node) {
-                // not completed yet!!!! NOTE
-                // // Print hash table for check
-                // hash_table_delete(tmp_node_child_for_check);
-                // remove_node(tmp_node_child_for_check);
-                // // Print hash table for check
-                // hash_table_insert(tmp_node_child);
-                //
-                // // check if goal before add more
-                // point2D tmp_point;
-                // tmp_point.x = tmp_node_child->worker_pos.x + move_x;
-                // tmp_point.y = tmp_node_child->worker_pos.y + move_y;
-                // if (!goal_box(tmp_point)) {
-                //     open_list.push_back(tmp_node_child);
-                // }
-                // return true;
                 tmp_node_child_for_check->cost_to_node = tmp_node_child->cost_to_node;
                 remove_node_from_parent(tmp_node_child_for_check);
                 tmp_node_child_for_check->parent = tmp_node_child->parent;
