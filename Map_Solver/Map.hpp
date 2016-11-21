@@ -39,14 +39,17 @@ public:
 
 	// Public Methods
 	bool load_map_from_file(string file_name);
+	bool create_deadlock_free_map();
 	void print_map();
 	void print_map(point2D& in_worker_pos, vector< point2D > in_boxes_pos, bool print_descriptor);
+	void print_map_simple(int map_type);
 	void print_info();
 	void print_goals();
 	void print_boxes();
-	int  map_point_type(point2D &inPoint);
+	int  map_point_type(int in_x, int in_y, int map_type);
+	int  map_point_type(point2D &inPoint, int map_type);
 
-	vector< vector<int> > get_map();
+	vector< vector<int> > get_map(int map_type);
 	vector< point2D > get_goals();
 	vector< point2D > get_boxes();
 	point2D get_worker();
@@ -55,7 +58,8 @@ public:
 
 private:
 	// Private variables
-	vector< vector<int> > map_structure; // outer vector holds rows and therefore the internal vector is the column, ex. map_structure.at(y).at(x)
+	vector< vector<int> >  map_worker; // outer vector holds rows and therefore the internal vector is the column, ex. map_worker.at(y).at(x)
+	vector< vector<int> >  map_box;
 
 	vector< point2D > initial_pos_goals;
 	vector< point2D > initial_pos_boxes;
@@ -76,7 +80,7 @@ Map::Map()
 
 Map::Map(Map &source_map)
 {
-	map_structure = source_map.get_map();
+	map_worker = source_map.get_map(worker);
 	empty_map = false; // Map has been transferred
 	//print_map();
 
@@ -132,7 +136,7 @@ bool Map::load_map_from_file(string file_name)
 						initial_pos_worker.y = i-2;
 					}
 				}
-				map_structure.push_back(row);
+				map_worker.push_back(row);
 			}
 		}
 		map_file.close();
@@ -149,6 +153,94 @@ bool Map::load_map_from_file(string file_name)
 	}
 }
 
+bool Map::create_deadlock_free_map()
+{
+	for (size_t i = 0; i < map_worker.size(); i++) { // copy map
+		map_box.push_back(map_worker.at(i));
+	}
+	for (size_t y = 0; y < map_box.size(); y++) { // outer vector is y
+		for (size_t x = 0; x < map_box.at(y).size(); x++) { // inner vector is x
+			point2D tmp_point;
+			tmp_point.x = x;
+			tmp_point.y = y;
+			if ( (x > 0 and x < map_width-1) and (y > 0 and y < map_height-1) ) {
+				if ( ( (map_worker.at(y-1).at(x) == obstacle and map_worker.at(y).at(x+1) == obstacle)
+					or (map_worker.at(y).at(x+1) == obstacle and map_worker.at(y+1).at(x) == obstacle)
+					or (map_worker.at(y+1).at(x) == obstacle and map_worker.at(y).at(x-1) == obstacle)
+					or (map_worker.at(y).at(x-1) == obstacle and map_worker.at(y-1).at(x) == obstacle) )
+					and (map_point_type(tmp_point,worker) != goal) ) {
+
+					map_box.at(y).at(x) = obstacle;
+				}
+			}
+		}
+	}
+	// check rows for deadlozed zones
+	for (size_t y = 0; y < map_box.size(); y++) {
+		int last_freespace_x = 0;
+		for (size_t x = 0; x < map_box.at(y).size(); x++) {
+			bool create_deadlocked_zone = true;
+			bool goal_in_zone = false;
+			if ( (map_point_type(x,y, worker) == freespace) and (map_point_type(x-1,y, worker) == obstacle) and ( x > last_freespace_x) ) {
+				for (size_t x_tmp = x; x_tmp < map_box.at(y).size(); x_tmp++) {
+					if (map_point_type(x_tmp,y, worker) == goal)
+						goal_in_zone = true;
+					if (map_point_type(x_tmp,y, worker) == obstacle) {
+						last_freespace_x = x_tmp-1;
+						if (!goal_in_zone) {
+							bool prev_row = false;
+							bool next_row = false;
+							for (size_t x_prev_y = x; x_prev_y <= last_freespace_x; x_prev_y++) {
+								if (map_point_type(x_prev_y,y-1, worker) != obstacle)
+									prev_row = true;
+								if (map_point_type(x_prev_y,y+1, worker) != obstacle)
+									next_row = true;
+							}
+							if (!prev_row or !next_row)
+								for (size_t x_mark = x; x_mark < last_freespace_x; x_mark++)
+									map_box.at(y).at(x_mark) = obstacle;
+						}
+						break;
+					}
+				}
+			}
+		}
+	}
+	// check cols for deadlozed zones
+	for (size_t x = 0; x < map_box.at(0).size(); x++) {
+	    int last_freespace_y = 0;
+
+	    for (size_t y = 0; y < map_box.size(); y++) {
+	        bool create_deadlocked_zone = true;
+	        bool goal_in_zone = false;
+	        if ( (map_point_type(x,y, worker) == freespace) and (map_point_type(x,y-1, worker) == obstacle) and ( y > last_freespace_y) ) {
+	            for (size_t y_tmp = y; y_tmp < map_box.size(); y_tmp++) {
+	                if (map_point_type(x,y_tmp, worker) == goal)
+	                    goal_in_zone = true;
+	                if (map_point_type(x,y_tmp, worker) == obstacle) {
+	                    last_freespace_y = y_tmp-1;
+	                    if (!goal_in_zone) {
+	                        bool prev_row = false;
+	                        bool next_row = false;
+	                        for (size_t y_prev_x = y; y_prev_x <= last_freespace_y; y_prev_x++) {
+	                            if (map_point_type(x-1,y_prev_x, worker) != obstacle)
+	                                prev_row = true;
+	                            if (map_point_type(x+1,y_prev_x, worker) != obstacle)
+	                                next_row = true;
+	                        }
+	                        if (!prev_row or !next_row)
+	                            for (size_t y_mark = y; y_mark < last_freespace_y; y_mark++)
+	                                map_box.at(y_mark).at(x) = obstacle;
+	                    }
+	                    break;
+	                }
+	            }
+	        }
+	    }
+	}
+	return true;
+}
+
 void Map::print_map()
 {
 	print_map(initial_pos_worker, initial_pos_boxes, true);
@@ -160,16 +252,16 @@ void Map::print_map(point2D& in_worker_pos, vector< point2D > in_boxes_pos, bool
 		if (print_descriptor)
 			cout << endl << " *** Printing map ***" << endl;
 		cout << "  ";
-	    for (size_t i = 0; i < map_structure.at(0).size(); i++)
+	    for (size_t i = 0; i < map_worker.at(0).size(); i++)
 	        cout << i << " ";
 	    cout << endl;
-	    for (size_t row = 0; row < map_structure.size(); row++) {
-	        if (map_structure.size() >= 10)
+	    for (size_t row = 0; row < map_worker.size(); row++) {
+	        if (map_worker.size() >= 10)
 	            cout << row << "  ";
 	        else
 	            cout << row << " ";
-	        for (size_t col = 0; col < map_structure.at(row).size(); col++) {
-	            //cout << map_structure_loaded.at(row).at(col);
+	        for (size_t col = 0; col < map_worker.at(row).size(); col++) {
+	            //cout << map_worker_loaded.at(row).at(col);
 				bool printed_obj = false;
 
 				if (in_worker_pos.x == col and in_worker_pos.y == row) {
@@ -206,9 +298,9 @@ void Map::print_map(point2D& in_worker_pos, vector< point2D > in_boxes_pos, bool
 				}
 
 
-	            if (map_structure.at(row).at(col) == obstacle)
+	            if (map_worker.at(row).at(col) == obstacle)
 	                cout << "⊞"; // obstacle
-	            else if (map_structure.at(row).at(col) == freespace and !printed_obj)
+	            else if (map_worker.at(row).at(col) == freespace and !printed_obj)
 	                cout << " "; // free space
 	            if (col >= 10)
 	                cout << "  ";
@@ -225,6 +317,47 @@ void Map::print_map(point2D& in_worker_pos, vector< point2D > in_boxes_pos, bool
 			cout << "\033[1;35mΔ\033[0m: Start / robot" << endl;
 			cout << " *** Printing map done ***" << endl << endl;
 		}
+	} else {
+		cout << "Map is empty and cannot be printed!" << endl << endl;
+	}
+}
+
+void Map::print_map_simple(int map_type)
+{
+	vector< vector<int> >* map_ptr;
+	if (map_type == worker) {
+		 map_ptr = &map_worker;
+		 cout << endl << "[INFO] Printing worker map" << endl;
+	} else if (map_type == box) {
+		map_ptr = &map_box;
+		cout << endl << "[INFO] Printing box map" << endl;
+	} else {
+		cout << "Unkown map type specified" << endl;
+		return;
+	}
+
+	if (!empty_map) {
+		cout << "  ";
+	    for (size_t i = 0; i < map_ptr->at(0).size(); i++)
+	        cout << i << " ";
+	    cout << endl;
+	    for (size_t row = 0; row < map_ptr->size(); row++) {
+	        if (map_ptr->size() >= 10)
+	            cout << row << "  ";
+	        else
+	            cout << row << " ";
+	        for (size_t col = 0; col < map_ptr->at(row).size(); col++) {
+	            if (map_ptr->at(row).at(col) == obstacle)
+	                cout << "⊞"; // obstacle
+	            else if (map_ptr->at(row).at(col) == freespace)
+	                cout << " "; // free space
+	            if (col >= 10)
+	                cout << "  ";
+	            else
+	                cout << " ";
+	        }
+	        cout << endl;
+	    }
 	} else {
 		cout << "Map is empty and cannot be printed!" << endl << endl;
 	}
@@ -258,9 +391,16 @@ void Map::print_boxes()
 		cout << endl << "There are no boxes in the map" << endl;
 }
 
-vector< vector<int> > Map::get_map()
+vector< vector<int> > Map::get_map(int map_type)
 {
-	return map_structure;
+	if (map_type == worker) {
+		 return map_worker;
+	} else if (map_type == box) {
+		return map_box;
+	} else {
+		cout << "Unkown map type specified, returning worker map" << endl;
+		return map_worker;
+	}
 }
 
 vector< point2D > Map::get_goals()
@@ -278,12 +418,32 @@ point2D Map::get_worker()
 	return initial_pos_worker;
 }
 
-int Map::map_point_type(point2D &inPoint)
+int Map::map_point_type(int in_x, int in_y, int map_type)
 {
-	for (size_t i = 0; i < initial_pos_goals.size(); i++)
-        if (initial_pos_goals.at(i).x == inPoint.x and initial_pos_goals.at(i).y == inPoint.y)
-            return goal;
-	return map_structure.at(inPoint.y).at(inPoint.x);
+	point2D tmp_point;
+	tmp_point.x = in_x;
+	tmp_point.y = in_y;
+	return map_point_type(tmp_point, map_type);
+}
+int Map::map_point_type(point2D &inPoint, int map_type)
+{
+	vector< vector<int> >* map_ptr;
+	if (map_type == worker) {
+		 map_ptr = &map_worker;
+	} else if (map_type == box) {
+		map_ptr = &map_box;
+	} else {
+		cout << "Unkown map type specified" << endl;
+		return undefined;
+	}
+	if ( (inPoint.x >= 0 and inPoint.x < map_width) and (inPoint.y >= 0 and inPoint.y < map_height) ) {
+		for (size_t i = 0; i < initial_pos_goals.size(); i++)
+	        if (initial_pos_goals.at(i).x == inPoint.x and initial_pos_goals.at(i).y == inPoint.y)
+	            return goal;
+		return map_ptr->at(inPoint.y).at(inPoint.x);
+	} else {
+		return undefined;
+	}
 }
 
 int  Map::get_width()

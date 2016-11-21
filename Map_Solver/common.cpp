@@ -7,8 +7,8 @@
 //
 #pragma once
 
-#define BF      0
-#define Astar   1
+#define BF      0 // Breadth-first
+#define Astar   1 // A*
 
 struct point2D {
   int x;

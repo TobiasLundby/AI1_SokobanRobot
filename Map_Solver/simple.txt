@@ -1,8 +1,8 @@
-06 07 03
-XXXXXX
-XGX..X
-XJM..X
-X.X.JX
-XGJ.GX
-X....X
-XXXXXX
+07 07 03
+XXXXXXX
+X...G.X
+X.X.X.X
+X.....X
+X.J...X
+X....MX
+XXXXXXX
