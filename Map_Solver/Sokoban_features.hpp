@@ -103,6 +103,8 @@ public:
     bool goal_box(point2D in_box);
 	bool move_box(feature_node* in_node, int in_x, int in_y, int offset_x, int offset_y);
     bool move_forward(feature_node* in_node);
+	bool turn_right(feature_node* in_node);
+	bool turn_left(feature_node* in_node);
 
 	// Hash table methods
     bool hash_table_insert(feature_node* &in_node);
@@ -202,6 +204,7 @@ bool Sokoban_features::remove_node(feature_node* &child)
 	}
 	delete child;
 	child = nullptr;
+	tree_nodes--;
 	return true;
 }
 
@@ -234,6 +237,7 @@ bool Sokoban_features::add_node_to_parent(feature_node* &child, int pos)
 void Sokoban_features::print_node(feature_node* in_node)
 {
 	map->print_map(in_node->worker_pos, in_node->boxes, false);
+	cout << "Worker has direction: " << in_node->worker_dir << endl;
 }
 
 void Sokoban_features::solve(int solver_type)
@@ -246,75 +250,49 @@ void Sokoban_features::solve(int solver_type)
 			while (open_list.size()) {
 				feature_node* tmp_node = open_list.front();
 				open_list.erase(open_list.begin());
-				cout << "Current element is " << tmp_node << " and has depth " << tmp_node->depth << endl;
-
-				switch (tmp_node->worker_dir) {
-					case NORTH:
-                        if (move_forward(tmp_node)) {
-                            print_node(tmp_node->children.at(0));
-                            if (goal_node(tmp_node->children.at(0))) {
-                                print_branch_up(tmp_node->children.at(0));
-                                break;
-                            }
-                        }
-
-
-
-                        //cout << "Node is goal: " << goal_node(tmp_node_child) << endl;
-                        // NOTE move box
-                        // NOTE check id new node, delete if not and add to openlist if it is
-					// case EAST:
-					// case SOUTH:
-					// case WEST:
+				//cout << "Current element is " << tmp_node << " and has depth " << tmp_node->depth << endl;
+                // if (move_forward(tmp_node)) {
+                //     print_node(tmp_node->children.at(0));
+                //     if (goal_node(tmp_node->children.at(0))) {
+                //         print_branch_up(tmp_node->children.at(0));
+                //         break;
+                //     }
+                // }
+				if (move_forward(tmp_node)) {
+                    //print_node(tmp_node->children.at(0));
+					//cout << "Hashed to " << hash_node_to_key(tmp_node->children.at(0)) << endl;
+                }
+				//move_forward(tmp_node);
+				turn_right(tmp_node);
+				turn_left(tmp_node);
+				bool break_search = false;
+				for (size_t i = 0; i < tmp_node->children.size(); i++) {
+					//print_node(tmp_node->children.at(i));
+					if (goal_node(tmp_node->children.at(i))) {
+						print_branch_up(tmp_node->children.at(0));
+                        break_search = true;
+						break;
+					}
+				}
+				if (break_search) {
+					break;
+				}
+				if (tree_nodes%10000==0) {
+					print_info(to_string(tree_nodes)+" nodes visited");
 				}
 			}
-
-			// int new_nodes = 5;
-			// for (size_t i = 0; i < new_nodes; i++) {
-			// 	if (i==0)
-			// 		tmp_node = insert_child(root);
-			// 	else
-			// 		tmp_node = insert_child(tmp_node);
-			// }
-			//remove_node(tmp_node);
+			cout << "Open list has " << open_list.size() << " elements" << endl;
 
 		} else if (solver_type == Astar) {
 			root = insert_child(nullptr); // Create tree root
 		} else {
 			print_info("Unknown solver type, try again.");
 		}
-
-		// int new_nodes = 100;
-		//
-		// for (size_t i = 0; i < new_nodes; i++) {
-		// 	feature_node* tmp_node = insert_child(root);
-		// 	// if (i == new_nodes -1) {
-		// 	// 	tmp_node->worker_pos.x = 7;
-		// 	// 	print_node(tmp_node);
-		// 	// }
-		// }
 	} else
         print_info("Tree already exists; breaking solver");
 
 	cout << endl;
 	print_info("Nodes in tree " + to_string(tree_nodes));
-    // print_info("Point type test");
-    // point2D point_tmp;
-    // point_tmp.x = 2;
-    // point_tmp.y = 3;
-    // cout << point_type(root,point_tmp) << endl;
-    //
-    //print_info("Nearest goals test");
-    // update_nearest_goals(root);
-    // for (size_t i = 0; i < root->boxes.size(); i++)
-    //     cout << "Box " << i << " has goal " << root->box_goal_ref.at(i) << " as nearest goal" << endl;
-    //
-    //print_info("Hashing test");
-    // feature_node* tmp_node = insert_child(root);
-    // cout << hash_table_insert(tmp_node) << " node " << tmp_node << endl;
-    // for (size_t i = 0; i < hash_table.size(); i++)
-    //     cout << "element " << i << " contains " << hash_table.at(i).hash_value << " and " << hash_table.at(i).ref_node << endl;
-
 }
 
 bool Sokoban_features::move_forward(feature_node* in_node)
@@ -334,17 +312,15 @@ bool Sokoban_features::move_forward(feature_node* in_node)
 
     // First test if there is free space to move forward
     // second test if there is a box in front and if there is test for freespace or goal in front of box
-    // Third test if it is a goal; not done
-    if (point_type(tmp_node_child, tmp_node_child->worker_pos.x + move_x, tmp_node_child->worker_pos.y + move_y) == freespace) {
-        // move forward to freespace
+    if (point_type(tmp_node_child, tmp_node_child->worker_pos.x + move_x, tmp_node_child->worker_pos.y + move_y) == freespace
+	or point_type(tmp_node_child, tmp_node_child->worker_pos.x + move_x, tmp_node_child->worker_pos.y + move_y) == goal) {
+        // MOVE FORWARD TO FREESPACE
         tmp_node_child->cost_to_node = tmp_node_child->cost_to_node + 1*forward_cost;
-        // save forward move
         tmp_node_child->worker_pos.x = tmp_node_child->worker_pos.x + move_x;
         tmp_node_child->worker_pos.y = tmp_node_child->worker_pos.y + move_y;
 
         feature_node* tmp_node_child_for_check = tmp_node_child;
         if (hash_table_insert(tmp_node_child_for_check)) {
-            //New element is good
             open_list.push_back(tmp_node_child);
             return true;
         } else {
@@ -361,36 +337,24 @@ bool Sokoban_features::move_forward(feature_node* in_node)
                 return false;
             }
         }
-
-        cout << "move forward" << endl;
         return false;
     } else if (point_type(tmp_node_child, tmp_node_child->worker_pos.x + move_x, tmp_node_child->worker_pos.y + move_y) == box
         and (point_type(tmp_node_child, tmp_node_child->worker_pos.x + move_x*2, tmp_node_child->worker_pos.y + move_y*2) == goal
             or point_type(tmp_node_child, tmp_node_child->worker_pos.x + move_x*2, tmp_node_child->worker_pos.y + move_y*2) == freespace) ) {
-        //and (point_type(tmp_node_child, tmp_node_child->worker_pos.x + move_x*2, tmp_node_child->worker_pos.y + move_y*2) != box)
-        tmp_node_child->cost_to_node = tmp_node_child->cost_to_node + 1.5*forward_cost;
-        // Save push move
-        cout << "pushing a box" << endl;
-
+        tmp_node_child->cost_to_node = tmp_node_child->cost_to_node + approach_cost;
+        // PUSH MOVE
         move_box(tmp_node_child,tmp_node_child->worker_pos.x + move_x,tmp_node_child->worker_pos.y + move_y,move_x,move_y);
         tmp_node_child->worker_pos.x = tmp_node_child->worker_pos.x + move_x;
         tmp_node_child->worker_pos.y = tmp_node_child->worker_pos.y + move_y;
 
         feature_node* tmp_node_child_for_check = tmp_node_child;
         if (hash_table_insert(tmp_node_child_for_check)) {
-            //New element is good
-            // check if goal before add more
             point2D tmp_point;
             tmp_point.x = tmp_node_child->worker_pos.x + move_x;
             tmp_point.y = tmp_node_child->worker_pos.y + move_y;
-            cout << "x: " << tmp_point.x << endl;
-            cout << "y: " << tmp_point.y << endl;
-            if (!goal_box(tmp_point)) {
-                open_list.push_back(tmp_node_child);
-            }
+            open_list.push_back(tmp_node_child);
             return true;
         } else {
-            // Check the returned
             if (tmp_node_child->cost_to_node < tmp_node_child_for_check->cost_to_node) {
                 tmp_node_child_for_check->cost_to_node = tmp_node_child->cost_to_node;
                 remove_node_from_parent(tmp_node_child_for_check);
@@ -404,8 +368,65 @@ bool Sokoban_features::move_forward(feature_node* in_node)
             }
         }
     }
-    // If no of the other cases matches.
     return false;
+}
+bool Sokoban_features::turn_right(feature_node* in_node)
+{
+	// Right CW
+	feature_node* tmp_node_child_cw = insert_child(in_node);
+	// Test for deploy NOTE
+	tmp_node_child_cw->cost_to_node = tmp_node_child_cw->cost_to_node + 1*left_cost;
+	if (tmp_node_child_cw->worker_dir >= WEST) {
+		tmp_node_child_cw->worker_dir = NORTH;
+	} else {
+		tmp_node_child_cw->worker_dir += 1;
+	}
+	feature_node* tmp_node_child_for_check_cw = tmp_node_child_cw;
+	if (hash_table_insert(tmp_node_child_for_check_cw)) {
+		open_list.push_back(tmp_node_child_cw);
+		return true;
+	} else {
+		if (tmp_node_child_cw->cost_to_node < tmp_node_child_for_check_cw->cost_to_node) {
+			tmp_node_child_for_check_cw->cost_to_node = tmp_node_child_cw->cost_to_node;
+			remove_node_from_parent(tmp_node_child_for_check_cw);
+			tmp_node_child_for_check_cw->parent = tmp_node_child_cw->parent;
+			add_node_to_parent(tmp_node_child_for_check_cw,0);
+			remove_node(tmp_node_child_cw);
+			return true;
+		} else {
+			remove_node(tmp_node_child_cw);
+			return false;
+		}
+	}
+}
+bool Sokoban_features::turn_left(feature_node* in_node)
+{
+	// Left CCW
+	feature_node* tmp_node_child_ccw = insert_child(in_node);
+	// test for deploy NOTE
+	tmp_node_child_ccw->cost_to_node = tmp_node_child_ccw->cost_to_node + 1*left_cost;
+	if (tmp_node_child_ccw->worker_dir <= NORTH) {
+		tmp_node_child_ccw->worker_dir = WEST;
+	} else {
+		tmp_node_child_ccw->worker_dir -= 1;
+	}
+	feature_node* tmp_node_child_for_check_ccw = tmp_node_child_ccw;
+	if (hash_table_insert(tmp_node_child_for_check_ccw)) {
+		open_list.push_back(tmp_node_child_ccw);
+		return true;
+	} else {
+		if (tmp_node_child_ccw->cost_to_node < tmp_node_child_for_check_ccw->cost_to_node) {
+			tmp_node_child_for_check_ccw->cost_to_node = tmp_node_child_ccw->cost_to_node;
+			remove_node_from_parent(tmp_node_child_for_check_ccw);
+			tmp_node_child_for_check_ccw->parent = tmp_node_child_ccw->parent;
+			add_node_to_parent(tmp_node_child_for_check_ccw,0);
+			remove_node(tmp_node_child_ccw);
+			return true;
+		} else {
+			remove_node(tmp_node_child_ccw);
+			return false;
+		}
+	}
 }
 
 int  Sokoban_features::point_type(feature_node* in_node, point2D &inPoint)
@@ -541,7 +562,6 @@ unsigned long Sokoban_features::hash_node_to_key(feature_node* in_node)
     }
 
     return str_hash(tmp_str);
-
 }
 
 bool Sokoban_features::nodes_match(feature_node* in_node1, feature_node* in_node2)
@@ -604,13 +624,14 @@ bool Sokoban_features::goal_node(feature_node* in_node)
     int counter = 0;
 	for (size_t i = 0; i < tmp_vec_box.size(); i++) {
         for (size_t j = 0; j < tmp_vec_goal.size(); j++) {
-            cout << tmp_vec_box.at(i)  << " : " << tmp_vec_goal.at(i) << endl;
-            if (tmp_vec_box.at(i) == tmp_vec_goal.at(i)) {
+            //cout << tmp_vec_box.at(i)  << " : " << tmp_vec_goal.at(j) << endl;
+            if (tmp_vec_box.at(i) == tmp_vec_goal.at(j)) {
                 counter++;
+				//cout << "Box " << tmp_vec_box.at(i) << " and goal " << tmp_vec_goal.at(j) << endl;
             }
         }
 	}
-    cout << "counter: " << counter << " , boxes: " << tmp_vec_box.size() << endl;
+    //cout << "counter: " << counter << " , boxes: " << tmp_vec_box.size() << endl;
     if (counter == tmp_vec_box.size()) {
         return true;
     }

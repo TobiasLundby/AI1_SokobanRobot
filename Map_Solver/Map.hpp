@@ -172,6 +172,11 @@ void Map::print_map(point2D& in_worker_pos, vector< point2D > in_boxes_pos, bool
 	            //cout << map_structure_loaded.at(row).at(col);
 				bool printed_obj = false;
 
+				if (in_worker_pos.x == col and in_worker_pos.y == row) {
+					cout << "\033[1;35mΔ\033[0m"; // start
+					printed_obj = true;
+				}
+
 				bool same_goal_box = false;
 				for (size_t h = 0; h < in_boxes_pos.size(); h++){
 					if (in_boxes_pos.at(h).x == col and in_boxes_pos.at(h).y == row) {
@@ -193,17 +198,14 @@ void Map::print_map(point2D& in_worker_pos, vector< point2D > in_boxes_pos, bool
 						}
 					}
 					for (size_t h = 0; h < initial_pos_goals.size(); h++) {
-						if (initial_pos_goals.at(h).x == col and initial_pos_goals.at(h).y == row) {
+						if (initial_pos_goals.at(h).x == col and initial_pos_goals.at(h).y == row and !printed_obj) {
 							cout << "\033[1;32m★\033[0m"; // goal
 							printed_obj = true;
 						}
 					}
 				}
 
-				if (in_worker_pos.x == col and in_worker_pos.y == row) {
-					cout << "\033[1;35mΔ\033[0m"; // start
-					printed_obj = true;
-				}
+
 	            if (map_structure.at(row).at(col) == obstacle)
 	                cout << "⊞"; // obstacle
 	            else if (map_structure.at(row).at(col) == freespace and !printed_obj)
