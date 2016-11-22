@@ -248,7 +248,6 @@ bool Sokoban_features::add_node_to_parent(feature_node* &child, int pos)
 void Sokoban_features::print_node(feature_node* in_node)
 {
 	map->print_map(in_node->worker_pos, in_node->boxes, false);
-	cout << "Worker has direction: " << in_node->worker_dir << endl;
 }
 
 bool Sokoban_features::solve(int solver_type)
@@ -686,6 +685,7 @@ void Sokoban_features::print_branch_up(feature_node* in_node)
         branch.pop_back();
 		print_info("Depth is " + to_string(tmp_node->depth));
         print_info("Cost to node is " + to_string(tmp_node->cost_to_node));
+        print_info("Worker has direction: "+to_string(tmp_node->worker_dir));
 		print_node(tmp_node);
 	}
 }
