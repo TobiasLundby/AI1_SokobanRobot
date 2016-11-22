@@ -32,7 +32,7 @@
 
 // Moves cost_to_node
 #define     forward_cost     1
-#define     backward_cost    1
+#define     backward_cost    2
 #define     left_cost        1
 #define     right_cost       1
 #define     deploy_cost      2
@@ -124,7 +124,7 @@ private:
     feature_node* goal_ptr;
     Map* map;
 
-	int tree_nodes = 0;
+	int peeked_notes = 0;
 
     vector< feature_node* > open_list; // Hold unvisited nodes
     vector< feature_node* > closed_list; // holds visited nodes
@@ -166,7 +166,7 @@ Sokoban_features::feature_node* Sokoban_features::insert_child(feature_node* par
 // Input: can either be the nullptr for creating the root of the tree or a pointer to the parent
 // Output: Pointer to the created node / child
 {
-	tree_nodes++;
+	peeked_notes++;
     feature_node* temp_node = nullptr;
     if (parent_node == nullptr) {
         if (root == nullptr) {
@@ -215,7 +215,6 @@ bool Sokoban_features::remove_node(feature_node* &child)
 	}
 	delete child;
 	child = nullptr;
-	tree_nodes--;
 	return true;
 }
 
@@ -236,8 +235,8 @@ bool Sokoban_features::add_node_to_parent(feature_node* &child, int pos)
 {
 	feature_node* parent_node = child->parent;
     if (pos >= parent_node->children.size()) {
-        parent_node->children.insert(open_list.begin()+pos,child);
-        parent_node->children_edge_cost.insert(open_list.begin()+pos,0);
+        parent_node->children.insert(parent_node->children.begin()+pos,child);
+        parent_node->children_edge_cost.insert(parent_node->children.begin()+pos,0);
     } else {
         parent_node->children.push_back(child);
         parent_node->children_edge_cost.push_back(0);
@@ -261,19 +260,7 @@ bool Sokoban_features::solve(int solver_type)
 				feature_node* tmp_node = open_list.front();
 				open_list.erase(open_list.begin());
                 closed_list.push_back(tmp_node);
-				//cout << "Current element is " << tmp_node << " and has depth " << tmp_node->depth << endl;
-                // if (move_forward(tmp_node)) {
-                //     print_node(tmp_node->children.at(0));
-                //     if (goal_node(tmp_node->children.at(0))) {
-                //         print_branch_up(tmp_node->children.at(0));
-                //         break;
-                //     }
-                // }
-				if (move_forward(tmp_node)) {
-                    //print_node(tmp_node->children.at(0));
-					//cout << "Hashed to " << hash_node_to_key(tmp_node->children.at(0)) << endl;
-                }
-				//move_forward(tmp_node);
+				move_forward(tmp_node);
                 move_backward(tmp_node); // saves some moves but adds a lot of nodes (a factor more)
 				turn_right(tmp_node);
 				turn_left(tmp_node);
@@ -287,9 +274,9 @@ bool Sokoban_features::solve(int solver_type)
 				}
 				if (break_search)
 					break;
-				if (tree_nodes%10000==0 or (tree_nodes-1)%10000==0 or (tree_nodes-2)%10000==0 or (tree_nodes-3)%10000==0) {
-					print_info(to_string(tree_nodes)+" nodes visited");
-				}
+                if (closed_list.size()%10000 == 0) {
+                    print_info("Visited " + to_string(closed_list.size()) + " and " + to_string(open_list.size()) + " nodes waiting (peeked at " + to_string(peeked_notes) + " nodes)");
+                }
 			}
 		} else if (solver_type == Astar) {
 			root = insert_child(nullptr); // Create tree root

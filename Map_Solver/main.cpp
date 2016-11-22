@@ -118,21 +118,29 @@ void make_robot_commands(Sokoban_features::feature_node* solution_ptr, Sokoban_f
     int move = 0;
     bool worker_attached_to_box = false;
 
+    string robot_commands;
+
     cout << "Robot commands: ";
 
     // Special case for first move below
     move = determine_robot_move(parent_ptr,grandparent_ptr,tree);
     if ( move==F and box_inFrontOf_robot(grandparent_ptr,tree) and box_inFrontOf_robot(parent_ptr,tree) ) {
         cout << "A";
+        robot_commands += "A";
         worker_attached_to_box = true;
-    } else if (move==F)
+    } else if (move==F) {
         cout << "F";
-    else if (move==B)
+        robot_commands += "F";
+    } else if (move==B) {
         cout << "B";
-    else if (move==L)
+        robot_commands += "B";
+    } else if (move==L) {
         cout << "L";
-    else if (move==R)
+        robot_commands += "L";
+    } else if (move==R) {
         cout << "R";
+        robot_commands += "R";
+    }
     // General conversion
     while (branch.size()) {
         grandparent_ptr = parent_ptr;
@@ -145,21 +153,30 @@ void make_robot_commands(Sokoban_features::feature_node* solution_ptr, Sokoban_f
             if (!worker_attached_to_box) { // worker is not currently pushing, but check for it!
                 if ( box_inFrontOf_robot(grandparent_ptr,tree) and box_inFrontOf_robot(parent_ptr,tree) ) {
                     cout << "A";
+                    robot_commands += "A";
                     worker_attached_to_box = true;
-                } else
+                } else {
                     cout << "F";
-            } else
+                    robot_commands += "F";
+                }
+            } else {
                 cout << "F";
+                robot_commands += "F";
+            }
         } else if (worker_attached_to_box) {
             cout << "D";
+            robot_commands += "D";
             worker_attached_to_box = false;
         }
         if (move==B) {
             cout << "B";
+            robot_commands += "B";
         } else if (move==L) {
             cout << "L";
+            robot_commands += "L";
         } else if (move==R) {
             cout << "R";
+            robot_commands += "R";
         }
     }
     // Special case for last move; it should be a forwards move and in the current case that becomes deploy
@@ -168,19 +185,30 @@ void make_robot_commands(Sokoban_features::feature_node* solution_ptr, Sokoban_f
         if (!worker_attached_to_box) { // worker is not currently pushing, but check for it!
             if ( box_inFrontOf_robot(parent_ptr,tree) and box_inFrontOf_robot(current_ptr,tree) ) {
                 cout << "AD";
+                robot_commands += "AD";
                 worker_attached_to_box = true;
             }
-        } else
+        } else {
             cout << "D";
-    }else if (move==B)
+            robot_commands += "D";
+        }
+    } else if (move==B) {
         cout << "B";
-    else if (move==L)
+        robot_commands += "B";
+    } else if (move==L) {
         cout << "L";
-    else if (move==R)
+        robot_commands += "L";
+    } else if (move==R) {
         cout << "R";
+        robot_commands += "R";
+    }
     // Print line break to ensure proper terminal layout
     cout << endl;
-    cout << (box_inFrontOf_robot(grandparent_ptr,tree) and box_inFrontOf_robot(parent_ptr,tree)) << endl;
+
+    ofstream myfile;
+    myfile.open ("robot_string.txt");
+    myfile << robot_commands;
+    myfile.close();
 }
 
 int main(int argc,  char **argv) {
@@ -189,21 +217,33 @@ int main(int argc,  char **argv) {
         Map initial_map;
         Map* initial_map_ptr = &initial_map;
         if (initial_map.load_map_from_file(map_file_name)) {
-             initial_map.print_map();
-             initial_map.print_info();
-             initial_map.print_goals();
-             initial_map.print_boxes();
-             cout << endl;
+             string user_input;
+             cout << "[INPUT] Print map and info (y/n): ";
+             getline(cin, user_input);
+             if (user_input == "y") {
+                 initial_map.print_map();
+                 initial_map.print_info();
+                 initial_map.print_goals();
+                 initial_map.print_boxes();
+                 cout << endl;
+             }
              if (initial_map.create_deadlock_free_map()) {
-                 initial_map.print_map_simple(worker);
-                 initial_map.print_map_simple(box);
+                 //initial_map.print_map_simple(worker);
+                 //initial_map.print_map_simple(box);
                  Sokoban_features feature_tree(initial_map_ptr);
+                 feature_tree.print_info("Starting search");
                  if (feature_tree.solve(BF)) {  // Solve using Breadth-first searching
                      feature_tree.print_info("Solved using Breadth-first searching");
                      feature_tree.print_info("Nodes visited "+to_string(feature_tree.get_closed_list_size()));
                      feature_tree.print_info("Nodes not visited "+to_string(feature_tree.get_open_list_size()));
-                     feature_tree.print_branch_up(feature_tree.get_goal_node_ptr());
                      make_robot_commands(feature_tree.get_goal_node_ptr(), feature_tree);
+                     cout << endl;
+                     
+                     cout << "[INPUT] Print solution (y/n): ";
+                     getline(cin, user_input);
+                     if (user_input == "y") {
+                         feature_tree.print_branch_up(feature_tree.get_goal_node_ptr());
+                     }
                  } else {
                      feature_tree.print_info("No solution was found using Breadth-first searching");
                      feature_tree.print_info("Visited "+to_string(feature_tree.get_closed_list_size())+" nodes");
