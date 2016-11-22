@@ -1,7 +1,7 @@
 07 07 03
 XXXXXXX
-X...G.X
-X.X.X.X
+X....GX
+X.X.XXX
 X.....X
 X.J...X
 X....MX

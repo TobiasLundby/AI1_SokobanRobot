@@ -10,6 +10,13 @@
 #define BF      0 // Breadth-first
 #define Astar   1 // A*
 
+#define F       1 // Forward move
+#define B       2 // Backward move
+#define L       3 // Turn left, CCW
+#define R       4 // Turn right, CW
+#define D       5 // Deploy move
+#define A       6 // Approach move
+
 struct point2D {
   int x;
   int y;

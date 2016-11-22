@@ -163,7 +163,7 @@ bool Map::create_deadlock_free_map()
 			point2D tmp_point;
 			tmp_point.x = x;
 			tmp_point.y = y;
-			if ( (x > 0 and x < map_width-1) and (y > 0 and y < map_height-1) ) {
+			if ( (x > 0 and x < map_box.at(y).size()-1) and (y > 0 and y < map_box.size()-1) ) {
 				if ( ( (map_worker.at(y-1).at(x) == obstacle and map_worker.at(y).at(x+1) == obstacle)
 					or (map_worker.at(y).at(x+1) == obstacle and map_worker.at(y+1).at(x) == obstacle)
 					or (map_worker.at(y+1).at(x) == obstacle and map_worker.at(y).at(x-1) == obstacle)
