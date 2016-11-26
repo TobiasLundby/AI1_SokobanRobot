@@ -261,7 +261,7 @@ bool Sokoban_features::solve(int solver_type)
 				open_list.erase(open_list.begin());
                 closed_list.push_back(tmp_node);
 				move_forward(tmp_node);
-                move_backward(tmp_node); // saves some moves but adds a lot of nodes (a factor more)
+                //move_backward(tmp_node); // saves some moves but adds a lot of nodes (a factor more)
 				turn_right(tmp_node);
 				turn_left(tmp_node);
 				bool break_search = false;
