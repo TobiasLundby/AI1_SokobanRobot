@@ -15,6 +15,8 @@
 
 // Class include
 #include "Map.hpp" // Uses map and therefore needs to be included
+#include <time.h>       /* time */
+#include <sys/time.h>       /* time */
 
 // Defines
 #define     NORTH   1 // NOTE: this goes opposite the y-axis
@@ -79,6 +81,8 @@ public:
 	// Public variables
 
 	// Public Methods
+    long long currentTimeUs();
+
     feature_node* get_root_ptr();
     feature_node* get_goal_node_ptr();
 	feature_node* insert_child(feature_node* parent_node);
@@ -153,6 +157,14 @@ Sokoban_features::Sokoban_features(Map* map_ptr)
 Sokoban_features::~Sokoban_features()
 {
 	// Do cleanup
+}
+
+long long Sokoban_features::currentTimeUs()
+// Timer function
+{
+    timeval current;
+    gettimeofday(&current, 0);
+    return (long long)current.tv_sec * 1000000L + current.tv_usec;
 }
 
 Sokoban_features::feature_node* Sokoban_features::get_root_ptr()
@@ -260,6 +272,12 @@ bool Sokoban_features::solve(int solver_type, int max_search)
 // Input: BF or Astar (defines in common) and max search counter
 // Output: true if a solution has been found
 {
+    /* initialize random seed: */
+    srand (time(NULL));
+    long long time_stamp = currentTimeUs();
+    std::cout << "Time stamp is: " << time_stamp << std::endl;
+    std::cout << "Time stamp diff is: " << currentTimeUs() - time_stamp << std::endl;
+    
 	if (root == nullptr) {
 		if (solver_type == BF) {
 			root = insert_child(nullptr); // Create tree root
