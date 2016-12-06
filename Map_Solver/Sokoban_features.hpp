@@ -86,7 +86,7 @@ public:
     void print_debug(const string& in_string);
     void print_info(const string& in_string);
 	void print_node(feature_node* in_node);
-	bool solve(int solver_type);
+	bool solve(int solver_type, int max_search);
     int  point_type(feature_node* in_node, point2D &inPoint, int map_type);
 	int  point_type(feature_node* in_node, int in_x, int in_y, int map_type);
     double calcualte_heuristic(feature_node* in_node);
@@ -135,6 +135,7 @@ private:
 
 
 Sokoban_features::Sokoban_features()
+// Default constructor
 {
 	root = nullptr;
     goal_ptr = nullptr;
@@ -142,6 +143,7 @@ Sokoban_features::Sokoban_features()
 }
 
 Sokoban_features::Sokoban_features(Map* map_ptr)
+// Overload constructor
 {
 	root = nullptr;
     goal_ptr = nullptr;
@@ -154,10 +156,12 @@ Sokoban_features::~Sokoban_features()
 }
 
 Sokoban_features::feature_node* Sokoban_features::get_root_ptr()
+// Returns the root node (ptr)
 {
 	return root;
 }
 Sokoban_features::feature_node* Sokoban_features::get_goal_node_ptr()
+// Returns the goal node (ptr)
 {
 	return goal_ptr;
 }
@@ -204,7 +208,7 @@ Sokoban_features::feature_node* Sokoban_features::insert_child(feature_node* par
 	return temp_node;
 }
 bool Sokoban_features::remove_node(feature_node* &child)
-// only deletes the current child and from parent
+// Removes the node and also from the parent
 {
 	feature_node* parent_node = child->parent;
 	for (size_t i = 0; i < parent_node->children.size(); i++) {
@@ -219,7 +223,7 @@ bool Sokoban_features::remove_node(feature_node* &child)
 }
 
 bool Sokoban_features::remove_node_from_parent(feature_node* &child)
-// only deletes the current child and from parent
+// Deletes the current child and from parent
 {
 	feature_node* parent_node = child->parent;
 	for (size_t i = 0; i < parent_node->children.size(); i++) {
@@ -231,12 +235,13 @@ bool Sokoban_features::remove_node_from_parent(feature_node* &child)
 	return true;
 }
 bool Sokoban_features::add_node_to_parent(feature_node* &child, int pos)
-// only deletes the current child and from parent
+// Adds a node to the parent node
 {
 	feature_node* parent_node = child->parent;
     if (pos >= parent_node->children.size()) {
         parent_node->children.insert(parent_node->children.begin()+pos,child);
         parent_node->children_edge_cost.insert(parent_node->children.begin()+pos,0);
+        // NOTE no Astar here, just adds the edge_cost 0
     } else {
         parent_node->children.push_back(child);
         parent_node->children_edge_cost.push_back(0);
@@ -245,11 +250,15 @@ bool Sokoban_features::add_node_to_parent(feature_node* &child, int pos)
 }
 
 void Sokoban_features::print_node(feature_node* in_node)
+// Prints a node using the Map class
 {
 	map->print_map(in_node->worker_pos, in_node->boxes, false);
 }
 
-bool Sokoban_features::solve(int solver_type)
+bool Sokoban_features::solve(int solver_type, int max_search)
+// Solver
+// Input: BF or Astar (defines in common) and max search counter
+// Output: true if a solution has been found
 {
 	if (root == nullptr) {
 		if (solver_type == BF) {
@@ -277,6 +286,9 @@ bool Sokoban_features::solve(int solver_type)
                 if (closed_list.size()%10000 == 0) {
                     print_info("Visited " + to_string(closed_list.size()) + " and " + to_string(open_list.size()) + " nodes waiting (peeked at " + to_string(peeked_notes) + " nodes)");
                 }
+                if (max_search <= closed_list.size()) {
+                    return false;
+                }
 			}
 		} else if (solver_type == Astar) {
 			root = insert_child(nullptr); // Create tree root
@@ -296,7 +308,8 @@ bool Sokoban_features::solve(int solver_type)
 }
 
 bool Sokoban_features::move_forward(feature_node* in_node)
-// the move is relative to the direction of the worker
+// Adds the forwards move node to the open list if it does NOT exist.
+// If the node already exists the tree is manipulated if the new node has a smaller cost to node
 {
     feature_node* tmp_node_child = insert_child(in_node);
     int move_x = 0;
@@ -393,7 +406,8 @@ bool Sokoban_features::move_forward(feature_node* in_node)
     return false;
 }
 bool Sokoban_features::move_backward(feature_node* in_node)
-// the move is relative to the direction of the worker
+// Adds the backwards move node to the open list if it does NOT exist.
+// If the node already exists the tree is manipulated if the new node has a smaller cost to node
 {
     feature_node* tmp_node_child = insert_child(in_node);
     int move_x = 0;
@@ -440,6 +454,8 @@ bool Sokoban_features::move_backward(feature_node* in_node)
     return false;
 }
 bool Sokoban_features::turn_right(feature_node* in_node)
+// Adds the right turn node to the open list if it does NOT exist.
+// If the node already exists the tree is manipulated if the new node has a smaller cost to node
 {
 	// Right CW
 	feature_node* tmp_node_child_cw = insert_child(in_node);
@@ -469,6 +485,8 @@ bool Sokoban_features::turn_right(feature_node* in_node)
 	}
 }
 bool Sokoban_features::turn_left(feature_node* in_node)
+// Adds the left turn node to the open list if it does NOT exist.
+// If the node already exists the tree is manipulated if the new node has a smaller cost to node
 {
 	// Left CCW
 	feature_node* tmp_node_child_ccw = insert_child(in_node);
@@ -498,7 +516,16 @@ bool Sokoban_features::turn_left(feature_node* in_node)
 	}
 }
 
+int  Sokoban_features::point_type(feature_node* in_node, int in_x, int in_y, int map_type)
+// An overload function for the point_type; makes a point from the input positions
+{
+	point2D tmp_point;
+	tmp_point.x = in_x;
+	tmp_point.y = in_y;
+	return point_type(in_node,tmp_point, map_type);
+}
 int  Sokoban_features::point_type(feature_node* in_node, point2D &inPoint, int map_type)
+// Returns the type of the point; the actual return value is given by defines
 {
 	if ( (inPoint.x >= 0 and inPoint.x < map->get_width()) and (inPoint.y >= 0 and inPoint.y < map->get_height()) ) {
 		if (in_node->worker_pos.x == inPoint.x and in_node->worker_pos.y == inPoint.y)
@@ -511,31 +538,29 @@ int  Sokoban_features::point_type(feature_node* in_node, point2D &inPoint, int m
     return undefined;
 }
 
-int  Sokoban_features::point_type(feature_node* in_node, int in_x, int in_y, int map_type)
-{
-	point2D tmp_point;
-	tmp_point.x = in_x;
-	tmp_point.y = in_y;
-	return point_type(in_node,tmp_point, map_type);
-}
-
 double Sokoban_features::calcualte_heuristic(feature_node* in_node)
+// Calculates and returns the heuristic for the input node.
 {
     // Still no heuristic!!
     return 0;
 }
 
 double Sokoban_features::calculate_euclidian_distance(point2D &inPoint1, point2D &inPoint2)
+// Calculates the euclidian distance between point1 and point2 and returns the distance.
 {
     return sqrt(pow(inPoint1.x-inPoint2.x,2)+pow(inPoint1.y-inPoint2.y,2));
 }
 
 int Sokoban_features::calculate_taxicab_distance(point2D &inPoint1, point2D &inPoint2)
+// Calculates the taxicab distance between point1 and point2 and returns the distance.
 {
     return abs(inPoint1.x-inPoint2.x)+abs(inPoint1.y-inPoint2.y);
 }
 
 void Sokoban_features::update_nearest_goals(feature_node* in_node)
+// Each node contains a box_goal_ref which is a vector where each of the boxes are associated with a goal
+// This method updates these associations which in term can be used for a heuristic
+// Currently it is just using the euclidian distance which is not a good distance, a better one would be a wavefront map for each of the goals
 {
     bool debug_update_nearest_goals = false;
     //in_node->box_goal_ref.clear();
@@ -640,6 +665,7 @@ bool Sokoban_features::nodes_match(feature_node* in_node1, feature_node* in_node
 }
 
 bool Sokoban_features::update_parent_node(feature_node* &in_node_child, feature_node* in_node_new_parent)
+// Updates the parent node of the first input node with the parent node of the second input node.
 {
     if ( (in_node_child->parent = in_node_new_parent) ) {
         return true;
@@ -648,15 +674,18 @@ bool Sokoban_features::update_parent_node(feature_node* &in_node_child, feature_
 }
 
 void Sokoban_features::print_debug(const string& in_string)
+// A method for nicer debug messages
 {
     cout << "[DEBUG] " << in_string << endl;
 }
 void Sokoban_features::print_info(const string& in_string)
+// A method for nicer info messages
 {
     cout << "[INFO] " << in_string << endl;
 }
 
 void Sokoban_features::print_branch_up(feature_node* in_node)
+// Prints the branch in decreasing order so starting from the root.
 {
 	cout << endl;
 	print_info(" *** PRINTING BRANCH - OUTPUT LENGTH DEPENDS ON BRANCH DEPTH ***");
@@ -678,6 +707,7 @@ void Sokoban_features::print_branch_up(feature_node* in_node)
 }
 
 bool Sokoban_features::goal_node(feature_node* in_node)
+// Tests whether or not the input node is a goal node; a goal node is a node where all the boxes are at the goals (no specific order nessecary)
 {
 	vector< int > tmp_vec_box;
     for (size_t i = 0; i < in_node->boxes.size(); i++) {
@@ -694,20 +724,18 @@ bool Sokoban_features::goal_node(feature_node* in_node)
     int counter = 0;
 	for (size_t i = 0; i < tmp_vec_box.size(); i++) {
         for (size_t j = 0; j < tmp_vec_goal.size(); j++) {
-            //cout << tmp_vec_box.at(i)  << " : " << tmp_vec_goal.at(j) << endl;
             if (tmp_vec_box.at(i) == tmp_vec_goal.at(j)) {
                 counter++;
-				//cout << "Box " << tmp_vec_box.at(i) << " and goal " << tmp_vec_goal.at(j) << endl;
             }
         }
 	}
-    //cout << "counter: " << counter << " , boxes: " << tmp_vec_box.size() << endl;
     if (counter == tmp_vec_box.size()) {
         return true;
     }
     return false;
 }
 bool Sokoban_features::goal_box(point2D in_box)
+// Tests if the input box is at a goal
 {
     vector< point2D > goals = map->get_goals();
 
@@ -720,6 +748,7 @@ bool Sokoban_features::goal_box(point2D in_box)
 }
 
 bool Sokoban_features::move_box(feature_node* in_node, int in_x, int in_y, int offset_x, int offset_y)
+// Moves a box given from the position of the box and moves it the given amount by the offset inputs.
 {
 	for (size_t i = 0; i < in_node->boxes.size(); i++) {
 		if (in_node->boxes.at(i).x == in_x and in_node->boxes.at(i).y == in_y) {
@@ -732,16 +761,19 @@ bool Sokoban_features::move_box(feature_node* in_node, int in_x, int in_y, int o
 }
 
 int  Sokoban_features::get_open_list_size()
+// Returns the open list
 {
     return open_list.size();
 }
 int  Sokoban_features::get_closed_list_size()
+// Returns the closed list
 {
     return closed_list.size();
 }
 
 // Hash table methods **********************************************************
 bool Sokoban_features::hash_table_insert(feature_node* &in_node)
+// An overload function for the hash_table_insert; hashes the input node
 {
     return hash_table_insert(hash_node_to_key(in_node), in_node);
 }
@@ -826,11 +858,13 @@ bool Sokoban_features::hash_table_insert(unsigned long in_hash_value, feature_no
 }
 
 bool Sokoban_features::hash_table_exist(feature_node* &in_node)
+// An overload function for the hash_table_exist; hashes the input node
 {
     //cout << "[DEBUG: hashing] Hash key " << hash_node_to_key(in_node) << endl;
     return hash_table_exist(hash_node_to_key(in_node), in_node);
 }
 bool Sokoban_features::hash_table_exist(unsigned long in_hash_value, feature_node* &in_node)
+// Searches for a element in the the hash table and if it exists the pointer to the found object is passes back in in_node and it returns true; otherwise no pointer return and false return value
 {
     if (hash_table.size() > 0) { // test if has_table is empty
         int const start_hash_table = 0; // access this element as hash_table.begin()
@@ -870,10 +904,12 @@ bool Sokoban_features::hash_table_exist(unsigned long in_hash_value, feature_nod
 }
 
 bool Sokoban_features::hash_table_delete(feature_node* &in_node)
+// An overload function for the hash_table_delete; hashes the input node
 {
     return hash_table_delete(hash_node_to_key(in_node), in_node);
 }
 bool Sokoban_features::hash_table_delete(unsigned long in_hash_value, feature_node* &in_node)
+// Deletes an element in the list if it exists (return value true)
 {
     if (hash_table.size() > 0) { // test if has_table is empty
         int const start_hash_table = 0; // access this element as hash_table.begin()

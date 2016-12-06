@@ -74,11 +74,13 @@ private:
 };
 
 Map::Map()
+// Default constructor
 {
 
 }
 
 Map::Map(Map &source_map)
+// Overload constructor
 {
 	map_worker = source_map.get_map(worker);
 	empty_map = false; // Map has been transferred
@@ -91,11 +93,13 @@ Map::Map(Map &source_map)
 }
 
 Map::~Map()
+// Default destructor
 {
 	// Do cleanup
 }
 
 bool Map::load_map_from_file(string file_name)
+// Loads a map from the input file name given by the AI1 (at SDU) format
 {
 	string line;
 	ifstream map_file (file_name);
@@ -154,6 +158,7 @@ bool Map::load_map_from_file(string file_name)
 }
 
 bool Map::create_deadlock_free_map()
+// Creates a deadlock free map; a map for the boxes so the worker cannot push a box into an already deadlocked position
 {
 	for (size_t i = 0; i < map_worker.size(); i++) { // copy map
 		map_box.push_back(map_worker.at(i));
@@ -242,11 +247,13 @@ bool Map::create_deadlock_free_map()
 }
 
 void Map::print_map()
+// An overload function for the print_map
 {
 	print_map(initial_pos_worker, initial_pos_boxes, true);
 }
 
 void Map::print_map(point2D& in_worker_pos, vector< point2D > in_boxes_pos, bool print_descriptor)
+// Prints the map using the provided worker position and boxes from the input
 {
 	if (!empty_map) {
 		if (print_descriptor)
@@ -323,6 +330,7 @@ void Map::print_map(point2D& in_worker_pos, vector< point2D > in_boxes_pos, bool
 }
 
 void Map::print_map_simple(int map_type)
+// Prints the map without any worker or boxes so the static elements
 {
 	vector< vector<int> >* map_ptr;
 	if (map_type == worker) {
@@ -364,6 +372,7 @@ void Map::print_map_simple(int map_type)
 }
 
 void Map::print_info()
+// Prints map info; width, height, and obstacles
 {
 	cout << endl << "*** Map info ***" << endl;
 	cout << "Width: " << map_width << endl;
@@ -372,6 +381,7 @@ void Map::print_info()
 }
 
 void Map::print_goals()
+// Prints the goals and their positions
 {
 	if (initial_pos_goals.size() > 0) {
 		cout << endl << "Printing goals (" << initial_pos_goals.size() << ")" << endl;
@@ -382,6 +392,7 @@ void Map::print_goals()
 }
 
 void Map::print_boxes()
+// Prints the initial boxes and their positions
 {
 	if (initial_pos_boxes.size() > 0) {
 		cout << endl << "Printing boxes (" << initial_pos_boxes.size() << ")" << endl;
@@ -392,6 +403,7 @@ void Map::print_boxes()
 }
 
 vector< vector<int> > Map::get_map(int map_type)
+// Returns the map
 {
 	if (map_type == worker) {
 		 return map_worker;
@@ -404,21 +416,25 @@ vector< vector<int> > Map::get_map(int map_type)
 }
 
 vector< point2D > Map::get_goals()
+// Returns the goals
 {
 	return initial_pos_goals;
 }
 
 vector< point2D > Map::get_boxes()
+// Returns the initial boxes
 {
 	return initial_pos_boxes;
 }
 
 point2D Map::get_worker()
+// Returns the initial worker position
 {
 	return initial_pos_worker;
 }
 
 int Map::map_point_type(int in_x, int in_y, int map_type)
+// An overload function for the map_point_type
 {
 	point2D tmp_point;
 	tmp_point.x = in_x;
@@ -426,6 +442,7 @@ int Map::map_point_type(int in_x, int in_y, int map_type)
 	return map_point_type(tmp_point, map_type);
 }
 int Map::map_point_type(point2D &inPoint, int map_type)
+// Returns the point type but only freespace, obstacles, or goals
 {
 	vector< vector<int> >* map_ptr;
 	if (map_type == worker) {
@@ -447,10 +464,12 @@ int Map::map_point_type(point2D &inPoint, int map_type)
 }
 
 int  Map::get_width()
+// Returns the width of the map (x-axis positive right)
 {
 	return map_width;
 }
 int  Map::get_height()
+// Returns the height of the map (y-axis but negative downwards)
 {
 	return map_height;
 }

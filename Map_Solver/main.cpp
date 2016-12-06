@@ -232,13 +232,13 @@ int main(int argc,  char **argv) {
                  //initial_map.print_map_simple(box);
                  Sokoban_features feature_tree(initial_map_ptr);
                  feature_tree.print_info("Starting search");
-                 if (feature_tree.solve(BF)) {  // Solve using Breadth-first searching
+                 if (feature_tree.solve(BF, 500)) {  // Solve using Breadth-first searching
                      feature_tree.print_info("Solved using Breadth-first searching");
                      feature_tree.print_info("Nodes visited "+to_string(feature_tree.get_closed_list_size()));
                      feature_tree.print_info("Nodes not visited "+to_string(feature_tree.get_open_list_size()));
                      make_robot_commands(feature_tree.get_goal_node_ptr(), feature_tree);
                      cout << endl;
-                     
+
                      cout << "[INPUT] Print solution (y/n): ";
                      getline(cin, user_input);
                      if (user_input == "y") {
