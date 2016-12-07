@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include <iomanip>
 
 #include "common.cpp"
 #include "Map.hpp"
@@ -218,36 +219,51 @@ int main(int argc,  char **argv) {
         Map* initial_map_ptr = &initial_map;
         if (initial_map.load_map_from_file(map_file_name)) {
              string user_input;
-             cout << "[INPUT] Print map and info (y/n): ";
-             getline(cin, user_input);
-             if (user_input == "y") {
-                 initial_map.print_map();
-                 initial_map.print_info();
-                 initial_map.print_goals();
-                 initial_map.print_boxes();
-                 cout << endl;
-             }
+            //  cout << "[INPUT] Print map and info (y/n): ";
+            //  getline(cin, user_input);
+            //  if (user_input == "y") {
+            //      initial_map.print_map();
+            //      initial_map.print_info();
+            //      initial_map.print_goals();
+            //      initial_map.print_boxes();
+            //      cout << endl;
+            //  }
+            bool found_solution;
              if (initial_map.create_deadlock_free_map()) {
                  //initial_map.print_map_simple(worker);
                  //initial_map.print_map_simple(box);
                  Sokoban_features feature_tree(initial_map_ptr);
                  feature_tree.print_info("Starting search");
-                 if (feature_tree.solve(BF, 500)) {  // Solve using Breadth-first searching
+                 long long time_start = feature_tree.currentTimeUs();
+                 long long time_end;
+                 int solver_type = BF;
+                 if (feature_tree.solve(solver_type, 10000000)) {  // Solve using Breadth-first searching
+                     time_end = feature_tree.currentTimeUs();
+                     cout << "Start time was " << time_start << " and end time was " << time_end << " and diff is "<< time_end-time_start << endl;
+                     found_solution = true;
                      feature_tree.print_info("Solved using Breadth-first searching");
                      feature_tree.print_info("Nodes visited "+to_string(feature_tree.get_closed_list_size()));
                      feature_tree.print_info("Nodes not visited "+to_string(feature_tree.get_open_list_size()));
                      make_robot_commands(feature_tree.get_goal_node_ptr(), feature_tree);
                      cout << endl;
 
-                     cout << "[INPUT] Print solution (y/n): ";
-                     getline(cin, user_input);
-                     if (user_input == "y") {
-                         feature_tree.print_branch_up(feature_tree.get_goal_node_ptr());
-                     }
+                    //  cout << "[INPUT] Print solution (y/n): ";
+                    //  getline(cin, user_input);
+                    //  if (user_input == "y") {
+                    //      feature_tree.print_branch_up(feature_tree.get_goal_node_ptr());
+                    //  }
                  } else {
+                     time_end = feature_tree.currentTimeUs();
+                     cout << "Start time was " << time_start << " and end time was " << time_end << " and diff is "<< time_end-time_start << endl;
+                     found_solution = false;
                      feature_tree.print_info("No solution was found using Breadth-first searching");
                      feature_tree.print_info("Visited "+to_string(feature_tree.get_closed_list_size())+" nodes");
                  }
+                 ofstream timing_data;
+                 timing_data.open ("timing_data.csv",fstream::app|fstream::out);
+                 //timing_data << "t_start,t_end,t_diff,closed_list,open_list,solver_type,solved\n"; // Only used for saving the file the first time, otherwise it just appends
+                 timing_data << setprecision(8) << time_start << "," << time_end << "," << time_end-time_start << setprecision(0) << "," << feature_tree.get_closed_list_size() << "," << feature_tree.get_open_list_size() << "," << solver_type << "," << found_solution << "\n";
+                 // remove set precision!!! no effect here!
              }
         }
     } else cout << "Please provide a map file and try again!" << endl;
