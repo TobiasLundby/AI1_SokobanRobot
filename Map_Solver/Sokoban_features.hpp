@@ -277,25 +277,32 @@ bool Sokoban_features::solve(int solver_type, int max_search)
     long long time_stamp = currentTimeUs();
     std::cout << "Time stamp is: " << time_stamp << std::endl;
     std::cout << "Time stamp diff is: " << currentTimeUs() - time_stamp << std::endl;
-    
+
 	if (root == nullptr) {
 		if (solver_type == BF) {
 			root = insert_child(nullptr); // Create tree root
 			open_list.push_back(root);
-
+            double branching = 0;
 			while (open_list.size()) {
 				feature_node* tmp_node = open_list.front();
 				open_list.erase(open_list.begin());
                 closed_list.push_back(tmp_node);
+                // cout << "Parent" << endl;
+                //print_node(tmp_node);
 				move_forward(tmp_node);
-                //move_backward(tmp_node); // saves some moves but adds a lot of nodes (a factor more)
+                move_backward(tmp_node); // saves some moves but adds a lot of nodes (a factor more)
 				turn_right(tmp_node);
 				turn_left(tmp_node);
+                //cout << "Children" << tmp_node->children.size() << endl;
+                branching += tmp_node->children.size();
 				bool break_search = false;
 				for (size_t i = 0; i < tmp_node->children.size(); i++) {
+                    //print_node(tmp_node->children.at(i));
 					if (goal_node(tmp_node->children.at(i))) {
                         goal_ptr = tmp_node->children.at(i);
                         break_search = true;
+                        branching /= closed_list.size();
+                        cout << "Average branching is " << branching << endl;
 						break;
 					}
 				}
@@ -361,7 +368,6 @@ bool Sokoban_features::move_forward(feature_node* in_node)
         deadlock_test_y1 = 1;
         deadlock_test_y2 = -1;
     }
-
     // First test if there is free space to move forward
     // second test if there is a box in front and if there is test for freespace or goal in front of box
     if (point_type(tmp_node_child, tmp_node_child->worker_pos.x + move_x, tmp_node_child->worker_pos.y + move_y, worker) == freespace
@@ -420,6 +426,9 @@ bool Sokoban_features::move_forward(feature_node* in_node)
                 return false;
             }
         }
+    } else {
+        remove_node(tmp_node_child);
+        return false;
     }
     return false;
 }
@@ -448,6 +457,7 @@ bool Sokoban_features::move_backward(feature_node* in_node)
         tmp_node_child->cost_to_node = tmp_node_child->cost_to_node + 1*backward_cost;
         tmp_node_child->worker_pos.x = tmp_node_child->worker_pos.x + move_x;
         tmp_node_child->worker_pos.y = tmp_node_child->worker_pos.y + move_y;
+        //print_node(tmp_node_child);
 
         feature_node* tmp_node_child_for_check = tmp_node_child;
         if (hash_table_insert(tmp_node_child_for_check)) {
@@ -467,6 +477,9 @@ bool Sokoban_features::move_backward(feature_node* in_node)
                 return false;
             }
         }
+        return false;
+    } else {
+        remove_node(tmp_node_child);
         return false;
     }
     return false;

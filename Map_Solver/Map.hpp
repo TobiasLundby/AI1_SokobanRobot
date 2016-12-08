@@ -40,6 +40,7 @@ public:
 	// Public Methods
 	bool load_map_from_file(string file_name);
 	bool create_deadlock_free_map();
+	void create_wavefront_map();
 	void print_map();
 	void print_map(point2D& in_worker_pos, vector< point2D > in_boxes_pos, bool print_descriptor);
 	void print_map_simple(int map_type);
@@ -48,6 +49,8 @@ public:
 	void print_boxes();
 	int  map_point_type(int in_x, int in_y, int map_type);
 	int  map_point_type(point2D &inPoint, int map_type);
+	int  wavefront_distance(int in_x, int in_y, int goal_id);
+	int  wavefront_distance(point2D &inPoint, int goal_id);
 
 	vector< vector<int> > get_map(int map_type);
 	vector< point2D > get_goals();
@@ -60,6 +63,7 @@ private:
 	// Private variables
 	vector< vector<int> >  map_worker; // outer vector holds rows and therefore the internal vector is the column, ex. map_worker.at(y).at(x)
 	vector< vector<int> >  map_box;
+	vector< vector< vector<int> > >  map_wavefront;
 
 	vector< point2D > initial_pos_goals;
 	vector< point2D > initial_pos_boxes;
@@ -109,7 +113,7 @@ bool Map::load_map_from_file(string file_name)
 		for (size_t i = 1; getline (map_file,line); i++) {
 			if (i == 1) { // Catch first line which contains map info; XX YY DD, XX=width, YY=height, DD=obstacles
 				map_width = atoi(line.substr(0, 2).c_str()); // atoi: convert from string to int
-				map_height = atoi(line.substr(4, 2).c_str());
+				map_height = atoi(line.substr(3, 2).c_str());
 				map_obstacles = atoi(line.substr(7, 2).c_str());
 			} else {
 				//cout << line << '\n';
@@ -244,6 +248,61 @@ bool Map::create_deadlock_free_map()
 	    }
 	}
 	return true;
+}
+
+void Map::create_wavefront_map()
+// Explanation
+{
+	for (size_t map_nr = 0; map_nr < initial_pos_goals.size(); map_nr++) {
+		cout << map_nr << endl;
+		vector< vector<int> > tmp_wavefront;
+	    for (size_t i = 0; i < map_worker.size(); i++) { // copy map
+	        tmp_wavefront.push_back(map_worker.at(i));
+	    }
+		map_wavefront.push_back(tmp_wavefront);
+	    for (size_t y = 0; y < map_wavefront.at(map_nr).size(); y++) {
+	        for (size_t x = 0; x < map_wavefront.at(map_nr).at(y).size(); x++) {
+	            if (map_wavefront.at(map_nr).at(y).at(x) == obstacle) {
+	                map_wavefront.at(map_nr).at(y).at(x) = -1;
+	            } else {
+	                map_wavefront.at(map_nr).at(y).at(x) = -2;
+	            }
+	        }
+	    }
+
+	    vector<point2D> open_wavefront_list;
+	    vector<point2D> closed_wavefront_list;
+	    open_wavefront_list.push_back(initial_pos_goals.at(map_nr));
+	    map_wavefront.at(map_nr).at(initial_pos_goals.at(map_nr).y).at(initial_pos_goals.at(map_nr).x) = 0;
+
+	    while (open_wavefront_list.size()) {
+	        point2D tmp_point = open_wavefront_list.front();
+	        open_wavefront_list.erase(open_wavefront_list.begin());
+	        closed_wavefront_list.push_back(tmp_point);
+
+	        for (int y = -1; y <= 1; y++) {
+	            for (int x = -1; x <= 1; x++) {
+	                if (map_wavefront.at(map_nr).at(y+tmp_point.y).at(x+tmp_point.x) == -2) {
+	                    if (abs(y) != abs(x)) {
+							map_wavefront.at(map_nr).at(y+tmp_point.y).at(x+tmp_point.x) = map_wavefront.at(map_nr).at(tmp_point.y).at(tmp_point.x) + 1;
+							point2D tmp_point_new_candidate;
+		                    tmp_point_new_candidate.x = x+tmp_point.x;
+		                    tmp_point_new_candidate.y = y+tmp_point.y;
+		                    open_wavefront_list.push_back(tmp_point_new_candidate);
+						}
+	                }
+	            }
+	        }
+	    }
+
+	    // print map
+	    // for (size_t y = 0; y < map_wavefront.at(map_nr).size(); y++) {
+	    //     for (size_t x = 0; x < map_wavefront.at(map_nr).at(y).size(); x++) {
+	    //         cout << map_wavefront.at(map_nr).at(y).at(x) << "\t";
+	    //     }
+	    //     cout << endl;
+	    // }
+	}
 }
 
 void Map::print_map()
@@ -461,6 +520,20 @@ int Map::map_point_type(point2D &inPoint, int map_type)
 	} else {
 		return undefined;
 	}
+}
+
+int Map::wavefront_distance(int in_x, int in_y, int goal_id)
+// An overload function for the map_point_type
+{
+	point2D tmp_point;
+	tmp_point.x = in_x;
+	tmp_point.y = in_y;
+	return map_point_type(tmp_point, goal_id);
+}
+int Map::wavefront_distance(point2D &inPoint, int goal_id)
+// Returns the point type but only freespace, obstacles, or goals
+{
+	return map_wavefront.at(goal_id).at(inPoint.y).at(inPoint.x);
 }
 
 int  Map::get_width()
