@@ -254,7 +254,7 @@ void Map::create_wavefront_map()
 // Explanation
 {
 	for (size_t map_nr = 0; map_nr < initial_pos_goals.size(); map_nr++) {
-		cout << map_nr << endl;
+		//cout << map_nr << endl;
 		vector< vector<int> > tmp_wavefront;
 	    for (size_t i = 0; i < map_worker.size(); i++) { // copy map
 	        tmp_wavefront.push_back(map_worker.at(i));

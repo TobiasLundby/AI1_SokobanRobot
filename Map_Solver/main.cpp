@@ -244,7 +244,7 @@ int main(int argc,  char **argv) {
                      cout << "Start time was " << time_start << " and end time was " << time_end << " and diff is "<< time_end-time_start << endl;
                      found_solution = true;
                      solution_steps = feature_tree.get_goal_node_ptr()->depth;
-                     feature_tree.print_info("Solved using Breadth-first searching");
+                     feature_tree.print_info("Solved");
                      feature_tree.print_info("Nodes visited "+to_string(feature_tree.get_closed_list_size()));
                      feature_tree.print_info("Nodes not visited "+to_string(feature_tree.get_open_list_size()));
                      //make_robot_commands(feature_tree.get_goal_node_ptr(), feature_tree);
@@ -259,7 +259,7 @@ int main(int argc,  char **argv) {
                      time_end = feature_tree.currentTimeUs();
                      cout << "Start time was " << time_start << " and end time was " << time_end << " and diff is "<< time_end-time_start << endl;
                      found_solution = false;
-                     feature_tree.print_info("No solution was found using Breadth-first searching");
+                     feature_tree.print_info("No solution was found using the selected search algorithm");
                      feature_tree.print_info("Visited "+to_string(feature_tree.get_closed_list_size())+" nodes");
                  }
                  ofstream timing_data;

@@ -62,7 +62,7 @@ public:
 
         feature_node* parent = nullptr;
 		vector< feature_node* > children; // vector for holding the children
-        vector< feature_node* > children_edge_cost; // vector for holding the children
+        vector< double > children_edge_cost; // vector for holding the children
 
 		feature_node(feature_node* in_parent, int in_depth)
         : parent{ in_parent }, depth{ in_depth } { }
@@ -72,6 +72,7 @@ public:
         feature_node* ref_node;
     };
     vector< hash_node > hash_table;
+    vector< hash_node >* hash_table_ptr = &hash_table;
 
 	// Constructor, overload constructor, and destructor
 	Sokoban_features();
@@ -102,8 +103,11 @@ public:
     bool update_parent_node(feature_node* &in_node_child, feature_node* in_node_new_parent);
 	void print_branch_up(feature_node* in_node);
 	bool remove_node(feature_node* &child);
+    bool remove_only_node(feature_node* &child);
     bool remove_node_from_parent(feature_node* &child);
-    bool add_node_to_parent(feature_node* &child, int pos);
+    bool add_node_to_parent(feature_node* &child, int pos); // Do not use this function since there is a bug with insert and doubles!
+    bool update_node_to_parent(feature_node* &new_child, feature_node* &old_child);
+    bool update_node_cost(feature_node* &child, double node_cost);
 	bool goal_node(feature_node* in_node);
     bool goal_box(point2D in_box);
 	bool move_box(feature_node* in_node, int in_x, int in_y, int offset_x, int offset_y);
@@ -115,18 +119,20 @@ public:
     int  get_closed_list_size();
 
 	// Hash table methods
-    bool hash_table_insert(feature_node* &in_node);
-    bool hash_table_insert(unsigned long in_hash_value, feature_node* &in_node);
-    bool hash_table_exist(feature_node* &in_node);
-    bool hash_table_exist(unsigned long in_hash_value, feature_node* &in_node);
-    bool hash_table_delete(feature_node* &in_node);
-    bool hash_table_delete(unsigned long in_hash_value, feature_node* &in_node);
+    bool hash_table_insert(feature_node* &in_node, vector< hash_node >* hash_ptr);
+    bool hash_table_insert(unsigned long in_hash_value, feature_node* &in_node, vector< hash_node >* hash_ptr);
+    bool hash_table_exist(feature_node* &in_node, vector< hash_node >* hash_ptr);
+    bool hash_table_exist(unsigned long in_hash_value, feature_node* &in_node, vector< hash_node >* hash_ptr);
+    bool hash_table_delete(feature_node* &in_node, vector< hash_node >* hash_ptr);
+    bool hash_table_delete(unsigned long in_hash_value, feature_node* &in_node, vector< hash_node >* hash_ptr);
 
 private:
 	// Private variables
     feature_node* root; // to hold the start sokoban features which is understod as the start placement of the elements / features
     feature_node* goal_ptr;
     Map* map;
+
+    int chosen_graph_search;
 
 	int peeked_notes = 0;
 
@@ -191,11 +197,14 @@ Sokoban_features::feature_node* Sokoban_features::insert_child(feature_node* par
             for (size_t i = 0; i < temp_node->boxes.size(); i++) {
                 temp_node->box_goal_ref.push_back(i);
             }
-            update_nearest_goals(temp_node);
+            if (chosen_graph_search == Astar) {
+                update_nearest_goals(temp_node);
+                temp_node->heuristic = calcualte_heuristic(temp_node);
+            } else
+                temp_node->heuristic = 0; // No heuristic for BF
 			temp_node->worker_pos = map->get_worker();
 			temp_node->worker_dir = NORTH;
             temp_node->cost_to_node = 0;
-            temp_node->heuristic = 0; // No heuristic!
 
             root = temp_node; // Set root as temp node after relevant info is saved from Map object
         } else
@@ -210,7 +219,12 @@ Sokoban_features::feature_node* Sokoban_features::insert_child(feature_node* par
 		temp_node->worker_dir = parent_node->worker_dir;
         // Save stuff for searching
         temp_node->cost_to_node = parent_node->cost_to_node; // no movement yet so there is no added edge cost!
-        temp_node->heuristic = 0; // No heuristic!
+        if (chosen_graph_search == Astar) {
+            update_nearest_goals(temp_node);
+            temp_node->heuristic = calcualte_heuristic(temp_node);
+        } else
+            temp_node->heuristic = 0; // No heuristic for BF
+
         // Add new node to parent!
         parent_node->children.push_back(temp_node);
         parent_node->children_edge_cost.push_back(0); // no movement yet so there is no edge cost!
@@ -219,6 +233,7 @@ Sokoban_features::feature_node* Sokoban_features::insert_child(feature_node* par
     }
 	return temp_node;
 }
+
 bool Sokoban_features::remove_node(feature_node* &child)
 // Removes the node and also from the parent
 {
@@ -229,6 +244,14 @@ bool Sokoban_features::remove_node(feature_node* &child)
 			parent_node->children_edge_cost.erase(parent_node->children_edge_cost.begin()+i);
 		}
 	}
+	delete child;
+	child = nullptr;
+	return true;
+}
+
+bool Sokoban_features::remove_only_node(feature_node* &child)
+// Removes the node BUT NOT from the parent
+{
 	delete child;
 	child = nullptr;
 	return true;
@@ -248,16 +271,44 @@ bool Sokoban_features::remove_node_from_parent(feature_node* &child)
 }
 bool Sokoban_features::add_node_to_parent(feature_node* &child, int pos)
 // Adds a node to the parent node
+// Currently not used, replaced by the update_node_to_parent method which keeps track of the position as well
+// Do not use this function since there is a bug with insert and doubles!!!
 {
 	feature_node* parent_node = child->parent;
     if (pos >= parent_node->children.size()) {
         parent_node->children.insert(parent_node->children.begin()+pos,child);
-        parent_node->children_edge_cost.insert(parent_node->children.begin()+pos,0);
+        //parent_node->children_edge_cost.insert(parent_node->children.begin()+pos,0);
         // NOTE no Astar here, just adds the edge_cost 0
     } else {
         parent_node->children.push_back(child);
-        parent_node->children_edge_cost.push_back(0);
+        parent_node->children_edge_cost.push_back(child->cost_to_node);
     }
+	return true;
+}
+
+bool Sokoban_features::update_node_to_parent(feature_node* &new_child, feature_node* &old_child) {
+    feature_node* parent_node = old_child->parent;
+
+	for (size_t i = 0; i < parent_node->children.size(); i++) {
+		if (parent_node->children.at(i) == old_child) {
+            parent_node->children.at(i) = new_child;
+            parent_node->children_edge_cost.at(i) = new_child->cost_to_node;
+		}
+	}
+	return true;
+}
+
+bool Sokoban_features::update_node_cost(feature_node* &child, double node_cost) {
+    child->cost_to_node = child->cost_to_node + node_cost;
+    feature_node* parent_node = child->parent;
+
+	for (size_t i = 0; i < parent_node->children.size(); i++) {
+		if (parent_node->children.at(i) == child) {
+            parent_node->children_edge_cost.at(i) = node_cost;
+            //cout << "Cost to node: " << child->cost_to_node << endl;
+            //cout << "Node cost: " << parent_node->children_edge_cost.at(i) << endl;
+		}
+	}
 	return true;
 }
 
@@ -280,6 +331,7 @@ bool Sokoban_features::solve(int solver_type, int max_search)
 
 	if (root == nullptr) {
 		if (solver_type == BF) {
+            chosen_graph_search = BF;
 			root = insert_child(nullptr); // Create tree root
 			open_list.push_back(root);
             double branching = 0;
@@ -316,7 +368,50 @@ bool Sokoban_features::solve(int solver_type, int max_search)
                 }
 			}
 		} else if (solver_type == Astar) {
+            chosen_graph_search = Astar;
 			root = insert_child(nullptr); // Create tree root
+            open_list.push_back(root);
+            double branching = 0;
+			while (open_list.size()) {
+                int smallest_Astar_id = 0;
+                int smallest_Astar_value = open_list.at(0)->cost_to_node + open_list.at(0)->heuristic;
+                for (size_t i = 1; i < open_list.size(); i++) {
+                    if (open_list.at(i)->cost_to_node + open_list.at(i)->heuristic < smallest_Astar_value) {
+                        smallest_Astar_id = i;
+                    }
+                }
+                feature_node* tmp_node = open_list.at(smallest_Astar_id);
+                //cout << "Chose id " << smallest_Astar_id << " which has fscore " << open_list.at(smallest_Astar_id)->cost_to_node + open_list.at(smallest_Astar_id)->heuristic << endl;
+
+                open_list.erase(open_list.begin()+smallest_Astar_id);
+                closed_list.push_back(tmp_node);
+
+                move_forward(tmp_node);
+                move_backward(tmp_node); // saves some moves but adds a lot of nodes (a factor more)
+				turn_right(tmp_node);
+				turn_left(tmp_node);
+
+                branching += tmp_node->children.size();
+				bool break_search = false;
+				for (size_t i = 0; i < tmp_node->children.size(); i++) {
+                    //print_node(tmp_node->children.at(i));
+					if (goal_node(tmp_node->children.at(i))) {
+                        goal_ptr = tmp_node->children.at(i);
+                        break_search = true;
+                        branching /= closed_list.size();
+                        cout << "Average branching is " << branching << endl;
+						break;
+					}
+				}
+				if (break_search)
+					break;
+                if (closed_list.size()%10000 == 0) {
+                    print_info("Visited " + to_string(closed_list.size()) + " and " + to_string(open_list.size()) + " nodes waiting (peeked at " + to_string(peeked_notes) + " nodes)");
+                }
+                if (max_search <= closed_list.size()) {
+                    return false;
+                }
+            }
 		} else {
 			print_info("Unknown solver type, try again.");
 		}
@@ -373,12 +468,13 @@ bool Sokoban_features::move_forward(feature_node* in_node)
     if (point_type(tmp_node_child, tmp_node_child->worker_pos.x + move_x, tmp_node_child->worker_pos.y + move_y, worker) == freespace
 	or point_type(tmp_node_child, tmp_node_child->worker_pos.x + move_x, tmp_node_child->worker_pos.y + move_y, worker) == goal) {
         // MOVE FORWARD TO FREESPACE
-        tmp_node_child->cost_to_node = tmp_node_child->cost_to_node + 1*forward_cost;
+        //tmp_node_child->cost_to_node = tmp_node_child->cost_to_node + 1*forward_cost;
+        update_node_cost(tmp_node_child, 1*forward_cost);
         tmp_node_child->worker_pos.x = tmp_node_child->worker_pos.x + move_x;
         tmp_node_child->worker_pos.y = tmp_node_child->worker_pos.y + move_y;
 
         feature_node* tmp_node_child_for_check = tmp_node_child;
-        if (hash_table_insert(tmp_node_child_for_check)) {
+        if (hash_table_insert(tmp_node_child_for_check, hash_table_ptr)) {
             open_list.push_back(tmp_node_child);
             return true;
         } else {
@@ -387,8 +483,9 @@ bool Sokoban_features::move_forward(feature_node* in_node)
                 tmp_node_child_for_check->cost_to_node = tmp_node_child->cost_to_node;
                 remove_node_from_parent(tmp_node_child_for_check);
                 tmp_node_child_for_check->parent = tmp_node_child->parent;
-                add_node_to_parent(tmp_node_child_for_check,0);
-                remove_node(tmp_node_child);
+                //add_node_to_parent(tmp_node_child_for_check,0);
+                update_node_to_parent(tmp_node_child_for_check, tmp_node_child);
+                remove_only_node(tmp_node_child);
                 return true;
             } else {
                 remove_node(tmp_node_child);
@@ -400,14 +497,15 @@ bool Sokoban_features::move_forward(feature_node* in_node)
                 and (point_type(tmp_node_child, tmp_node_child->worker_pos.x + move_x*2, tmp_node_child->worker_pos.y + move_y*2, worker) == goal
                     or point_type(tmp_node_child, tmp_node_child->worker_pos.x + move_x*2, tmp_node_child->worker_pos.y + move_y*2, box) == freespace) ) {
 
-        tmp_node_child->cost_to_node = tmp_node_child->cost_to_node + approach_cost;
+        //tmp_node_child->cost_to_node = tmp_node_child->cost_to_node + approach_cost;
+        update_node_cost(tmp_node_child, 1*approach_cost);
         // PUSH MOVE
         move_box(tmp_node_child,tmp_node_child->worker_pos.x + move_x,tmp_node_child->worker_pos.y + move_y,move_x,move_y);
         tmp_node_child->worker_pos.x = tmp_node_child->worker_pos.x + move_x;
         tmp_node_child->worker_pos.y = tmp_node_child->worker_pos.y + move_y;
 
         feature_node* tmp_node_child_for_check = tmp_node_child;
-        if (hash_table_insert(tmp_node_child_for_check)) {
+        if (hash_table_insert(tmp_node_child_for_check, hash_table_ptr)) {
             point2D tmp_point;
             tmp_point.x = tmp_node_child->worker_pos.x + move_x;
             tmp_point.y = tmp_node_child->worker_pos.y + move_y;
@@ -418,8 +516,9 @@ bool Sokoban_features::move_forward(feature_node* in_node)
                 tmp_node_child_for_check->cost_to_node = tmp_node_child->cost_to_node;
                 remove_node_from_parent(tmp_node_child_for_check);
                 tmp_node_child_for_check->parent = tmp_node_child->parent;
-                add_node_to_parent(tmp_node_child_for_check,0);
-                remove_node(tmp_node_child);
+                //add_node_to_parent(tmp_node_child_for_check,0);
+                update_node_to_parent(tmp_node_child_for_check, tmp_node_child);
+                remove_only_node(tmp_node_child);
                 return true;
             } else {
                 remove_node(tmp_node_child);
@@ -454,13 +553,14 @@ bool Sokoban_features::move_backward(feature_node* in_node)
     if (point_type(tmp_node_child, tmp_node_child->worker_pos.x + move_x, tmp_node_child->worker_pos.y + move_y, worker) == freespace
 	or point_type(tmp_node_child, tmp_node_child->worker_pos.x + move_x, tmp_node_child->worker_pos.y + move_y, worker) == goal) {
         // MOVE FORWARD TO FREESPACE
-        tmp_node_child->cost_to_node = tmp_node_child->cost_to_node + 1*backward_cost;
+        //tmp_node_child->cost_to_node = tmp_node_child->cost_to_node + 1*backward_cost;
+        update_node_cost(tmp_node_child, 1*backward_cost);
         tmp_node_child->worker_pos.x = tmp_node_child->worker_pos.x + move_x;
         tmp_node_child->worker_pos.y = tmp_node_child->worker_pos.y + move_y;
         //print_node(tmp_node_child);
 
         feature_node* tmp_node_child_for_check = tmp_node_child;
-        if (hash_table_insert(tmp_node_child_for_check)) {
+        if (hash_table_insert(tmp_node_child_for_check, hash_table_ptr)) {
             open_list.push_back(tmp_node_child);
             return true;
         } else {
@@ -469,8 +569,9 @@ bool Sokoban_features::move_backward(feature_node* in_node)
                 tmp_node_child_for_check->cost_to_node = tmp_node_child->cost_to_node;
                 remove_node_from_parent(tmp_node_child_for_check);
                 tmp_node_child_for_check->parent = tmp_node_child->parent;
-                add_node_to_parent(tmp_node_child_for_check,0);
-                remove_node(tmp_node_child);
+                //add_node_to_parent(tmp_node_child_for_check,0);
+                update_node_to_parent(tmp_node_child_for_check, tmp_node_child);
+                remove_only_node(tmp_node_child);
                 return true;
             } else {
                 remove_node(tmp_node_child);
@@ -491,14 +592,15 @@ bool Sokoban_features::turn_right(feature_node* in_node)
 	// Right CW
 	feature_node* tmp_node_child_cw = insert_child(in_node);
 	// Test for deploy NOTE
-	tmp_node_child_cw->cost_to_node = tmp_node_child_cw->cost_to_node + 1*left_cost;
+	//tmp_node_child_cw->cost_to_node = tmp_node_child_cw->cost_to_node + 1*left_cost;
+    update_node_cost(tmp_node_child_cw, 1*left_cost);
 	if (tmp_node_child_cw->worker_dir >= WEST) {
 		tmp_node_child_cw->worker_dir = NORTH;
 	} else {
 		tmp_node_child_cw->worker_dir += 1;
 	}
 	feature_node* tmp_node_child_for_check_cw = tmp_node_child_cw;
-	if (hash_table_insert(tmp_node_child_for_check_cw)) {
+	if (hash_table_insert(tmp_node_child_for_check_cw, hash_table_ptr)) {
 		open_list.push_back(tmp_node_child_cw);
 		return true;
 	} else {
@@ -506,8 +608,9 @@ bool Sokoban_features::turn_right(feature_node* in_node)
 			tmp_node_child_for_check_cw->cost_to_node = tmp_node_child_cw->cost_to_node;
 			remove_node_from_parent(tmp_node_child_for_check_cw);
 			tmp_node_child_for_check_cw->parent = tmp_node_child_cw->parent;
-			add_node_to_parent(tmp_node_child_for_check_cw,0);
-			remove_node(tmp_node_child_cw);
+			//add_node_to_parent(tmp_node_child_for_check_cw,0);
+            update_node_to_parent(tmp_node_child_for_check_cw, tmp_node_child_cw);
+			remove_only_node(tmp_node_child_cw);
 			return true;
 		} else {
 			remove_node(tmp_node_child_cw);
@@ -522,14 +625,15 @@ bool Sokoban_features::turn_left(feature_node* in_node)
 	// Left CCW
 	feature_node* tmp_node_child_ccw = insert_child(in_node);
 	// test for deploy NOTE
-	tmp_node_child_ccw->cost_to_node = tmp_node_child_ccw->cost_to_node + 1*left_cost;
+	//tmp_node_child_ccw->cost_to_node = tmp_node_child_ccw->cost_to_node + 1*left_cost;
+    update_node_cost(tmp_node_child_ccw, 1*left_cost);
 	if (tmp_node_child_ccw->worker_dir <= NORTH) {
 		tmp_node_child_ccw->worker_dir = WEST;
 	} else {
 		tmp_node_child_ccw->worker_dir -= 1;
 	}
 	feature_node* tmp_node_child_for_check_ccw = tmp_node_child_ccw;
-	if (hash_table_insert(tmp_node_child_for_check_ccw)) {
+	if (hash_table_insert(tmp_node_child_for_check_ccw, hash_table_ptr)) {
 		open_list.push_back(tmp_node_child_ccw);
 		return true;
 	} else {
@@ -537,8 +641,9 @@ bool Sokoban_features::turn_left(feature_node* in_node)
 			tmp_node_child_for_check_ccw->cost_to_node = tmp_node_child_ccw->cost_to_node;
 			remove_node_from_parent(tmp_node_child_for_check_ccw);
 			tmp_node_child_for_check_ccw->parent = tmp_node_child_ccw->parent;
-			add_node_to_parent(tmp_node_child_for_check_ccw,0);
-			remove_node(tmp_node_child_ccw);
+			//add_node_to_parent(tmp_node_child_for_check_ccw,0);
+            update_node_to_parent(tmp_node_child_for_check_ccw, tmp_node_child_ccw);
+			remove_only_node(tmp_node_child_ccw);
 			return true;
 		} else {
 			remove_node(tmp_node_child_ccw);
@@ -573,7 +678,14 @@ double Sokoban_features::calcualte_heuristic(feature_node* in_node)
 // Calculates and returns the heuristic for the input node.
 {
     // Still no heuristic!!
-    return 0;
+    int heuristic = 0; // integer due to the taxicap distance from the wavefront!
+    for (size_t i = 0; i < in_node->boxes.size(); i++) {
+        //cout << "Box " << i << " and goal " << in_node->box_goal_ref.at(i) << " has heuristic " << map->wavefront_distance(in_node->boxes.at(i), in_node->box_goal_ref.at(i)) << endl;
+        heuristic += map->wavefront_distance(in_node->boxes.at(i), in_node->box_goal_ref.at(i));
+    }
+    //cout << "Cost to node " << in_node->cost_to_node << endl;
+    //cout << "A* value " << in_node->cost_to_node+heuristic << endl;
+    return heuristic;
 }
 
 double Sokoban_features::calculate_euclidian_distance(point2D &inPoint1, point2D &inPoint2)
@@ -803,12 +915,12 @@ int  Sokoban_features::get_closed_list_size()
 }
 
 // Hash table methods **********************************************************
-bool Sokoban_features::hash_table_insert(feature_node* &in_node)
+bool Sokoban_features::hash_table_insert(feature_node* &in_node, vector< hash_node >* hash_ptr)
 // An overload function for the hash_table_insert; hashes the input node
 {
-    return hash_table_insert(hash_node_to_key(in_node), in_node);
+    return hash_table_insert(hash_node_to_key(in_node), in_node, hash_ptr);
 }
-bool Sokoban_features::hash_table_insert(unsigned long in_hash_value, feature_node* &in_node)
+bool Sokoban_features::hash_table_insert(unsigned long in_hash_value, feature_node* &in_node, vector< hash_node >* hash_ptr)
 // inserts with a time constant of log(n) where n = hash_table_size
 // if the element exists the in_node is changed to the existing element so it can be used for futher processing
 // return true if element is inserted and false if it already exists
@@ -817,22 +929,22 @@ bool Sokoban_features::hash_table_insert(unsigned long in_hash_value, feature_no
     tmp_hash_node.hash_value = in_hash_value;
     tmp_hash_node.ref_node = in_node;
 
-    if (hash_table.size() > 0) { // test if has_table is empty
-        int const start_hash_table = 0; // access this element as hash_table.begin()
+    if (hash_ptr->size() > 0) { // test if has_table is empty
+        int const start_hash_table = 0; // access this element as hash_ptr->begin()
         int start_itr = start_hash_table;
-        int const end_hash_table = hash_table.size()-1; // access this element as hash_table.end()
+        int const end_hash_table = hash_ptr->size()-1; // access this element as hash_ptr->end()
         int end_itr = end_hash_table;
 
         if (start_itr == end_itr) { // test if has_table only consists of 1 element
-            if (in_hash_value == hash_table.at(start_itr).hash_value) {
+            if (in_hash_value == hash_ptr->at(start_itr).hash_value) {
                 // element exists return ptr. NOTE
-                in_node = hash_table.at(start_itr).ref_node;
+                in_node = hash_ptr->at(start_itr).ref_node;
                 return false;
-            } else if (in_hash_value > hash_table.at(start_itr).hash_value) {
-                hash_table.push_back(tmp_hash_node);
+            } else if (in_hash_value > hash_ptr->at(start_itr).hash_value) {
+                hash_ptr->push_back(tmp_hash_node);
                 return true; // node inserted after 1st element
             } else {
-                hash_table.insert(hash_table.begin()+start_itr,tmp_hash_node);
+                hash_ptr->insert(hash_ptr->begin()+start_itr,tmp_hash_node);
                 return true; // node inserted before 1st element
             }
         }
@@ -844,37 +956,37 @@ bool Sokoban_features::hash_table_insert(unsigned long in_hash_value, feature_no
             //cout << "[DEBUG INFO: hash_table_insert] tmp_itr has value " << tmp_itr << ", start " << start_itr << ", end " << end_itr << endl; // debug info
 
             if (tmp_itr == 0) {
-                if (in_hash_value == hash_table.at(start_itr).hash_value) {
+                if (in_hash_value == hash_ptr->at(start_itr).hash_value) {
                     // element exists return ptr. NOTE
-                    in_node = hash_table.at(start_itr).ref_node;
+                    in_node = hash_ptr->at(start_itr).ref_node;
                     return false;
-                } else if (in_hash_value > hash_table.at(start_itr).hash_value) {
-                    if (in_hash_value == hash_table.at(end_itr).hash_value) {
+                } else if (in_hash_value > hash_ptr->at(start_itr).hash_value) {
+                    if (in_hash_value == hash_ptr->at(end_itr).hash_value) {
                         // element exists return ptr. NOTE
-                        in_node = hash_table.at(end_itr).ref_node;
+                        in_node = hash_ptr->at(end_itr).ref_node;
                         return false;
-                    } else if (in_hash_value > hash_table.at(end_itr).hash_value) {
+                    } else if (in_hash_value > hash_ptr->at(end_itr).hash_value) {
                         if (end_itr == end_hash_table) {
-                            hash_table.push_back(tmp_hash_node);
+                            hash_ptr->push_back(tmp_hash_node);
                             return true; // node inserted at end of list
                         } else {
-                            hash_table.insert(hash_table.begin() + end_itr + 1,tmp_hash_node);
+                            hash_ptr->insert(hash_ptr->begin() + end_itr + 1,tmp_hash_node);
                             return true; // node inserted after end_ptr
                         }
                     } else {
-                        hash_table.insert(hash_table.begin() + end_itr,tmp_hash_node);
+                        hash_ptr->insert(hash_ptr->begin() + end_itr,tmp_hash_node);
                         return true; // node inserted between ptr's
                     }
                 } else {
-                    hash_table.insert(hash_table.begin() + start_itr,tmp_hash_node); // insert at start itr space
+                    hash_ptr->insert(hash_ptr->begin() + start_itr,tmp_hash_node); // insert at start itr space
                     return true; // node inserted before 1st element
                 }
             } else {
-                if (in_hash_value == hash_table.at(start_itr+tmp_itr).hash_value) {
+                if (in_hash_value == hash_ptr->at(start_itr+tmp_itr).hash_value) {
                     // element exists return ptr.
-                    in_node = hash_table.at(start_itr+tmp_itr).ref_node;
+                    in_node = hash_ptr->at(start_itr+tmp_itr).ref_node;
                     return false;
-                } else if (in_hash_value > hash_table.at(start_itr+tmp_itr).hash_value) {
+                } else if (in_hash_value > hash_ptr->at(start_itr+tmp_itr).hash_value) {
                     start_itr += tmp_itr;
                 } else {
                     end_itr -= tmp_itr;
@@ -882,25 +994,25 @@ bool Sokoban_features::hash_table_insert(unsigned long in_hash_value, feature_no
             }
         }
     } else {
-        hash_table.push_back(tmp_hash_node);
+        hash_ptr->push_back(tmp_hash_node);
         return true; // first element inserted
     }
     return true;
 }
 
-bool Sokoban_features::hash_table_exist(feature_node* &in_node)
+bool Sokoban_features::hash_table_exist(feature_node* &in_node, vector< hash_node >* hash_ptr)
 // An overload function for the hash_table_exist; hashes the input node
 {
     //cout << "[DEBUG: hashing] Hash key " << hash_node_to_key(in_node) << endl;
-    return hash_table_exist(hash_node_to_key(in_node), in_node);
+    return hash_table_exist(hash_node_to_key(in_node), in_node, hash_ptr);
 }
-bool Sokoban_features::hash_table_exist(unsigned long in_hash_value, feature_node* &in_node)
+bool Sokoban_features::hash_table_exist(unsigned long in_hash_value, feature_node* &in_node, vector< hash_node >* hash_ptr)
 // Searches for a element in the the hash table and if it exists the pointer to the found object is passes back in in_node and it returns true; otherwise no pointer return and false return value
 {
-    if (hash_table.size() > 0) { // test if has_table is empty
-        int const start_hash_table = 0; // access this element as hash_table.begin()
+    if (hash_ptr->size() > 0) { // test if has_table is empty
+        int const start_hash_table = 0; // access this element as hash_ptr->begin()
         int start_itr = start_hash_table;
-        int const end_hash_table = hash_table.size()-1; // access this element as hash_table.end()
+        int const end_hash_table = hash_ptr->size()-1; // access this element as hash_ptr->end()
         int end_itr = end_hash_table;
 
         int tmp_itr;
@@ -909,20 +1021,20 @@ bool Sokoban_features::hash_table_exist(unsigned long in_hash_value, feature_nod
             //cout << "[DEBUG INFO: hash_table_insert] tmp_itr has value " << tmp_itr << ", start " << start_itr << ", end " << end_itr << endl; // debug info
 
             if (tmp_itr == 0) {
-                if (in_hash_value == hash_table.at(start_itr).hash_value) {
-                    in_node = hash_table.at(start_itr).ref_node;
+                if (in_hash_value == hash_ptr->at(start_itr).hash_value) {
+                    in_node = hash_ptr->at(start_itr).ref_node;
                     return true;
-                } else if (in_hash_value == hash_table.at(end_itr).hash_value) {
-                    in_node = hash_table.at(end_itr).ref_node;
+                } else if (in_hash_value == hash_ptr->at(end_itr).hash_value) {
+                    in_node = hash_ptr->at(end_itr).ref_node;
                     return true;
                 } else {
                     return false;
                 }
             } else {
-                if (in_hash_value == hash_table.at(start_itr+tmp_itr).hash_value) {
-                    in_node = hash_table.at(start_itr+tmp_itr).ref_node;
+                if (in_hash_value == hash_ptr->at(start_itr+tmp_itr).hash_value) {
+                    in_node = hash_ptr->at(start_itr+tmp_itr).ref_node;
                     return true;
-                } else if (in_hash_value > hash_table.at(start_itr+tmp_itr).hash_value) {
+                } else if (in_hash_value > hash_ptr->at(start_itr+tmp_itr).hash_value) {
                     start_itr += tmp_itr;
                 } else {
                     end_itr -= tmp_itr;
@@ -934,18 +1046,18 @@ bool Sokoban_features::hash_table_exist(unsigned long in_hash_value, feature_nod
     }
 }
 
-bool Sokoban_features::hash_table_delete(feature_node* &in_node)
+bool Sokoban_features::hash_table_delete(feature_node* &in_node, vector< hash_node >* hash_ptr)
 // An overload function for the hash_table_delete; hashes the input node
 {
-    return hash_table_delete(hash_node_to_key(in_node), in_node);
+    return hash_table_delete(hash_node_to_key(in_node), in_node, hash_ptr);
 }
-bool Sokoban_features::hash_table_delete(unsigned long in_hash_value, feature_node* &in_node)
+bool Sokoban_features::hash_table_delete(unsigned long in_hash_value, feature_node* &in_node, vector< hash_node >* hash_ptr)
 // Deletes an element in the list if it exists (return value true)
 {
-    if (hash_table.size() > 0) { // test if has_table is empty
-        int const start_hash_table = 0; // access this element as hash_table.begin()
+    if (hash_ptr->size() > 0) { // test if has_table is empty
+        int const start_hash_table = 0; // access this element as hash_ptr->begin()
         int start_itr = start_hash_table;
-        int const end_hash_table = hash_table.size()-1; // access this element as hash_table.end()
+        int const end_hash_table = hash_ptr->size()-1; // access this element as hash_ptr->end()
         int end_itr = end_hash_table;
 
         int tmp_itr;
@@ -954,20 +1066,20 @@ bool Sokoban_features::hash_table_delete(unsigned long in_hash_value, feature_no
             //cout << "[DEBUG INFO: hash_table_insert] tmp_itr has value " << tmp_itr << ", start " << start_itr << ", end " << end_itr << endl; // debug info
 
             if (tmp_itr == 0) {
-                if (in_hash_value == hash_table.at(start_itr).hash_value) {
-                    hash_table.erase(hash_table.begin() + start_itr);
+                if (in_hash_value == hash_ptr->at(start_itr).hash_value) {
+                    hash_ptr->erase(hash_ptr->begin() + start_itr);
                     return true;
-                } else if (in_hash_value == hash_table.at(end_itr).hash_value) {
-                    hash_table.erase(hash_table.begin() + end_itr);
+                } else if (in_hash_value == hash_ptr->at(end_itr).hash_value) {
+                    hash_ptr->erase(hash_ptr->begin() + end_itr);
                     return true;
                 } else {
                     return false;
                 }
             } else {
-                if (in_hash_value == hash_table.at(start_itr+tmp_itr).hash_value) {
-                    hash_table.erase(hash_table.begin() + start_itr+tmp_itr);
+                if (in_hash_value == hash_ptr->at(start_itr+tmp_itr).hash_value) {
+                    hash_ptr->erase(hash_ptr->begin() + start_itr+tmp_itr);
                     return true;
-                } else if (in_hash_value > hash_table.at(start_itr+tmp_itr).hash_value) {
+                } else if (in_hash_value > hash_ptr->at(start_itr+tmp_itr).hash_value) {
                     start_itr += tmp_itr;
                 } else {
                     end_itr -= tmp_itr;
