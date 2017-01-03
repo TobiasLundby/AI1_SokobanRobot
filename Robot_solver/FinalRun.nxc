@@ -1,0 +1,273 @@
+//------------------------------------------------------------------------------
+//                                   Constants
+//------------------------------------------------------------------------------
+
+#define KP 0.8             //Error multiplier for P
+#define KD 3              //Error multiplier for D
+#define SPEED 80
+int THRES_B = 35;           //Defines blackline value
+int THRES_W = 55;          //Defines whit space value
+
+//------------------------------------------------------------------------------
+//                                   Global variable.
+//------------------------------------------------------------------------------
+
+bool BW = TRUE; // Cross counting logic keeps control of last.
+
+float P = 0;    //Final P gain
+float D = 0;    //Final D gain
+
+float E_T = 0;  //Last error between light emiters
+int U_T = 0;  // Total gain from feedback loop PID
+int Count = 0;// Count of Distance(Cross passed)
+int DR = 0, tx = 0, fx = 0, bx = 0, sWait;
+int ExtraSpeed = 0;
+int E = 0;    //Error in between light emiters
+int motorASpeed = 0, motorBSpeed = 0;
+byte handle;
+string solverString;
+char state, nxtState;
+
+//------------------------------------------------------------------------------
+//                                   Sensor and Calibrattion.
+//------------------------------------------------------------------------------
+sub sensorSetup(){
+         SetSensorLight(IN_1);
+         SetSensorLight(IN_2);
+         SetSensorLight(IN_3);
+         SetSensorTouch(IN_4);
+         
+         ClearScreen();
+         
+         if(SENSOR_4 == 1){
+               THRES_B = SENSOR_2 + 7;  //Read start value of left sensor
+               THRES_W = SENSOR_3 - 7;  //Read start value of Right sensor
+
+         }
+}
+
+//------------------------------------------------------------------------------
+//                                   PID Speedcontrol.
+//------------------------------------------------------------------------------
+int PID(int E){
+    E = (E_T + E)/2;          // Average Error
+    P = KP * E;               // Calc P gain
+    D = KD * (E - E_T);       // Calc D gain
+    U_T = P + D;              // total PID gain
+    E_T = E;                  // saving last error
+    return U_T;               // returing the total PID gain
+}
+//------------------------------------------------------------------------------
+//                                   Move forward.
+//------------------------------------------------------------------------------
+
+sub Forwards(int DR){
+    Count = 0;
+    ExtraSpeed = SPEED;
+    Wait(70);
+    sWait = 15;
+    if(DR == 1){
+          sWait = 30;
+    }
+    while(DR > Count){                            // Checking if distance has been reached
+         E  = SENSOR_1 - SENSOR_3;              //calc the error between the two ligth sensors
+
+         motorASpeed = ExtraSpeed + 6 + PID(E);
+         motorBSpeed = ExtraSpeed - PID(E);
+         OnRev(OUT_A, motorASpeed);     //turning according to PID gain
+         OnRev(OUT_B, motorBSpeed);
+
+         if(SENSOR_2 < THRES_B){          // Searching for new crosses on map if last cross was fully passed
+              if(BW == FALSE){
+                   BW = TRUE;                       // Marking your in a cross BW FALSE = BLACK
+                   Count++;                          // Counting the cross
+                   ExtraSpeed = SPEED + 14;
+              }
+         }
+         else if(SENSOR_2 > THRES_W){
+              BW = FALSE;                        // Marking that you left the cross
+         }
+    }
+    Wait(sWait);
+    Off(OUT_AB);
+    BW = TRUE;
+}
+
+
+//------------------------------------------------------------------------------
+//                                   Turn Left.
+//------------------------------------------------------------------------------
+sub TurnL(int tx){                           // <-----
+    Count = 0;
+    Wait(50);
+         sWait = 250;
+    if(tx == 2){
+         sWait = 400;
+         Count = 2;
+    }
+    OnFwdSync(OUT_AB,100,-100);
+    Wait(sWait);
+    OnFwdSync(OUT_AB,40,-100);
+    tx +=tx;
+    while(tx > Count){
+          if(SENSOR_1 > THRES_W && BW){
+               Count++;
+               BW = FALSE;
+          }
+          if(SENSOR_1 < THRES_B + 5 && !BW){
+               Count++;
+               BW = TRUE;
+          }
+    }
+    Off(OUT_AB);
+    BW = TRUE;
+    tx = 0;
+}
+
+//------------------------------------------------------------------------------
+//                                   Turn Right.
+//------------------------------------------------------------------------------
+sub TurnR(int tx){                           // <-----
+    Wait(80);
+    OnFwdSync(OUT_AB,100,100);
+    Wait(250);
+    OnRevSync(OUT_AB,40,100);
+    Count = 0;
+    tx +=tx;
+    while(tx > Count){
+
+          if(SENSOR_3 > THRES_W && BW){
+               Count++;
+               BW = FALSE;
+          }
+          if(SENSOR_3 < THRES_B + 5 && !BW){
+               Count++;
+               BW = TRUE;
+          }
+    }
+    Off(OUT_AB);
+    BW = TRUE;
+    tx = 0;
+}
+
+//------------------------------------------------------------------------------
+//                                   Deploy.
+//------------------------------------------------------------------------------
+sub Deploy(){
+    OnRevSync(OUT_AB,80,0);
+    Wait(300);
+    Off(OUT_AB);
+    Wait(10);
+    OnFwdSync(OUT_AB,80,0);
+    Wait(420);
+    Off(OUT_AB);
+}
+
+//------------------------------------------------------------------------------
+//                                   Move backwards.
+//------------------------------------------------------------------------------
+sub Backwards(int DR){
+    TurnL(2);
+    Forwards(DR);
+}
+
+//------------------------------------------------------------------------------
+//                                   Approach.
+//------------------------------------------------------------------------------
+
+
+//------------------------------------------------------------------------------
+//                         Argmented Finite State Machine.
+//------------------------------------------------------------------------------
+sub Afsm(string solverString){
+    for(int i = 0; i < strlen(solverString); i++)
+    {
+          state = solverString[i];
+          nxtState = solverString[i+1];
+          switch(state)
+          {
+                       case 'F':
+                         fx = 1;
+                         while(nxtState == 'F' ){
+                              fx++; // Update number of crosses to move by one.
+                              i++;  // Update String pointer
+                              nxtState = solverString[i+1];
+                         }
+                         Forwards(fx);
+                         fx = 0;
+                         break;
+                       
+                       case 'B':
+                         bx = 1;
+                         while(nxtState == 'B'){
+                              bx++;
+                              ++i;
+                              nxtState = solverString[i+1];
+                         }
+                         Backwards(bx);
+                         bx = 0;
+                         break;
+
+                       case 'L':
+                         //Turn Left
+                         tx = 1;
+                         if(nxtState == 'L'){
+                              tx++;
+                              ++i;
+                              nxtState = solverString[i+1];
+                         }
+                         TurnL(tx);
+                         tx = 0;
+                         break;
+                       
+                       case 'R':
+                         //Turn Right
+                         tx = 1;
+                         if(nxtState == 'R'){
+                              tx++;
+                              i++;
+                              nxtState = solverString[i+1];
+                         }
+                         TurnR(tx);
+                         tx = 0;
+                         break;
+
+                       case 'D':
+                         Deploy();
+                         break;
+
+                         case 'A':
+                         Forwards(1);
+                         break;
+
+                       default:
+                               //Forwards
+                       break;
+          }
+    }
+}
+
+//------------------------------------------------------------------------------
+//                                   Main loop.
+//------------------------------------------------------------------------------
+
+task main() {
+       sensorSetup();
+       // Test Deploy
+       //string solverString = "FFD";
+       
+       // Forward test
+       //string solverString = "FFFFFFFF";
+
+       // TurnR test
+       //string solverString = "FRFRFRFRFRFRFRFRFR";
+
+       // Real map solve test
+       //string solverString = "FDLFRFDRRFLFRFLFFLFLFDRFDLFDRFFFFFDLFRFFRFFRFRFDLFFFFLFFRFRFDLFRFRFFFFFDLFFLFFFFLFFDRFLFRFFRFRFFFFFDRFLFLFFDRFLFRFFRFRFDRRFRFFRFRFDLFFFFFRFFRFFFDRFFFRFFLFRFRFDLFFRFFRFDRFLFFFFDLFFLFFFLFDRFLFLFFFDRFLFLFDRFD";
+       string solverString = "FDLFRFDLLFLFRFLFFLFLFDRFFDLLFRFDRFFFFFDLFRFFRFFRFRFDLFFRFFLFFFLFFDRFLFRFFRFRFFFFFFFDLFFRFFRFRFDLLFRFFRFRFDLFFFLFFRFFRFDLFFRFFRFDRFLFFFFFDLLFRFFLFFFLFDRFLFLFFFDRFLFLFFDLLFRFLFFRFRFDLFRFRFFDRFLFLFDLFFFRFFRFFFD";
+
+       Afsm(solverString);
+       while(TRUE){
+                   //PlaySound(SOUND_FAST_UP);
+       }
+}

@@ -1,0 +1,1249 @@
+#SYMBOLS
+Index	Identifier	Type	Flag	Data	Size	RefCount
+0	__D0TurnL	6	1	0	4	22
+1	__D0sensorSetup	6	1	4	4	3
+2	__DF0PID	10	1	8	4	2
+3	__D0TurnR	6	1	12	4	19
+4	__signed_stack_001TurnR	6	1	16	4	14
+5	__DU0TurnL	5	1	20	4	4
+6	D	10	1	24	4	2
+7	__D0Forwards	6	1	28	4	21
+8	__D0Deploy	6	1	32	4	4
+9	__D0PID	6	1	36	4	3
+10	P	10	1	40	4	2
+11	__D0main	6	1	44	4	2
+12	__signed_stack_001Forwards	6	1	48	4	14
+13	__signed_stack_001Deploy	6	1	52	4	4
+14	__signed_stack_001Afsm	6	1	56	4	22
+15	__float_stack_001PID	10	1	60	4	2
+16	__signed_stack_001PID	6	1	64	4	2
+17	__unsigned_stack_001Forwards	5	1	68	4	2
+18	__D0SetSensorLight_inline_sensorSetup	6	1	72	4	9
+19	__signed_stack_001TurnL	6	1	76	4	16
+20	__DU0TurnR	5	1	80	4	4
+21	__D0strlen_inline_Afsm	6	1	84	4	2
+22	__signed_stack_001sensorSetup	6	1	88	4	6
+23	__DU0SetSensorLight_inline_sensorSetup	5	1	92	4	6
+24	__Wait_7qG2_ms_7qG2_000_inline_TurnR	5	1	96	4	4
+25	__Wait_7qG2_ms_7qG2_000_inline_Deploy	5	1	100	4	6
+26	__Wait_7qG2_ms_7qG2_000_inline_TurnL	5	1	104	4	4
+27	__constValf0P8	10	0	108	4	1
+28	__Wait_7qG2_ms_7qG2_000_inline_Forwards	5	1	112	4	4
+29	E_T	10	1	116	4	3
+30	__D0Afsm	6	1	120	4	22
+31	__OnRevMutex	9	0	124	4	8
+32	__Forwards_7qG2_DR_7qG2_000	4	1	128	2	5
+33	__PID_7qG2_E_7qG2_000	4	1	130	2	7
+34	__Afsm_7qG2_i_7qG2_001	4	1	132	2	18
+35	__Backwards_7qG2_DR_7qG2_000	4	1	134	2	2
+36	__TurnR_7qG2_tx_7qG2_000	4	1	136	2	6
+37	__TurnL_7qG2_tx_7qG2_000	4	1	138	2	8
+38	THRES_W	4	0	140	2	4
+39	fx	4	1	142	2	5
+40	bx	4	1	144	2	5
+41	U_T	4	1	146	2	2
+42	Count	4	1	148	2	17
+43	tx	4	1	150	2	10
+44	E	4	1	152	2	3
+45	motorASpeed	4	1	154	2	2
+46	motorBSpeed	4	1	156	2	2
+47	sWait	4	1	158	2	6
+48	THRES_B	4	0	160	2	4
+49	ExtraSpeed	4	1	162	2	4
+50	__constVal200	4	0	164	2	2
+51	__constVal63	2	0	166	1	13
+52	__constVal5	2	0	167	1	2
+53	__constVal96	2	0	168	1	13
+54	__constVal3	2	0	169	1	8
+55	__TurnL_return	1	1	170	1	4
+56	__constVal6	2	0	171	1	1
+57	____ResetSensorSubroutine_return	1	1	172	1	6
+58	__SetSensorTouch_7qG2_port_7qG2_000_inline_sensorSetup	1	1	173	1	4
+59	__ResetSensor_7qG2_port_7qG2_000_inline_SetSensorLight_inline_sensorSetup	1	1	174	1	3
+60	__PID_return	1	1	175	1	5
+61	__Forwards_return	1	1	176	1	5
+62	__ResetSensorPort	1	1	177	1	6
+63	__ResetSensorTmp	1	1	178	1	2
+64	__constVal82	2	0	179	1	1
+65	__constVal76	2	0	180	1	1
+66	__Afsm_return	1	1	181	1	3
+67	____initialize_global_data_return	1	1	182	1	3
+68	__constVal65	2	0	183	1	1
+69	__constVal68	2	0	184	1	1
+70	__Backwards_return	1	1	185	1	3
+71	__constVal1	2	0	186	1	30
+72	__TurnR_return	1	1	187	1	3
+73	__constVal0	2	1	188	1	36
+74	__OnRev_Tmp	2	1	189	1	8
+75	__constVal32	2	0	190	1	40
+76	__Deploy_return	1	1	191	1	3
+77	__SetSensorMode_7qG2_mode_7qG2_000_inline_SetSensorLight_inline_sensorSetup	1	1	192	1	6
+78	__ArrHelper__Afsm_98_0	1	1	193	1	12
+79	__zfAfsm	1	1	194	1	15
+80	__zfForwards	1	1	195	1	15
+81	__constVal7	2	0	196	1	8
+82	__constVal66	2	0	197	1	1
+83	__constVal70	2	0	198	1	1
+84	__zfTurnL	1	1	199	1	20
+85	__zfTurnR	1	1	200	1	17
+86	__zfSetSensorLight_inline_sensorSetup	1	1	201	1	6
+87	__zfmain	1	1	202	1	2
+88	BW	1	0	203	1	16
+89	__zfsensorSetup	1	1	204	1	3
+90	__SetSensorLight_7qG2_bActive_7qG2_000_inline_sensorSetup	1	1	205	1	6
+91	__SetSensorLight_7qG2_port_7qG2_000_inline_sensorSetup	1	1	206	1	15
+92	__sensorSetup_return	1	1	207	1	3
+93	__SetSensorMode_7qG2_port_7qG2_000_inline_SetSensorLight_inline_sensorSetup	1	1	208	1	6
+94	__SetSensorType_7qG2_type_7qG2_000_inline_SetSensorLight_inline_sensorSetup	1	1	209	1	6
+95	__SetSensorType_7qG2_port_7qG2_000_inline_SetSensorLight_inline_sensorSetup	1	1	210	1	6
+96	nxtState	2	1	211	1	9
+97	__PFTmp	1	1	212	1	1
+98	__constValNeg100	2	0	213	1	2
+99	__constVal2	2	0	214	1	11
+100	state	2	1	215	1	2
+101	__PointOutArgs	8	0	3	12	4
+102	__PointOutArgs.Result	2	1	216	1	4
+103	__PointOutArgs.Location	8	0	2	4	4
+104	__PointOutArgs.Location.X	4	1	220	2	4
+105	__PointOutArgs.Location.Y	4	1	222	2	4
+106	__PointOutArgs.Options	5	1	224	4	4
+107	__constStr0009	7	0	228	4	1
+108	__constStr0009.__constStr0009_type	1	1	0	1	0
+109	__main_7qG2_solverString_7qG2_000	7	0	230	4	2
+110	__main_7qG2_solverString_7qG2_000.__main_7qG2_solverString_7qG2_000_type	1	0	0	1	0
+111	__Afsm_7qG2_solverString_7qG2_000	7	0	232	4	8
+112	__Afsm_7qG2_solverString_7qG2_000.__Afsm_7qG2_solverString_7qG2_000_type	1	0	0	1	0
+113	__strbufAfsm	7	0	234	4	2
+114	__strbufAfsm.__strbufAfsm_type	1	0	0	1	0
+115	__OUT_AB	7	0	236	4	11
+116	__OUT_AB.__OUT_AB_type	1	0	0	1	0
+117	__strbufmain	7	0	238	4	4
+118	__strbufmain.__strbufmain_type	1	0	0	1	0
+119	__strlen_7qG2_str_7qG2_000_inline_Afsm	7	0	240	4	2
+120	__strlen_7qG2_str_7qG2_000_inline_Afsm.__strlen_7qG2_str_7qG2_000_inline_Afsm_type	1	0	0	1	0
+#SOURCES
+Clump	Line	PC	Source
+0	254	0	#line 254 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+0	255	0		subcall __initialize_global_data, ____initialize_global_data_return
+0	254	2	#line 254 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+0	266	2	#line 266 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+0	267	2		subcall sensorSetup, __sensorSetup_return
+0	266	4	#line 266 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+0	268	4	#line 268 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+0	269	4		strcat __strbufmain, __constStr0009
+0	268	8	#line 268 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+0	269	8		mov __main_7qG2_solverString_7qG2_000, __strbufmain
+0	268	10	#line 268 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+0	269	10		strcat __strbufmain, __main_7qG2_solverString_7qG2_000
+0	268	14	#line 268 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+0	269	14		mov __Afsm_7qG2_solverString_7qG2_000, __strbufmain
+0	269	16	#line 269 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+0	270	16		subcall Afsm, __Afsm_return
+0	269	18	#line 269 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+0	269	18	#line 269 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+0	270	18		set __D0main, 1
+0	271	21	#line 271 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+0	272	21		tst 5, __zfmain, __D0main
+0	271	24	#line 271 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+0	272	24		brtst 4, __NXC_Label_753, __zfmain
+0	274	27	#line 274 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+0	275	27		jmp __NXC_Label_752
+0	274	29	#line 274 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+0	275	29		exit -1, -1
+1	4885	0		setin __constVal1, __ResetSensorPort, 5
+1	4887	4		getin __ResetSensorTmp, __ResetSensorPort, 5
+1	4888	8		brtst 5, __SensorStillInvalid, __ResetSensorTmp
+1	4889	11		subret ____ResetSensorSubroutine_return
+2	34	0	#line 34 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	35	0		set __SetSensorLight_7qG2_port_7qG2_000_inline_sensorSetup, 0
+2	34	3	#line 34 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	35	3	#line 35 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	36	3		mov __SetSensorLight_7qG2_bActive_7qG2_000_inline_sensorSetup, __constVal1
+2	3729	5	#line 3729 "NXCDefs.h"
+2	3730	5		mov __SetSensorType_7qG2_port_7qG2_000_inline_SetSensorLight_inline_sensorSetup, __SetSensorLight_7qG2_port_7qG2_000_inline_sensorSetup
+2	3729	7	#line 3729 "NXCDefs.h"
+2	3729	7	#line 3729 "NXCDefs.h"
+2	3730	7		mov __DU0SetSensorLight_inline_sensorSetup, __SetSensorLight_7qG2_bActive_7qG2_000_inline_sensorSetup
+2	3729	9	#line 3729 "NXCDefs.h"
+2	3730	9		tst 5, __zfSetSensorLight_inline_sensorSetup, __DU0SetSensorLight_inline_sensorSetup
+2	3729	12	#line 3729 "NXCDefs.h"
+2	3730	12		brtst 4, __001__NXC_Label_4, __zfSetSensorLight_inline_sensorSetup
+2	3729	15	#line 3729 "NXCDefs.h"
+2	3730	15		set __D0SetSensorLight_inline_sensorSetup, 5
+2	3729	18	#line 3729 "NXCDefs.h"
+2	3730	18		jmp __001__NXC_Label_5
+2	3729	20	#line 3729 "NXCDefs.h"
+2	3730	20		set __D0SetSensorLight_inline_sensorSetup, 6
+2	3729	23	#line 3729 "NXCDefs.h"
+2	3730	23		mov __SetSensorType_7qG2_type_7qG2_000_inline_SetSensorLight_inline_sensorSetup, __D0SetSensorLight_inline_sensorSetup
+2	3663	25	#line 3663 "NXCDefs.h"
+2	3664	25		setin __SetSensorType_7qG2_type_7qG2_000_inline_SetSensorLight_inline_sensorSetup, __SetSensorType_7qG2_port_7qG2_000_inline_SetSensorLight_inline_sensorSetup, 0
+2	3663	29	#line 3663 "NXCDefs.h"
+2	3730	29	#line 3730 "NXCDefs.h"
+2	3730	29	#line 3730 "NXCDefs.h"
+2	3731	29		mov __SetSensorMode_7qG2_port_7qG2_000_inline_SetSensorLight_inline_sensorSetup, __SetSensorLight_7qG2_port_7qG2_000_inline_sensorSetup
+2	3730	31	#line 3730 "NXCDefs.h"
+2	3730	31	#line 3730 "NXCDefs.h"
+2	3731	31		set __SetSensorMode_7qG2_mode_7qG2_000_inline_SetSensorLight_inline_sensorSetup, 128
+2	3730	34	#line 3730 "NXCDefs.h"
+2	3676	34	#line 3676 "NXCDefs.h"
+2	3677	34		setin __SetSensorMode_7qG2_mode_7qG2_000_inline_SetSensorLight_inline_sensorSetup, __SetSensorMode_7qG2_port_7qG2_000_inline_SetSensorLight_inline_sensorSetup, 1
+2	3676	38	#line 3676 "NXCDefs.h"
+2	3731	38	#line 3731 "NXCDefs.h"
+2	3731	38	#line 3731 "NXCDefs.h"
+2	3732	38		mov __ResetSensor_7qG2_port_7qG2_000_inline_SetSensorLight_inline_sensorSetup, __SetSensorLight_7qG2_port_7qG2_000_inline_sensorSetup
+2	3731	40	#line 3731 "NXCDefs.h"
+2	3694	40	#line 3694 "NXCDefs.h"
+2	3695	40	#pragma macro 4
+2	3695	40		mov __ResetSensorPort, __SetSensorLight_7qG2_port_7qG2_000_inline_sensorSetup
+2	3695	42		subcall __ResetSensorSubroutine, ____ResetSensorSubroutine_return
+2	4325	44	#line 4325 "NXCDefs.h"
+2	3694	44	#line 3694 "NXCDefs.h"
+2	3732	44	#line 3732 "NXCDefs.h"
+2	35	44	#line 35 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	35	44	#line 35 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	36	44		set __SetSensorLight_7qG2_port_7qG2_000_inline_sensorSetup, 1
+2	35	47	#line 35 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	36	47	#line 36 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	37	47		mov __SetSensorLight_7qG2_bActive_7qG2_000_inline_sensorSetup, __constVal1
+2	3729	49	#line 3729 "NXCDefs.h"
+2	3730	49		mov __SetSensorType_7qG2_port_7qG2_000_inline_SetSensorLight_inline_sensorSetup, __SetSensorLight_7qG2_port_7qG2_000_inline_sensorSetup
+2	3729	51	#line 3729 "NXCDefs.h"
+2	3729	51	#line 3729 "NXCDefs.h"
+2	3730	51		mov __DU0SetSensorLight_inline_sensorSetup, __SetSensorLight_7qG2_bActive_7qG2_000_inline_sensorSetup
+2	3729	53	#line 3729 "NXCDefs.h"
+2	3730	53		tst 5, __zfSetSensorLight_inline_sensorSetup, __DU0SetSensorLight_inline_sensorSetup
+2	3729	56	#line 3729 "NXCDefs.h"
+2	3730	56		brtst 4, __002__NXC_Label_4, __zfSetSensorLight_inline_sensorSetup
+2	3729	59	#line 3729 "NXCDefs.h"
+2	3730	59		set __D0SetSensorLight_inline_sensorSetup, 5
+2	3729	62	#line 3729 "NXCDefs.h"
+2	3730	62		jmp __002__NXC_Label_5
+2	3729	64	#line 3729 "NXCDefs.h"
+2	3730	64		set __D0SetSensorLight_inline_sensorSetup, 6
+2	3729	67	#line 3729 "NXCDefs.h"
+2	3730	67		mov __SetSensorType_7qG2_type_7qG2_000_inline_SetSensorLight_inline_sensorSetup, __D0SetSensorLight_inline_sensorSetup
+2	3663	69	#line 3663 "NXCDefs.h"
+2	3664	69		setin __SetSensorType_7qG2_type_7qG2_000_inline_SetSensorLight_inline_sensorSetup, __SetSensorType_7qG2_port_7qG2_000_inline_SetSensorLight_inline_sensorSetup, 0
+2	3663	73	#line 3663 "NXCDefs.h"
+2	3730	73	#line 3730 "NXCDefs.h"
+2	3730	73	#line 3730 "NXCDefs.h"
+2	3731	73		mov __SetSensorMode_7qG2_port_7qG2_000_inline_SetSensorLight_inline_sensorSetup, __SetSensorLight_7qG2_port_7qG2_000_inline_sensorSetup
+2	3730	75	#line 3730 "NXCDefs.h"
+2	3730	75	#line 3730 "NXCDefs.h"
+2	3731	75		set __SetSensorMode_7qG2_mode_7qG2_000_inline_SetSensorLight_inline_sensorSetup, 128
+2	3730	78	#line 3730 "NXCDefs.h"
+2	3676	78	#line 3676 "NXCDefs.h"
+2	3677	78		setin __SetSensorMode_7qG2_mode_7qG2_000_inline_SetSensorLight_inline_sensorSetup, __SetSensorMode_7qG2_port_7qG2_000_inline_SetSensorLight_inline_sensorSetup, 1
+2	3676	82	#line 3676 "NXCDefs.h"
+2	3731	82	#line 3731 "NXCDefs.h"
+2	3731	82	#line 3731 "NXCDefs.h"
+2	3732	82		mov __ResetSensor_7qG2_port_7qG2_000_inline_SetSensorLight_inline_sensorSetup, __SetSensorLight_7qG2_port_7qG2_000_inline_sensorSetup
+2	3731	84	#line 3731 "NXCDefs.h"
+2	3694	84	#line 3694 "NXCDefs.h"
+2	3695	84	#pragma macro 4
+2	3695	84		mov __ResetSensorPort, __SetSensorLight_7qG2_port_7qG2_000_inline_sensorSetup
+2	3695	86		subcall __ResetSensorSubroutine, ____ResetSensorSubroutine_return
+2	4392	88	#line 4392 "NXCDefs.h"
+2	3694	88	#line 3694 "NXCDefs.h"
+2	3732	88	#line 3732 "NXCDefs.h"
+2	36	88	#line 36 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	36	88	#line 36 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	37	88		set __SetSensorLight_7qG2_port_7qG2_000_inline_sensorSetup, 2
+2	36	91	#line 36 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	37	91	#line 37 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	38	91		mov __SetSensorLight_7qG2_bActive_7qG2_000_inline_sensorSetup, __constVal1
+2	3729	93	#line 3729 "NXCDefs.h"
+2	3730	93		mov __SetSensorType_7qG2_port_7qG2_000_inline_SetSensorLight_inline_sensorSetup, __SetSensorLight_7qG2_port_7qG2_000_inline_sensorSetup
+2	3729	95	#line 3729 "NXCDefs.h"
+2	3729	95	#line 3729 "NXCDefs.h"
+2	3730	95		mov __DU0SetSensorLight_inline_sensorSetup, __SetSensorLight_7qG2_bActive_7qG2_000_inline_sensorSetup
+2	3729	97	#line 3729 "NXCDefs.h"
+2	3730	97		tst 5, __zfSetSensorLight_inline_sensorSetup, __DU0SetSensorLight_inline_sensorSetup
+2	3729	100	#line 3729 "NXCDefs.h"
+2	3730	100		brtst 4, __003__NXC_Label_4, __zfSetSensorLight_inline_sensorSetup
+2	3729	103	#line 3729 "NXCDefs.h"
+2	3730	103		set __D0SetSensorLight_inline_sensorSetup, 5
+2	3729	106	#line 3729 "NXCDefs.h"
+2	3730	106		jmp __003__NXC_Label_5
+2	3729	108	#line 3729 "NXCDefs.h"
+2	3730	108		set __D0SetSensorLight_inline_sensorSetup, 6
+2	3729	111	#line 3729 "NXCDefs.h"
+2	3730	111		mov __SetSensorType_7qG2_type_7qG2_000_inline_SetSensorLight_inline_sensorSetup, __D0SetSensorLight_inline_sensorSetup
+2	3663	113	#line 3663 "NXCDefs.h"
+2	3664	113		setin __SetSensorType_7qG2_type_7qG2_000_inline_SetSensorLight_inline_sensorSetup, __SetSensorType_7qG2_port_7qG2_000_inline_SetSensorLight_inline_sensorSetup, 0
+2	3663	117	#line 3663 "NXCDefs.h"
+2	3730	117	#line 3730 "NXCDefs.h"
+2	3730	117	#line 3730 "NXCDefs.h"
+2	3731	117		mov __SetSensorMode_7qG2_port_7qG2_000_inline_SetSensorLight_inline_sensorSetup, __SetSensorLight_7qG2_port_7qG2_000_inline_sensorSetup
+2	3730	119	#line 3730 "NXCDefs.h"
+2	3730	119	#line 3730 "NXCDefs.h"
+2	3731	119		set __SetSensorMode_7qG2_mode_7qG2_000_inline_SetSensorLight_inline_sensorSetup, 128
+2	3730	122	#line 3730 "NXCDefs.h"
+2	3676	122	#line 3676 "NXCDefs.h"
+2	3677	122		setin __SetSensorMode_7qG2_mode_7qG2_000_inline_SetSensorLight_inline_sensorSetup, __SetSensorMode_7qG2_port_7qG2_000_inline_SetSensorLight_inline_sensorSetup, 1
+2	3676	126	#line 3676 "NXCDefs.h"
+2	3731	126	#line 3731 "NXCDefs.h"
+2	3731	126	#line 3731 "NXCDefs.h"
+2	3732	126		mov __ResetSensor_7qG2_port_7qG2_000_inline_SetSensorLight_inline_sensorSetup, __SetSensorLight_7qG2_port_7qG2_000_inline_sensorSetup
+2	3731	128	#line 3731 "NXCDefs.h"
+2	3694	128	#line 3694 "NXCDefs.h"
+2	3695	128	#pragma macro 4
+2	3695	128		mov __ResetSensorPort, __SetSensorLight_7qG2_port_7qG2_000_inline_sensorSetup
+2	3695	130		subcall __ResetSensorSubroutine, ____ResetSensorSubroutine_return
+2	4459	132	#line 4459 "NXCDefs.h"
+2	3694	132	#line 3694 "NXCDefs.h"
+2	3732	132	#line 3732 "NXCDefs.h"
+2	37	132	#line 37 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	37	132	#line 37 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	38	132		set __SetSensorTouch_7qG2_port_7qG2_000_inline_sensorSetup, 3
+2	37	135	#line 37 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	3718	135	#line 3718 "NXCDefs.h"
+2	3719	135	#pragma macro 6
+2	3719	135		setin __constVal1, __SetSensorTouch_7qG2_port_7qG2_000_inline_sensorSetup, 0
+2	3719	139		setin __constVal32, __SetSensorTouch_7qG2_port_7qG2_000_inline_sensorSetup, 1
+2	3719	143		mov __ResetSensorPort, __SetSensorTouch_7qG2_port_7qG2_000_inline_sensorSetup
+2	3719	145		subcall __ResetSensorSubroutine, ____ResetSensorSubroutine_return
+2	4474	147	#line 4474 "NXCDefs.h"
+2	3718	147	#line 3718 "NXCDefs.h"
+2	39	147	#line 39 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	6069	147	#line 6069 "NXCDefs.h"
+2	6070	147	#pragma macro 6
+2	6070	147		mov __PointOutArgs.Location.X, __constVal200
+2	6070	149		mov __PointOutArgs.Location.Y, __constVal200
+2	6070	151		mov __PointOutArgs.Options, __constVal1
+2	6070	153		syscall 14, __PointOutArgs
+2	4478	156	#line 4478 "NXCDefs.h"
+2	6069	156	#line 6069 "NXCDefs.h"
+2	41	156	#line 41 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	41	156	#line 41 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	42	156		getin __signed_stack_001sensorSetup, __constVal3, 4
+2	41	160	#line 41 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	41	160	#line 41 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	42	160		set __D0sensorSetup, 1
+2	41	163	#line 41 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	42	163		cmp 4, __zfsensorSetup, __signed_stack_001sensorSetup, __D0sensorSetup
+2	41	167	#line 41 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	42	167		mov __D0sensorSetup, __zfsensorSetup
+2	42	169	#line 42 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	43	169		brtst 4, __NXC_Label_499, __zfsensorSetup
+2	42	172	#line 42 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	43	172		getin __signed_stack_001sensorSetup, __constVal1, 4
+2	42	176	#line 42 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	43	176	#line 43 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	43	176	#line 43 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	44	176		add THRES_B, __signed_stack_001sensorSetup, __constVal7
+2	43	180	#line 43 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	43	180	#line 43 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	43	180	#line 43 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	43	180	#line 43 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	44	180		getin __signed_stack_001sensorSetup, __constVal2, 4
+2	43	184	#line 43 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	45	184	#line 45 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	45	184	#line 45 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	46	184		sub THRES_W, __signed_stack_001sensorSetup, __constVal7
+2	45	188	#line 45 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	45	188	#line 45 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	45	188	#line 45 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	51	188	#line 51 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	51	188	#line 51 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+2	52	188		subret __sensorSetup_return
+3	52	0	#line 52 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	52	0	#line 52 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	52	0	#line 52 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	52	0	#line 52 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	53	0		add __float_stack_001PID, E_T, __PID_7qG2_E_7qG2_000
+3	52	4	#line 52 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	53	4	#line 53 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	53	4	#line 53 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	54	4		div __PID_7qG2_E_7qG2_000, __float_stack_001PID, __constVal2
+3	53	8	#line 53 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	53	8	#line 53 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	53	8	#line 53 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	53	8	#line 53 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	54	8	#line 54 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	54	8	#line 54 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	55	8		mul P, __constValf0P8, __PID_7qG2_E_7qG2_000
+3	54	12	#line 54 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	54	12	#line 54 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	54	12	#line 54 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	55	12		set __signed_stack_001PID, 3
+3	54	15	#line 54 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	54	15	#line 54 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	54	15	#line 54 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	54	15	#line 54 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	54	15	#line 54 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	55	15		sub __DF0PID, __PID_7qG2_E_7qG2_000, E_T
+3	55	19	#line 55 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	56	19		mul D, __signed_stack_001PID, __DF0PID
+3	55	23	#line 55 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	55	23	#line 55 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	55	23	#line 55 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	55	23	#line 55 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	56	23	#line 56 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	56	23	#line 56 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	57	23		add U_T, P, D
+3	56	27	#line 56 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	56	27	#line 56 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	57	27	#line 57 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	58	27		mov E_T, __PID_7qG2_E_7qG2_000
+3	57	29	#line 57 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	57	29	#line 57 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	58	29	#line 58 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	59	29		mov __D0PID, U_T
+3	58	31	#line 58 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	59	31		subret __PID_return
+3	58	33	#line 58 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	63	33	#line 63 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+3	64	33		subret __PID_return
+4	65	0	#line 65 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	66	0		set Count, 0
+4	65	3	#line 65 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	65	3	#line 65 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	66	3	#line 66 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	67	3		set ExtraSpeed, 80
+4	66	6	#line 66 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	66	6	#line 66 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	66	6	#line 66 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	67	6		set __Wait_7qG2_ms_7qG2_000_inline_Forwards, 70
+4	66	9	#line 66 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	7921	9	#line 7921 "NXCDefs.h"
+4	7922	9		wait2 NA, __Wait_7qG2_ms_7qG2_000_inline_Forwards
+4	7921	12	#line 7921 "NXCDefs.h"
+4	67	12	#line 67 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	68	12	#line 68 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	69	12		set sWait, 15
+4	68	15	#line 68 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	68	15	#line 68 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	68	15	#line 68 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	69	15		mov __signed_stack_001Forwards, __Forwards_7qG2_DR_7qG2_000
+4	68	17	#line 68 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	68	17	#line 68 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	69	17		set __D0Forwards, 1
+4	68	20	#line 68 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	69	20		cmp 4, __zfForwards, __signed_stack_001Forwards, __D0Forwards
+4	68	24	#line 68 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	69	24		mov __D0Forwards, __zfForwards
+4	69	26	#line 69 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	70	26		brtst 4, __NXC_Label_530, __zfForwards
+4	70	29	#line 70 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	71	29		set sWait, 30
+4	70	32	#line 70 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	70	32	#line 70 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	71	32	#line 71 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	71	32	#line 71 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	72	32		mov __signed_stack_001Forwards, __Forwards_7qG2_DR_7qG2_000
+4	71	34	#line 71 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	71	34	#line 71 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	72	34		mov __D0Forwards, Count
+4	71	36	#line 71 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	72	36		cmp 1, __zfForwards, __signed_stack_001Forwards, __D0Forwards
+4	71	40	#line 71 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	72	40		mov __D0Forwards, __zfForwards
+4	72	42	#line 72 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	73	42		brtst 4, __NXC_Label_534, __zfForwards
+4	72	45	#line 72 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	73	45		getin __signed_stack_001Forwards, __constVal0, 4
+4	72	49	#line 72 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	72	49	#line 72 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	73	49		getin __D0Forwards, __constVal2, 4
+4	72	53	#line 72 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	73	53		sub E, __signed_stack_001Forwards, __D0Forwards
+4	72	57	#line 72 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	72	57	#line 72 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	72	57	#line 72 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	74	57	#line 74 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	74	57	#line 74 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	74	57	#line 74 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	74	57	#line 74 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	75	57		add __signed_stack_001Forwards, ExtraSpeed, __constVal6
+4	74	61	#line 74 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	74	61	#line 74 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	75	61		mov __PID_7qG2_E_7qG2_000, E
+4	74	63	#line 74 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	75	63	#line 75 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	76	63		subcall PID, __PID_return
+4	75	65	#line 75 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	75	65	#line 75 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	76	65		add motorASpeed, __signed_stack_001Forwards, __D0PID
+4	75	69	#line 75 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	75	69	#line 75 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	75	69	#line 75 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	76	69		mov __signed_stack_001Forwards, ExtraSpeed
+4	75	71	#line 75 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	75	71	#line 75 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	76	71		mov __PID_7qG2_E_7qG2_000, E
+4	75	73	#line 75 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	76	73	#line 76 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	77	73		subcall PID, __PID_return
+4	76	75	#line 76 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	76	75	#line 76 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	77	75		sub motorBSpeed, __signed_stack_001Forwards, __D0PID
+4	76	79	#line 76 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	76	79	#line 76 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	76	79	#line 76 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	77	79		mov __D0Forwards, motorASpeed
+4	77	81	#line 77 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	78	81	#pragma macro 10
+4	78	81		acquire __OnRevMutex
+4	78	82		neg __OnRev_Tmp, __D0Forwards
+4	78	85		setout __constVal0, 2, __OnRev_Tmp, 1, __constVal3, 8, __constVal0, 6, __constVal32, 7, __constVal0, 5, __constVal0, 10, __constVal96, 11, __constVal32, 12, __constVal32, 0, __constVal63
+4	78	108		release __OnRevMutex
+4	4765	109	#line 4765 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	77	109	#line 77 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	77	109	#line 77 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	78	109		mov __D0Forwards, motorBSpeed
+4	79	111	#line 79 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	80	111	#pragma macro 10
+4	80	111		acquire __OnRevMutex
+4	80	112		neg __OnRev_Tmp, __D0Forwards
+4	80	115		setout __constVal1, 2, __OnRev_Tmp, 1, __constVal3, 8, __constVal0, 6, __constVal32, 7, __constVal0, 5, __constVal0, 10, __constVal96, 11, __constVal32, 12, __constVal32, 0, __constVal63
+4	80	138		release __OnRevMutex
+4	4772	139	#line 4772 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	79	139	#line 79 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	79	139	#line 79 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	80	139		getin __signed_stack_001Forwards, __constVal1, 4
+4	79	143	#line 79 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	79	143	#line 79 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	80	143		mov __D0Forwards, THRES_B
+4	79	145	#line 79 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	80	145		cmp 0, __zfForwards, __signed_stack_001Forwards, __D0Forwards
+4	79	149	#line 79 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	80	149		mov __D0Forwards, __zfForwards
+4	80	151	#line 80 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	81	151		brtst 4, __NXC_Label_553, __zfForwards
+4	80	154	#line 80 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	81	154		mov __unsigned_stack_001Forwards, BW
+4	80	156	#line 80 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	80	156	#line 80 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	81	156		set __D0Forwards, 0
+4	80	159	#line 80 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	81	159		cmp 4, __zfForwards, __unsigned_stack_001Forwards, __D0Forwards
+4	80	163	#line 80 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	81	163		mov __D0Forwards, __zfForwards
+4	81	165	#line 81 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	82	165		brtst 4, __NXC_Label_556, __zfForwards
+4	82	168	#line 82 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	83	168		set BW, 1
+4	82	171	#line 82 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	82	171	#line 82 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	83	171	#line 83 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	84	171		add Count, Count, __constVal1
+4	83	175	#line 83 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	84	175	#line 84 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	85	175		set ExtraSpeed, 94
+4	84	178	#line 84 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	84	178	#line 84 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	86	178	#line 86 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	86	178	#line 86 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	87	178		jmp __NXC_Label_561
+4	86	180	#line 86 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	87	180		getin __signed_stack_001Forwards, __constVal1, 4
+4	86	184	#line 86 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	86	184	#line 86 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	87	184		mov __D0Forwards, THRES_W
+4	86	186	#line 86 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	87	186		cmp 1, __zfForwards, __signed_stack_001Forwards, __D0Forwards
+4	86	190	#line 86 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	87	190		mov __D0Forwards, __zfForwards
+4	87	192	#line 87 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	88	192		brtst 4, __NXC_Label_564, __zfForwards
+4	88	195	#line 88 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	89	195		set BW, 0
+4	88	198	#line 88 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	88	198	#line 88 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	90	198	#line 90 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	90	198	#line 90 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	90	198	#line 90 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	91	198		jmp __NXC_Label_533
+4	90	200	#line 90 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	90	200	#line 90 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	91	200		mov __Wait_7qG2_ms_7qG2_000_inline_Forwards, sWait
+4	90	202	#line 90 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	7921	202	#line 7921 "NXCDefs.h"
+4	7922	202		wait2 NA, __Wait_7qG2_ms_7qG2_000_inline_Forwards
+4	7921	205	#line 7921 "NXCDefs.h"
+4	91	205	#line 91 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	92	205	#line 92 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	93	205	#pragma macro 7
+4	93	205		setout __OUT_AB, 2, __constVal0, 1, __constVal3, 8, __constVal0, 6, __constVal32, 7, __constVal0, 5, __constVal0, 10, __constVal96, 11, __constVal32, 12, __constVal32, 0, __constVal63
+4	4864	228	#line 4864 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	92	228	#line 92 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	93	228	#line 93 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	94	228		set BW, 1
+4	93	231	#line 93 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	93	231	#line 93 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	99	231	#line 99 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+4	100	231		subret __Forwards_return
+5	101	0	#line 101 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	102	0		set Count, 0
+5	101	3	#line 101 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	101	3	#line 101 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	101	3	#line 101 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	102	3		set __Wait_7qG2_ms_7qG2_000_inline_TurnL, 50
+5	101	6	#line 101 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	7921	6	#line 7921 "NXCDefs.h"
+5	7922	6		wait2 NA, __Wait_7qG2_ms_7qG2_000_inline_TurnL
+5	7921	9	#line 7921 "NXCDefs.h"
+5	102	9	#line 102 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	103	9	#line 103 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	104	9		set sWait, 250
+5	103	12	#line 103 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	103	12	#line 103 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	103	12	#line 103 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	104	12		mov __signed_stack_001TurnL, __TurnL_7qG2_tx_7qG2_000
+5	103	14	#line 103 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	103	14	#line 103 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	104	14		set __D0TurnL, 2
+5	103	17	#line 103 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	104	17		cmp 4, __zfTurnL, __signed_stack_001TurnL, __D0TurnL
+5	103	21	#line 103 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	104	21		mov __D0TurnL, __zfTurnL
+5	104	23	#line 104 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	105	23		brtst 4, __NXC_Label_579, __zfTurnL
+5	105	26	#line 105 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	106	26		set sWait, 400
+5	105	29	#line 105 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	105	29	#line 105 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	106	29	#line 106 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	107	29		set Count, 2
+5	106	32	#line 106 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	106	32	#line 106 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	107	32	#line 107 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	107	32	#line 107 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	108	32		set __signed_stack_001TurnL, 100
+5	107	35	#line 107 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	107	35	#line 107 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	108	35		mov __D0TurnL, __constValNeg100
+5	108	37	#line 108 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	109	37	#pragma macro 7
+5	109	37		setout __OUT_AB, 2, __signed_stack_001TurnL, 1, __constVal7, 8, __constVal2, 7, __D0TurnL, 6, __constVal32, 5, __constVal0, 10, __constVal96, 11, __constVal32, 12, __constVal32, 0, __constVal63
+5	4951	60	#line 4951 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	108	60	#line 108 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	108	60	#line 108 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	109	60		mov __Wait_7qG2_ms_7qG2_000_inline_TurnL, sWait
+5	108	62	#line 108 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	7921	62	#line 7921 "NXCDefs.h"
+5	7922	62		wait2 NA, __Wait_7qG2_ms_7qG2_000_inline_TurnL
+5	7921	65	#line 7921 "NXCDefs.h"
+5	109	65	#line 109 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	109	65	#line 109 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	110	65		set __signed_stack_001TurnL, 40
+5	109	68	#line 109 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	109	68	#line 109 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	110	68		mov __D0TurnL, __constValNeg100
+5	110	70	#line 110 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	111	70	#pragma macro 7
+5	111	70		setout __OUT_AB, 2, __signed_stack_001TurnL, 1, __constVal7, 8, __constVal2, 7, __D0TurnL, 6, __constVal32, 5, __constVal0, 10, __constVal96, 11, __constVal32, 12, __constVal32, 0, __constVal63
+5	4974	93	#line 4974 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	110	93	#line 110 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	111	93	#line 111 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	111	93	#line 111 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	112	93		add __TurnL_7qG2_tx_7qG2_000, __TurnL_7qG2_tx_7qG2_000, __TurnL_7qG2_tx_7qG2_000
+5	111	97	#line 111 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	111	97	#line 111 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	112	97		mov __signed_stack_001TurnL, __TurnL_7qG2_tx_7qG2_000
+5	111	99	#line 111 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	111	99	#line 111 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	112	99		mov __D0TurnL, Count
+5	111	101	#line 111 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	112	101		cmp 1, __zfTurnL, __signed_stack_001TurnL, __D0TurnL
+5	111	105	#line 111 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	112	105		mov __D0TurnL, __zfTurnL
+5	112	107	#line 112 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	113	107		brtst 4, __NXC_Label_597, __zfTurnL
+5	112	110	#line 112 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	113	110		getin __signed_stack_001TurnL, __constVal0, 4
+5	112	114	#line 112 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	112	114	#line 112 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	113	114		mov __D0TurnL, THRES_W
+5	112	116	#line 112 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	113	116		cmp 1, __zfTurnL, __signed_stack_001TurnL, __D0TurnL
+5	112	120	#line 112 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	113	120		mov __D0TurnL, __zfTurnL
+5	112	122	#line 112 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	113	122		brtst 4, __NXC_Label_601, __zfTurnL
+5	112	125	#line 112 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	113	125		mov __signed_stack_001TurnL, __D0TurnL
+5	112	127	#line 112 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	113	127		mov __DU0TurnL, BW
+5	112	129	#line 112 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	113	129		tst 5, __zfTurnL, __DU0TurnL
+5	112	132	#line 112 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	112	132	#line 112 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	113	132		and __D0TurnL, __signed_stack_001TurnL, __zfTurnL
+5	113	136	#line 113 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	114	136		tst 5, __zfTurnL, __D0TurnL
+5	113	139	#line 113 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	114	139		brtst 4, __NXC_Label_602, __zfTurnL
+5	114	142	#line 114 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	115	142		add Count, Count, __constVal1
+5	114	146	#line 114 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	115	146	#line 115 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	116	146		set BW, 0
+5	115	149	#line 115 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	115	149	#line 115 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	116	149	#line 116 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	116	149	#line 116 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	117	149		getin __signed_stack_001TurnL, __constVal0, 4
+5	116	153	#line 116 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	116	153	#line 116 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	116	153	#line 116 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	116	153	#line 116 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	116	153	#line 116 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	117	153		add __D0TurnL, THRES_B, __constVal5
+5	116	157	#line 116 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	117	157		cmp 0, __zfTurnL, __signed_stack_001TurnL, __D0TurnL
+5	116	161	#line 116 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	117	161		mov __D0TurnL, __zfTurnL
+5	116	163	#line 116 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	117	163		brtst 4, __NXC_Label_606, __zfTurnL
+5	116	166	#line 116 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	117	166		mov __signed_stack_001TurnL, __D0TurnL
+5	116	168	#line 116 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	116	168	#line 116 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	117	168		not __DU0TurnL, BW
+5	116	171	#line 116 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	117	171		tst 5, __zfTurnL, __DU0TurnL
+5	116	174	#line 116 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	116	174	#line 116 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	117	174		and __D0TurnL, __signed_stack_001TurnL, __zfTurnL
+5	117	178	#line 117 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	118	178		tst 5, __zfTurnL, __D0TurnL
+5	117	181	#line 117 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	118	181		brtst 4, __NXC_Label_607, __zfTurnL
+5	118	184	#line 118 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	119	184		add Count, Count, __constVal1
+5	118	188	#line 118 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	119	188	#line 119 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	120	188		set BW, 1
+5	119	191	#line 119 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	119	191	#line 119 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	121	191	#line 121 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	121	191	#line 121 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	122	191		jmp __NXC_Label_596
+5	121	193	#line 121 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	122	193	#line 122 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	123	193	#pragma macro 7
+5	123	193		setout __OUT_AB, 2, __constVal0, 1, __constVal3, 8, __constVal0, 6, __constVal32, 7, __constVal0, 5, __constVal0, 10, __constVal96, 11, __constVal32, 12, __constVal32, 0, __constVal63
+5	5091	216	#line 5091 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	122	216	#line 122 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	123	216	#line 123 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	124	216		set BW, 1
+5	123	219	#line 123 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	123	219	#line 123 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	124	219	#line 124 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	125	219		set __TurnL_7qG2_tx_7qG2_000, 0
+5	124	222	#line 124 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	124	222	#line 124 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	129	222	#line 129 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+5	130	222		subret __TurnL_return
+6	130	0	#line 130 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	131	0		set __Wait_7qG2_ms_7qG2_000_inline_TurnR, 80
+6	130	3	#line 130 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	7921	3	#line 7921 "NXCDefs.h"
+6	7922	3		wait2 NA, __Wait_7qG2_ms_7qG2_000_inline_TurnR
+6	7921	6	#line 7921 "NXCDefs.h"
+6	131	6	#line 131 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	131	6	#line 131 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	132	6		set __signed_stack_001TurnR, 100
+6	131	9	#line 131 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	131	9	#line 131 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	132	9		set __D0TurnR, 100
+6	132	12	#line 132 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	133	12	#pragma macro 7
+6	133	12		setout __OUT_AB, 2, __signed_stack_001TurnR, 1, __constVal7, 8, __constVal2, 7, __D0TurnR, 6, __constVal32, 5, __constVal0, 10, __constVal96, 11, __constVal32, 12, __constVal32, 0, __constVal63
+6	5141	35	#line 5141 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	132	35	#line 132 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	132	35	#line 132 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	133	35		set __Wait_7qG2_ms_7qG2_000_inline_TurnR, 250
+6	132	38	#line 132 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	7921	38	#line 7921 "NXCDefs.h"
+6	7922	38		wait2 NA, __Wait_7qG2_ms_7qG2_000_inline_TurnR
+6	7921	41	#line 7921 "NXCDefs.h"
+6	133	41	#line 133 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	133	41	#line 133 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	134	41		set __signed_stack_001TurnR, 40
+6	133	44	#line 133 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	133	44	#line 133 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	134	44		set __D0TurnR, 100
+6	134	47	#line 134 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	135	47	#pragma macro 10
+6	135	47		acquire __OnRevMutex
+6	135	48		neg __OnRev_Tmp, __signed_stack_001TurnR
+6	135	51		setout __OUT_AB, 2, __OnRev_Tmp, 1, __constVal7, 8, __constVal2, 7, __D0TurnR, 6, __constVal32, 5, __constVal0, 10, __constVal96, 11, __constVal32, 12, __constVal32, 0, __constVal63
+6	135	74		release __OnRevMutex
+6	5164	75	#line 5164 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	134	75	#line 134 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	135	75	#line 135 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	136	75		set Count, 0
+6	135	78	#line 135 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	135	78	#line 135 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	136	78	#line 136 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	136	78	#line 136 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	137	78		add __TurnR_7qG2_tx_7qG2_000, __TurnR_7qG2_tx_7qG2_000, __TurnR_7qG2_tx_7qG2_000
+6	136	82	#line 136 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	136	82	#line 136 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	137	82		mov __signed_stack_001TurnR, __TurnR_7qG2_tx_7qG2_000
+6	136	84	#line 136 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	136	84	#line 136 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	137	84		mov __D0TurnR, Count
+6	136	86	#line 136 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	137	86		cmp 1, __zfTurnR, __signed_stack_001TurnR, __D0TurnR
+6	136	90	#line 136 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	137	90		mov __D0TurnR, __zfTurnR
+6	138	92	#line 138 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	139	92		brtst 4, __NXC_Label_631, __zfTurnR
+6	138	95	#line 138 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	139	95		getin __signed_stack_001TurnR, __constVal2, 4
+6	138	99	#line 138 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	138	99	#line 138 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	139	99		mov __D0TurnR, THRES_W
+6	138	101	#line 138 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	139	101		cmp 1, __zfTurnR, __signed_stack_001TurnR, __D0TurnR
+6	138	105	#line 138 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	139	105		mov __D0TurnR, __zfTurnR
+6	138	107	#line 138 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	139	107		brtst 4, __NXC_Label_635, __zfTurnR
+6	138	110	#line 138 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	139	110		mov __signed_stack_001TurnR, __D0TurnR
+6	138	112	#line 138 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	139	112		mov __DU0TurnR, BW
+6	138	114	#line 138 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	139	114		tst 5, __zfTurnR, __DU0TurnR
+6	138	117	#line 138 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	138	117	#line 138 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	139	117		and __D0TurnR, __signed_stack_001TurnR, __zfTurnR
+6	139	121	#line 139 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	140	121		tst 5, __zfTurnR, __D0TurnR
+6	139	124	#line 139 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	140	124		brtst 4, __NXC_Label_636, __zfTurnR
+6	140	127	#line 140 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	141	127		add Count, Count, __constVal1
+6	140	131	#line 140 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	141	131	#line 141 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	142	131		set BW, 0
+6	141	134	#line 141 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	141	134	#line 141 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	142	134	#line 142 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	142	134	#line 142 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	143	134		getin __signed_stack_001TurnR, __constVal2, 4
+6	142	138	#line 142 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	142	138	#line 142 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	142	138	#line 142 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	142	138	#line 142 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	142	138	#line 142 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	143	138		add __D0TurnR, THRES_B, __constVal5
+6	142	142	#line 142 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	143	142		cmp 0, __zfTurnR, __signed_stack_001TurnR, __D0TurnR
+6	142	146	#line 142 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	143	146		mov __D0TurnR, __zfTurnR
+6	142	148	#line 142 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	143	148		brtst 4, __NXC_Label_640, __zfTurnR
+6	142	151	#line 142 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	143	151		mov __signed_stack_001TurnR, __D0TurnR
+6	142	153	#line 142 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	142	153	#line 142 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	143	153		not __DU0TurnR, BW
+6	142	156	#line 142 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	143	156		tst 5, __zfTurnR, __DU0TurnR
+6	142	159	#line 142 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	142	159	#line 142 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	143	159		and __D0TurnR, __signed_stack_001TurnR, __zfTurnR
+6	143	163	#line 143 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	144	163		tst 5, __zfTurnR, __D0TurnR
+6	143	166	#line 143 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	144	166		brtst 4, __NXC_Label_641, __zfTurnR
+6	144	169	#line 144 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	145	169		add Count, Count, __constVal1
+6	144	173	#line 144 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	145	173	#line 145 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	146	173		set BW, 1
+6	145	176	#line 145 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	145	176	#line 145 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	147	176	#line 147 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	147	176	#line 147 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	148	176		jmp __NXC_Label_630
+6	147	178	#line 147 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	148	178	#line 148 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	149	178	#pragma macro 7
+6	149	178		setout __OUT_AB, 2, __constVal0, 1, __constVal3, 8, __constVal0, 6, __constVal32, 7, __constVal0, 5, __constVal0, 10, __constVal96, 11, __constVal32, 12, __constVal32, 0, __constVal63
+6	5288	201	#line 5288 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	148	201	#line 148 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	149	201	#line 149 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	150	201		set BW, 1
+6	149	204	#line 149 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	149	204	#line 149 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	150	204	#line 150 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	151	204		set __TurnR_7qG2_tx_7qG2_000, 0
+6	150	207	#line 150 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	150	207	#line 150 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	155	207	#line 155 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+6	156	207		subret __TurnR_return
+7	156	0	#line 156 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	157	0		set __signed_stack_001Deploy, 80
+7	156	3	#line 156 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	156	3	#line 156 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	157	3		set __D0Deploy, 0
+7	157	6	#line 157 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	158	6	#pragma macro 10
+7	158	6		acquire __OnRevMutex
+7	158	7		neg __OnRev_Tmp, __signed_stack_001Deploy
+7	158	10		setout __OUT_AB, 2, __OnRev_Tmp, 1, __constVal7, 8, __constVal2, 7, __D0Deploy, 6, __constVal32, 5, __constVal0, 10, __constVal96, 11, __constVal32, 12, __constVal32, 0, __constVal63
+7	158	33		release __OnRevMutex
+7	5320	34	#line 5320 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	157	34	#line 157 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	157	34	#line 157 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	158	34		set __Wait_7qG2_ms_7qG2_000_inline_Deploy, 300
+7	157	37	#line 157 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	7921	37	#line 7921 "NXCDefs.h"
+7	7922	37		wait2 NA, __Wait_7qG2_ms_7qG2_000_inline_Deploy
+7	7921	40	#line 7921 "NXCDefs.h"
+7	158	40	#line 158 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	159	40	#line 159 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	160	40	#pragma macro 7
+7	160	40		setout __OUT_AB, 2, __constVal0, 1, __constVal3, 8, __constVal0, 6, __constVal32, 7, __constVal0, 5, __constVal0, 10, __constVal96, 11, __constVal32, 12, __constVal32, 0, __constVal63
+7	5337	63	#line 5337 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	159	63	#line 159 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	159	63	#line 159 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	160	63		set __Wait_7qG2_ms_7qG2_000_inline_Deploy, 10
+7	159	66	#line 159 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	7921	66	#line 7921 "NXCDefs.h"
+7	7922	66		wait2 NA, __Wait_7qG2_ms_7qG2_000_inline_Deploy
+7	7921	69	#line 7921 "NXCDefs.h"
+7	160	69	#line 160 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	160	69	#line 160 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	161	69		set __signed_stack_001Deploy, 80
+7	160	72	#line 160 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	160	72	#line 160 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	161	72		set __D0Deploy, 0
+7	161	75	#line 161 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	162	75	#pragma macro 7
+7	162	75		setout __OUT_AB, 2, __signed_stack_001Deploy, 1, __constVal7, 8, __constVal2, 7, __D0Deploy, 6, __constVal32, 5, __constVal0, 10, __constVal96, 11, __constVal32, 12, __constVal32, 0, __constVal63
+7	5360	98	#line 5360 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	161	98	#line 161 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	161	98	#line 161 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	162	98		set __Wait_7qG2_ms_7qG2_000_inline_Deploy, 420
+7	161	101	#line 161 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	7921	101	#line 7921 "NXCDefs.h"
+7	7922	101		wait2 NA, __Wait_7qG2_ms_7qG2_000_inline_Deploy
+7	7921	104	#line 7921 "NXCDefs.h"
+7	162	104	#line 162 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	163	104	#line 163 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	164	104	#pragma macro 7
+7	164	104		setout __OUT_AB, 2, __constVal0, 1, __constVal3, 8, __constVal0, 6, __constVal32, 7, __constVal0, 5, __constVal0, 10, __constVal96, 11, __constVal32, 12, __constVal32, 0, __constVal63
+7	5373	127	#line 5373 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	163	127	#line 163 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	168	127	#line 168 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+7	169	127		subret __Deploy_return
+8	169	0	#line 169 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+8	170	0		set __TurnL_7qG2_tx_7qG2_000, 2
+8	169	3	#line 169 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+8	170	3	#line 170 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+8	171	3		subcall TurnL, __TurnL_return
+8	170	5	#line 170 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+8	170	5	#line 170 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+8	171	5		mov __Forwards_7qG2_DR_7qG2_000, __Backwards_7qG2_DR_7qG2_000
+8	170	7	#line 170 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+8	171	7	#line 171 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+8	172	7		subcall Forwards, __Forwards_return
+8	171	9	#line 171 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+8	181	9	#line 181 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+8	182	9		subret __Backwards_return
+9	182	0	#line 182 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	183	0		set __Afsm_7qG2_i_7qG2_001, 0
+9	182	3	#line 182 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	182	3	#line 182 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	183	3		mov __signed_stack_001Afsm, __Afsm_7qG2_i_7qG2_001
+9	182	5	#line 182 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	182	5	#line 182 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	183	5		strcat __strbufAfsm, __Afsm_7qG2_solverString_7qG2_000
+9	182	9	#line 182 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	183	9		mov __strlen_7qG2_str_7qG2_000_inline_Afsm, __strbufAfsm
+9	18589	11	#line 18589 "NXCDefs.h"
+9	18590	11		arrsize __D0strlen_inline_Afsm, __strlen_7qG2_str_7qG2_000_inline_Afsm
+9	18590	14		sub __D0Afsm, __D0strlen_inline_Afsm, __constVal1
+9	18589	18	#line 18589 "NXCDefs.h"
+9	182	18	#line 182 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	182	18	#line 182 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	183	18		cmp 0, __zfAfsm, __signed_stack_001Afsm, __D0Afsm
+9	182	22	#line 182 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	183	22		mov __D0Afsm, __zfAfsm
+9	182	24	#line 182 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	183	24		brtst 4, __NXC_Label_667, __zfAfsm
+9	182	27	#line 182 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	183	27		jmp __NXC_Label_668
+9	183	29	#line 183 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	184	29		add __Afsm_7qG2_i_7qG2_001, __Afsm_7qG2_i_7qG2_001, __constVal1
+9	184	33	#line 184 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	185	33		jmp __NXC_Label_666
+9	184	35	#line 184 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	185	35		mov __signed_stack_001Afsm, __Afsm_7qG2_i_7qG2_001
+9	184	37	#line 184 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	184	37	#line 184 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	185	37		index __ArrHelper__Afsm_98_0, __Afsm_7qG2_solverString_7qG2_000, __signed_stack_001Afsm
+9	184	41	#line 184 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	185	41		mov state, __ArrHelper__Afsm_98_0
+9	185	43	#line 185 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	185	43	#line 185 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	185	43	#line 185 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	185	43	#line 185 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	185	43	#line 185 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	185	43	#line 185 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	186	43		add __signed_stack_001Afsm, __Afsm_7qG2_i_7qG2_001, __constVal1
+9	185	47	#line 185 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	185	47	#line 185 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	186	47		index __ArrHelper__Afsm_98_0, __Afsm_7qG2_solverString_7qG2_000, __signed_stack_001Afsm
+9	185	51	#line 185 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	186	51		mov nxtState, __ArrHelper__Afsm_98_0
+9	186	53	#line 186 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	186	53	#line 186 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	187	53	#line 187 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	188	53		mov __D0Afsm, state
+9	191	55		brcmp 4, __NXC_Label_685, __constVal70, __D0Afsm
+9	192	59		brcmp 4, __NXC_Label_700, __constVal66, __D0Afsm
+9	193	63		brcmp 4, __NXC_Label_717, __constVal76, __D0Afsm
+9	194	67		brcmp 4, __NXC_Label_733, __constVal82, __D0Afsm
+9	195	71		brcmp 4, __NXC_Label_747, __constVal68, __D0Afsm
+9	196	75		brcmp 4, __NXC_Label_748, __constVal65, __D0Afsm
+9	197	79		jmp __NXC_Label_751
+9	198	81		jmp __NXC_Label_684
+9	189	83	#line 189 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	190	83	#line 190 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	191	83		set fx, 1
+9	190	86	#line 190 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	190	86	#line 190 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	190	86	#line 190 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	191	86		mov __signed_stack_001Afsm, nxtState
+9	190	88	#line 190 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	190	88	#line 190 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	191	88		set __D0Afsm, 70
+9	190	91	#line 190 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	191	91		cmp 4, __zfAfsm, __signed_stack_001Afsm, __D0Afsm
+9	190	95	#line 190 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	191	95		mov __D0Afsm, __zfAfsm
+9	191	97	#line 191 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	192	97		brtst 4, __NXC_Label_689, __zfAfsm
+9	192	100	#line 192 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	193	100		add fx, fx, __constVal1
+9	192	104	#line 192 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	193	104	#line 193 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	194	104		add __Afsm_7qG2_i_7qG2_001, __Afsm_7qG2_i_7qG2_001, __constVal1
+9	193	108	#line 193 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	193	108	#line 193 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	193	108	#line 193 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	193	108	#line 193 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	193	108	#line 193 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	194	108		add __signed_stack_001Afsm, __Afsm_7qG2_i_7qG2_001, __constVal1
+9	193	112	#line 193 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	193	112	#line 193 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	194	112		index __ArrHelper__Afsm_98_0, __Afsm_7qG2_solverString_7qG2_000, __signed_stack_001Afsm
+9	193	116	#line 193 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	194	116		mov nxtState, __ArrHelper__Afsm_98_0
+9	194	118	#line 194 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	194	118	#line 194 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	195	118	#line 195 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	196	118		jmp __NXC_Label_688
+9	195	120	#line 195 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	195	120	#line 195 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	196	120		mov __Forwards_7qG2_DR_7qG2_000, fx
+9	195	122	#line 195 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	196	122	#line 196 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	197	122		subcall Forwards, __Forwards_return
+9	196	124	#line 196 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	197	124	#line 197 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	198	124		set fx, 0
+9	197	127	#line 197 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	197	127	#line 197 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	199	127	#line 199 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	200	127		jmp __NXC_Label_684
+9	199	129	#line 199 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	200	129	#line 200 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	201	129	#line 201 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	202	129		set bx, 1
+9	201	132	#line 201 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	201	132	#line 201 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	201	132	#line 201 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	202	132		mov __signed_stack_001Afsm, nxtState
+9	201	134	#line 201 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	201	134	#line 201 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	202	134		set __D0Afsm, 66
+9	201	137	#line 201 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	202	137		cmp 4, __zfAfsm, __signed_stack_001Afsm, __D0Afsm
+9	201	141	#line 201 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	202	141		mov __D0Afsm, __zfAfsm
+9	202	143	#line 202 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	203	143		brtst 4, __NXC_Label_704, __zfAfsm
+9	203	146	#line 203 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	204	146		add bx, bx, __constVal1
+9	203	150	#line 203 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	203	150	#line 203 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	204	150		add __Afsm_7qG2_i_7qG2_001, __Afsm_7qG2_i_7qG2_001, __constVal1
+9	203	154	#line 203 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	204	154	#line 204 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	204	154	#line 204 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	204	154	#line 204 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	204	154	#line 204 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	204	154	#line 204 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	205	154		add __signed_stack_001Afsm, __Afsm_7qG2_i_7qG2_001, __constVal1
+9	204	158	#line 204 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	204	158	#line 204 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	205	158		index __ArrHelper__Afsm_98_0, __Afsm_7qG2_solverString_7qG2_000, __signed_stack_001Afsm
+9	204	162	#line 204 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	205	162		mov nxtState, __ArrHelper__Afsm_98_0
+9	205	164	#line 205 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	205	164	#line 205 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	206	164	#line 206 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	207	164		jmp __NXC_Label_703
+9	206	166	#line 206 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	206	166	#line 206 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	207	166		mov __Backwards_7qG2_DR_7qG2_000, bx
+9	206	168	#line 206 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	207	168	#line 207 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	208	168		subcall Backwards, __Backwards_return
+9	207	170	#line 207 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	208	170	#line 208 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	209	170		set bx, 0
+9	208	173	#line 208 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	208	173	#line 208 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	210	173	#line 210 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	211	173		jmp __NXC_Label_684
+9	210	175	#line 210 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	212	175	#line 212 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	213	175	#line 213 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	214	175		set tx, 1
+9	213	178	#line 213 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	213	178	#line 213 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	213	178	#line 213 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	214	178		mov __signed_stack_001Afsm, nxtState
+9	213	180	#line 213 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	213	180	#line 213 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	214	180		set __D0Afsm, 76
+9	213	183	#line 213 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	214	183		cmp 4, __zfAfsm, __signed_stack_001Afsm, __D0Afsm
+9	213	187	#line 213 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	214	187		mov __D0Afsm, __zfAfsm
+9	214	189	#line 214 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	215	189		brtst 4, __NXC_Label_722, __zfAfsm
+9	215	192	#line 215 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	216	192		add tx, tx, __constVal1
+9	215	196	#line 215 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	215	196	#line 215 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	216	196		add __Afsm_7qG2_i_7qG2_001, __Afsm_7qG2_i_7qG2_001, __constVal1
+9	215	200	#line 215 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	216	200	#line 216 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	216	200	#line 216 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	216	200	#line 216 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	216	200	#line 216 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	216	200	#line 216 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	217	200		add __signed_stack_001Afsm, __Afsm_7qG2_i_7qG2_001, __constVal1
+9	216	204	#line 216 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	216	204	#line 216 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	217	204		index __ArrHelper__Afsm_98_0, __Afsm_7qG2_solverString_7qG2_000, __signed_stack_001Afsm
+9	216	208	#line 216 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	217	208		mov nxtState, __ArrHelper__Afsm_98_0
+9	217	210	#line 217 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	217	210	#line 217 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	218	210	#line 218 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	218	210	#line 218 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	219	210		mov __TurnL_7qG2_tx_7qG2_000, tx
+9	218	212	#line 218 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	219	212	#line 219 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	220	212		subcall TurnL, __TurnL_return
+9	219	214	#line 219 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	220	214	#line 220 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	221	214		set tx, 0
+9	220	217	#line 220 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	220	217	#line 220 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	222	217	#line 222 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	223	217		jmp __NXC_Label_684
+9	222	219	#line 222 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	224	219	#line 224 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	225	219	#line 225 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	226	219		set tx, 1
+9	225	222	#line 225 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	225	222	#line 225 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	225	222	#line 225 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	226	222		mov __signed_stack_001Afsm, nxtState
+9	225	224	#line 225 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	225	224	#line 225 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	226	224		set __D0Afsm, 82
+9	225	227	#line 225 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	226	227		cmp 4, __zfAfsm, __signed_stack_001Afsm, __D0Afsm
+9	225	231	#line 225 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	226	231		mov __D0Afsm, __zfAfsm
+9	226	233	#line 226 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	227	233		brtst 4, __NXC_Label_738, __zfAfsm
+9	227	236	#line 227 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	228	236		add tx, tx, __constVal1
+9	227	240	#line 227 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	228	240	#line 228 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	229	240		add __Afsm_7qG2_i_7qG2_001, __Afsm_7qG2_i_7qG2_001, __constVal1
+9	228	244	#line 228 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	228	244	#line 228 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	228	244	#line 228 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	228	244	#line 228 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	228	244	#line 228 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	229	244		add __signed_stack_001Afsm, __Afsm_7qG2_i_7qG2_001, __constVal1
+9	228	248	#line 228 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	228	248	#line 228 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	229	248		index __ArrHelper__Afsm_98_0, __Afsm_7qG2_solverString_7qG2_000, __signed_stack_001Afsm
+9	228	252	#line 228 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	229	252		mov nxtState, __ArrHelper__Afsm_98_0
+9	229	254	#line 229 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	229	254	#line 229 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	230	254	#line 230 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	230	254	#line 230 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	231	254		mov __TurnR_7qG2_tx_7qG2_000, tx
+9	230	256	#line 230 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	231	256	#line 231 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	232	256		subcall TurnR, __TurnR_return
+9	231	258	#line 231 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	232	258	#line 232 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	233	258		set tx, 0
+9	232	261	#line 232 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	232	261	#line 232 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	234	261	#line 234 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	235	261		jmp __NXC_Label_684
+9	234	263	#line 234 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	235	263	#line 235 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	236	263	#line 236 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	237	263		subcall Deploy, __Deploy_return
+9	236	265	#line 236 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	238	265	#line 238 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	239	265		jmp __NXC_Label_684
+9	238	267	#line 238 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	239	267	#line 239 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	239	267	#line 239 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	240	267		set __Forwards_7qG2_DR_7qG2_000, 1
+9	239	270	#line 239 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	240	270	#line 240 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	241	270		subcall Forwards, __Forwards_return
+9	240	272	#line 240 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	242	272	#line 242 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	243	272		jmp __NXC_Label_684
+9	242	274	#line 242 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	244	274	#line 244 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	245	274	#line 245 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	245	274	#line 245 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	247	274	#line 247 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	253	274	#line 253 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	254	274		jmp __NXC_Label_669
+9	253	276	#line 253 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	253	276	#line 253 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+9	254	276		subret __Afsm_return
+10	275	0	#line 275 "C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc"
+10	276	0		subret ____initialize_global_data_return
+#CLUMPS
+Clump	Name	Offset	File
+0	main	0	C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc
+1	__ResetSensorSubroutine	32	NXTDefs.h
+2	sensorSetup	45	C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc
+3	PID	235	C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc
+4	Forwards	270	C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc
+5	TurnL	503	C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc
+6	TurnR	727	C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc
+7	Deploy	936	C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc
+8	Backwards	1065	C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc
+9	Afsm	1076	C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc
+10	__initialize_global_data	1354	C:\Users\Morten\Desktop\Lego\ForFinal\forFun.nxc
