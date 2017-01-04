@@ -1,0 +1,105 @@
+#!/bin/bash
+for (( i=1; i<=5; i++ ))
+do
+	./Map_solver tm/nodes_map-size/simple5x3.txt
+done
+mv timing_data.csv timing_data_Astar_5x3.csv
+cp structure_timing_data.csv timing_data.csv
+
+for (( i=1; i<=5; i++ ))
+do
+	./Map_solver tm/nodes_map-size/simple5x4.txt
+done
+mv timing_data.csv timing_data_Astar_5x4.csv
+cp structure_timing_data.csv timing_data.csv
+
+for (( i=1; i<=5; i++ ))
+do
+	./Map_solver tm/nodes_map-size/simple5x5.txt
+done
+mv timing_data.csv timing_data_Astar_5x5.csv
+cp structure_timing_data.csv timing_data.csv
+
+for (( i=1; i<=5; i++ ))
+do
+	./Map_solver tm/nodes_map-size/simple6x3.txt
+done
+mv timing_data.csv timing_data_Astar_6x3.csv
+cp structure_timing_data.csv timing_data.csv
+
+for (( i=1; i<=5; i++ ))
+do
+	./Map_solver tm/nodes_map-size/simple6x4.txt
+done
+mv timing_data.csv timing_data_Astar_6x4.csv
+cp structure_timing_data.csv timing_data.csv
+
+for (( i=1; i<=5; i++ ))
+do
+	./Map_solver tm/nodes_map-size/simple6x5.txt
+done
+mv timing_data.csv timing_data_Astar_6x5.csv
+cp structure_timing_data.csv timing_data.csv
+
+for (( i=1; i<=5; i++ ))
+do
+	./Map_solver tm/nodes_map-size/simple7x3.txt
+done
+mv timing_data.csv timing_data_Astar_7x3.csv
+cp structure_timing_data.csv timing_data.csv
+
+for (( i=1; i<=5; i++ ))
+do
+	./Map_solver tm/nodes_map-size/simple7x4.txt
+done
+mv timing_data.csv timing_data_Astar_7x4.csv
+cp structure_timing_data.csv timing_data.csv
+
+for (( i=1; i<=5; i++ ))
+do
+	./Map_solver tm/nodes_map-size/simple7x5.txt
+done
+mv timing_data.csv timing_data_Astar_7x5.csv
+cp structure_timing_data.csv timing_data.csv
+
+for (( i=1; i<=5; i++ ))
+do
+	./Map_solver tm/nodes_map-size/simple8x3.txt
+done
+mv timing_data.csv timing_data_Astar_8x3.csv
+cp structure_timing_data.csv timing_data.csv
+
+for (( i=1; i<=5; i++ ))
+do
+	./Map_solver tm/nodes_map-size/simple8x4.txt
+done
+mv timing_data.csv timing_data_Astar_8x4.csv
+cp structure_timing_data.csv timing_data.csv
+
+for (( i=1; i<=5; i++ ))
+do
+	./Map_solver tm/nodes_map-size/simple8x5.txt
+done
+mv timing_data.csv timing_data_Astar_8x5.csv
+cp structure_timing_data.csv timing_data.csv
+
+for (( i=1; i<=5; i++ ))
+do
+	./Map_solver tm/nodes_map-size/simple9x3.txt
+done
+mv timing_data.csv timing_data_Astar_9x3.csv
+cp structure_timing_data.csv timing_data.csv
+
+for (( i=1; i<=5; i++ ))
+do
+	./Map_solver tm/nodes_map-size/simple9x4.txt
+done
+mv timing_data.csv timing_data_Astar_9x4.csv
+cp structure_timing_data.csv timing_data.csv
+
+for (( i=1; i<=5; i++ ))
+do
+	./Map_solver tm/nodes_map-size/simple9x5.txt
+done
+mv timing_data.csv timing_data_Astar_9x5.csv
+cp structure_timing_data.csv timing_data.csv

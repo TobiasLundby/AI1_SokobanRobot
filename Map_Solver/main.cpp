@@ -237,7 +237,7 @@ int main(int argc,  char **argv) {
                  feature_tree.print_info("Starting search");
                  long long time_start = feature_tree.currentTimeUs();
                  long long time_end;
-                 int solver_type = BF;
+                 int solver_type = Astar;
                  initial_map.create_wavefront_map(); // Generate wavefront maps
                  if (feature_tree.solve(solver_type, 10000000)) {  // Solve using Breadth-first searching
                      time_end = feature_tree.currentTimeUs();
